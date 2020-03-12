@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Contas</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">,
+
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+            integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+            crossorigin="anonymous"></script>
+</head>
+
+<body>
+<!-- Fixed navbar -->
+<div class="container">
+    <br/>
+
+    <div class="col-sm-12">
+        <div class="form-group">
+            <b class="col-sm">Digite seu cpf/cnpj ou documento para buscar suas contas</b>
+            <div class="col-sm-12">
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" id="fisica" name="rd" class="custom-control-input" checked onclick="reloadMask('fisica')">
+                    <label class="custom-control-label" for="fisica">Pessoa fisica</label>
+                </div>
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" id="Juridica" name="rd" class="custom-control-input" onclick="reloadMask('juridica')">
+                    <label class="custom-control-label" for="Juridica">Pessoa Juridica</label>
+                </div>
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" id="estrangeiro" name="rd" class="custom-control-input" onclick="reloadMask('estrangeiro')">
+                    <label class="custom-control-label" for="estrangeiro">Estrangeiro</label>
+                </div>
+            </div>
+        </div>
+        <form action="/contas/" id="formPesquisa" class="form-group" method="get">
+            <input class="col-sm-4 custom-control-inline form-control" name="documento" id="documento" placeholder="Documento"/>
+            <button class="col-sm-2 custom-control-inline form-control btn-success" type="submit">Pesquisar</button>
+        </form>
+    </div>
+    <div href="#contas" class="form-group">
+        <table id="tbl" aria-colcount="10" class="table-bordered table table-dark">
+            <thead>
+            <tr>
+                <th class="">Código</th>
+                <th class="">Valor</th>
+                <th class="">Status</th>
+                <th class="">Lançamento</th>
+                <th class="">Vencimento</th>
+                <th class="">Valor pago</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="conta : ${contas}">
+                <td><span th:text="${conta.id}"></span></td>
+                <td><span th:text="${conta.valor}"></span></td>
+                <td><span th:text="${conta.statusConta}"></span></td>
+                <td><span th:text="${conta.dataLancamento}"></span></td>
+                <td><span th:text="${conta.dataVencimento}"></span></td>
+                <td><span th:text="${conta.valorPago}"></span></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.0/jquery.mask.js"></script>
+    <script language="javascript">
+
+
+        function find(){
+            var url = "http://localhost:8080/contas/" + document.getElementById("documento").value;
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("GET", url);
+            xhttp.send();
+        }
+
+        window.onload = initPage;
+
+        function initPage(){
+            reloadMask('fisica');
+        }
+
+        function reloadMask(type) {
+            masc = '';
+            if (type == 'fisica') {
+                masc = '###.###.###-##';
+            } else if (type == 'juridica') {
+                masc = '##.###.###/####-##';
+            } else {
+                masc = 'AAAAAAAAAAAAAAAAAAAAAAAAAAAA';
+            }
+            var campoJq = $("#documento");
+            campo = document.getElementById("documento") ;
+            campo.value = '';
+            campoJq.mask(masc);
+            if (masc.isEmpty){
+                campo.maxLength = 20 ;
+            } else {
+                campo.maxLength = masc.length;
+            }
+
+        };
+    </script>
+</div>
+</body>
+</html>

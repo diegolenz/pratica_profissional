@@ -1,0 +1,82 @@
+
+
+estoque e preço de custo não pode ser editavel *
+
+adicionar menu generico para cadastros *
+
+colocar orçamentos, vendas, e compras em financeiro *
+ 
+ADD CAMPO COD NO CADASTRO DE PAIS *
+
+INVERTER BOTOES DE SALVAR E CANCELAR *
+
+INVERTER ORDEM DOS CAMPOS NO CAD DE ESTADO  : COD, ESTADO,UF , PAIS
+                                     CIDADE : COD, CIDADE, DDD, ESTADO *
+
+ADICIONAR CAMPO DE BUSCA POR CÓDIGO NOS CAMPOS DE BUSCAR *
+
+MUDAR A SIGLA PARA UF E ALTERAR VALOR *
+
+NOS BOTOES DE ALTERAR COLOCAR PESQUISAR - LUPA *
+
+MUDAR O NOME DO MENU PESSOAS PARA CLIENTES *
+
+REDUZIR O TAMANHO DOS CAMPOS DE CODIGO E TODOS QUE NAO ESTEJAM PROPORCIONAL *
+
+CAMPO SEXO PROXIMO DO NOME *
+
+TIRAR OS CAMPOS SEXO EESTADO CIVIL QUANDO A PESSOA FOR JURIDICA, ?
+CAMPO DT DE CRIAÇÃO - DT DE FUNDAÇÃO *
+
+NOME -> RAZÃO SOCIAL   *
+APELIDO -> NOME FANTASIA *
+
+ABA ENDEREÇO ESTAR NA MESMA ABA QUE AS INF PRINCIPAIS *
+
+MARCAR CAMPO OBRIGATÓRIOS *
+
+CAMPOS OBRIGATÓRIOS,  END, CIDADE *
+
+CONSULTA DE CLIENTES NÃO ESTA TRAZENDO OS DADOS * 
+
+COLOCAR BOTÕES NA PARTE DE BAIXO DA TELA NAS TELAS DE CONSULTA *
+
+TIRAR ACESSO RAPIDO DO CANTO ESQUERDO *
+
+UNIDADE DE MEDIDA APÓS CAMPO DE DESCRIÇÃO DE PRODUTO *
+
+TIRAR DESCRICAO DO GRUPO DE PRODUTO *  
+
+TIRAR MARCA DO SERVIÇO - COLOCAR GRUPO *
+
+COD SERVIÇO ?
+ 
+COD DE BARRAS - REFERENCIA  DO PRODUTO- UNIDADE COMO CAMPO ABERTO - FORNECEDOR - DT ULT COMPRA - CUSTO UL COMPRAA 
+
+cond -> parcelas -> forma
+
+
+------
+
+cadastrar forma de pagamento no  cad de condição
+
+tirar o check box de a vista ou parcelado
+cad de cliente 
+		cod, tipo de cadastro, nome, apelido, sexo , 
+		 logradouro, numero, complemento, bairro, cep, cidade, estado, pais
+		celular, telefone, email,
+		cpf, rg, dtnascimento
+
+limite de credito e condições de pagamento do cliente
+
+
+-fornecedor
+nome - razao social
+nome de contato quando o mesmo for juridico
+
+-produto 
+nome, un, referencia, cod, de barras, preço, qtdatual, qtdmin,
+
+
+
+

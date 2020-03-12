@@ -1,0 +1,3293 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 10.6
+-- Dumped by pg_dump version 10.5
+
+-- Started on 2019-07-29 00:01:44
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- TOC entry 1 (class 3079 OID 12924)
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- TOC entry 3277 (class 0 OID 0)
+-- Dependencies: 1
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- TOC entry 204 (class 1259 OID 264069)
+-- Name: bairro; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.bairro (
+    id integer NOT NULL,
+    cep character varying(10),
+    nome character varying(25) NOT NULL,
+    cidade integer NOT NULL
+);
+
+
+ALTER TABLE public.bairro OWNER TO postgres;
+
+--
+-- TOC entry 205 (class 1259 OID 264075)
+-- Name: bairro_endereco; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.bairro_endereco (
+    bairro_id integer NOT NULL,
+    enderecos_id integer NOT NULL
+);
+
+
+ALTER TABLE public.bairro_endereco OWNER TO postgres;
+
+--
+-- TOC entry 203 (class 1259 OID 264067)
+-- Name: bairro_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.bairro_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.bairro_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3278 (class 0 OID 0)
+-- Dependencies: 203
+-- Name: bairro_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.bairro_id_seq OWNED BY public.bairro.id;
+
+
+--
+-- TOC entry 207 (class 1259 OID 264080)
+-- Name: cidade; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.cidade (
+    id integer NOT NULL,
+    ddd character varying(10),
+    ativo boolean,
+    codigo_ibge character varying(10),
+    nome character varying(255) NOT NULL,
+    estado_id integer
+);
+
+
+ALTER TABLE public.cidade OWNER TO postgres;
+
+--
+-- TOC entry 206 (class 1259 OID 264078)
+-- Name: cidade_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.cidade_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.cidade_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3279 (class 0 OID 0)
+-- Dependencies: 206
+-- Name: cidade_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.cidade_id_seq OWNED BY public.cidade.id;
+
+
+--
+-- TOC entry 209 (class 1259 OID 264088)
+-- Name: cobranca; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.cobranca (
+    id integer NOT NULL,
+    data_cobranca timestamp without time zone,
+    forma_pagamento character varying(255) NOT NULL,
+    sacado integer,
+    supervisor integer
+);
+
+
+ALTER TABLE public.cobranca OWNER TO postgres;
+
+--
+-- TOC entry 208 (class 1259 OID 264086)
+-- Name: cobranca_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.cobranca_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.cobranca_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3280 (class 0 OID 0)
+-- Dependencies: 208
+-- Name: cobranca_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.cobranca_id_seq OWNED BY public.cobranca.id;
+
+
+--
+-- TOC entry 210 (class 1259 OID 264094)
+-- Name: cobranca_itemcobranca; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.cobranca_itemcobranca (
+    cobranca_id integer NOT NULL,
+    itenscobranca_id integer NOT NULL
+);
+
+
+ALTER TABLE public.cobranca_itemcobranca OWNER TO postgres;
+
+--
+-- TOC entry 211 (class 1259 OID 264097)
+-- Name: cobranca_parcelacobranca; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.cobranca_parcelacobranca (
+    cobranca_id integer NOT NULL,
+    parcelacobrancalist_id integer NOT NULL
+);
+
+
+ALTER TABLE public.cobranca_parcelacobranca OWNER TO postgres;
+
+--
+-- TOC entry 213 (class 1259 OID 264102)
+-- Name: cobrancarenegociada; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.cobrancarenegociada (
+    id integer NOT NULL,
+    datarenegociacao date,
+    motivodescricao character varying(255),
+    cobranca_id integer,
+    operador_id integer,
+    solicitante_id integer,
+    venda_id integer
+);
+
+
+ALTER TABLE public.cobrancarenegociada OWNER TO postgres;
+
+--
+-- TOC entry 212 (class 1259 OID 264100)
+-- Name: cobrancarenegociada_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.cobrancarenegociada_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.cobrancarenegociada_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3281 (class 0 OID 0)
+-- Dependencies: 212
+-- Name: cobrancarenegociada_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.cobrancarenegociada_id_seq OWNED BY public.cobrancarenegociada.id;
+
+
+--
+-- TOC entry 214 (class 1259 OID 264108)
+-- Name: cobrancarenegociada_mensalidade; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.cobrancarenegociada_mensalidade (
+    cobrancarenegociada_id integer NOT NULL,
+    novasmensalidadesgeradas_id integer NOT NULL,
+    mensalidadesrenegociadas_id integer NOT NULL
+);
+
+
+ALTER TABLE public.cobrancarenegociada_mensalidade OWNER TO postgres;
+
+--
+-- TOC entry 215 (class 1259 OID 264111)
+-- Name: compra; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.compra (
+    id integer NOT NULL,
+    datavenda date,
+    devolvida boolean,
+    cobranca_id integer,
+    fornecedor_id integer,
+    operador_id integer
+);
+
+
+ALTER TABLE public.compra OWNER TO postgres;
+
+--
+-- TOC entry 217 (class 1259 OID 264118)
+-- Name: condicaopagamento; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.condicaopagamento (
+    id integer NOT NULL,
+    aprazo boolean,
+    ativo boolean,
+    avista boolean,
+    desconto double precision,
+    juros double precision,
+    multa double precision,
+    nome character varying(255),
+    quantidadeparcelas integer
+);
+
+
+ALTER TABLE public.condicaopagamento OWNER TO postgres;
+
+--
+-- TOC entry 216 (class 1259 OID 264116)
+-- Name: condicaopagamento_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.condicaopagamento_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.condicaopagamento_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3282 (class 0 OID 0)
+-- Dependencies: 216
+-- Name: condicaopagamento_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.condicaopagamento_id_seq OWNED BY public.condicaopagamento.id;
+
+
+--
+-- TOC entry 218 (class 1259 OID 264124)
+-- Name: condicaopagamento_parcela; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.condicaopagamento_parcela (
+    condicaopagamento_id integer NOT NULL,
+    parcelas_id integer NOT NULL
+);
+
+
+ALTER TABLE public.condicaopagamento_parcela OWNER TO postgres;
+
+--
+-- TOC entry 220 (class 1259 OID 264129)
+-- Name: endereco; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.endereco (
+    id integer NOT NULL,
+    ativo boolean NOT NULL,
+    bairro character varying(255),
+    cep character varying(255),
+    complemento character varying(255),
+    logradouro character varying(255) NOT NULL,
+    numero integer,
+    referencia character varying(255),
+    cidade_id integer
+);
+
+
+ALTER TABLE public.endereco OWNER TO postgres;
+
+--
+-- TOC entry 219 (class 1259 OID 264127)
+-- Name: endereco_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.endereco_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.endereco_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3283 (class 0 OID 0)
+-- Dependencies: 219
+-- Name: endereco_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.endereco_id_seq OWNED BY public.endereco.id;
+
+
+--
+-- TOC entry 222 (class 1259 OID 264140)
+-- Name: estado; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.estado (
+    id integer NOT NULL,
+    ativo boolean,
+    nome character varying(99) NOT NULL,
+    sigla character varying(255),
+    pais_id integer
+);
+
+
+ALTER TABLE public.estado OWNER TO postgres;
+
+--
+-- TOC entry 221 (class 1259 OID 264138)
+-- Name: estado_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.estado_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.estado_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3284 (class 0 OID 0)
+-- Dependencies: 221
+-- Name: estado_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.estado_id_seq OWNED BY public.estado.id;
+
+
+--
+-- TOC entry 224 (class 1259 OID 264148)
+-- Name: formapagamento; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.formapagamento (
+    id integer NOT NULL,
+    ativo boolean,
+    nome character varying(255)
+);
+
+
+ALTER TABLE public.formapagamento OWNER TO postgres;
+
+--
+-- TOC entry 223 (class 1259 OID 264146)
+-- Name: formapagamento_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.formapagamento_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.formapagamento_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3285 (class 0 OID 0)
+-- Dependencies: 223
+-- Name: formapagamento_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.formapagamento_id_seq OWNED BY public.formapagamento.id;
+
+
+--
+-- TOC entry 226 (class 1259 OID 264156)
+-- Name: grupo; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.grupo (
+    id integer NOT NULL,
+    ativo boolean,
+    nome character varying(255)
+);
+
+
+ALTER TABLE public.grupo OWNER TO postgres;
+
+--
+-- TOC entry 225 (class 1259 OID 264154)
+-- Name: grupo_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.grupo_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.grupo_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3286 (class 0 OID 0)
+-- Dependencies: 225
+-- Name: grupo_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.grupo_id_seq OWNED BY public.grupo.id;
+
+
+--
+-- TOC entry 228 (class 1259 OID 264164)
+-- Name: grupooperador; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.grupooperador (
+    id bigint NOT NULL,
+    nome character varying(255)
+);
+
+
+ALTER TABLE public.grupooperador OWNER TO postgres;
+
+--
+-- TOC entry 227 (class 1259 OID 264162)
+-- Name: grupooperador_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.grupooperador_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.grupooperador_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3287 (class 0 OID 0)
+-- Dependencies: 227
+-- Name: grupooperador_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.grupooperador_id_seq OWNED BY public.grupooperador.id;
+
+
+--
+-- TOC entry 229 (class 1259 OID 264170)
+-- Name: grupooperador_permissaoacesso; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.grupooperador_permissaoacesso (
+    grupooperador_id bigint NOT NULL,
+    "permossões_id" bigint NOT NULL
+);
+
+
+ALTER TABLE public.grupooperador_permissaoacesso OWNER TO postgres;
+
+--
+-- TOC entry 202 (class 1259 OID 264065)
+-- Name: hibernate_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.hibernate_sequence
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.hibernate_sequence OWNER TO postgres;
+
+--
+-- TOC entry 231 (class 1259 OID 264175)
+-- Name: informacaocontato; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.informacaocontato (
+    id integer NOT NULL,
+    ativo boolean NOT NULL,
+    tipo_informacao character varying(255) NOT NULL,
+    valor character varying(255) NOT NULL,
+    operador integer
+);
+
+
+ALTER TABLE public.informacaocontato OWNER TO postgres;
+
+--
+-- TOC entry 230 (class 1259 OID 264173)
+-- Name: informacaocontato_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.informacaocontato_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.informacaocontato_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3288 (class 0 OID 0)
+-- Dependencies: 230
+-- Name: informacaocontato_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.informacaocontato_id_seq OWNED BY public.informacaocontato.id;
+
+
+--
+-- TOC entry 233 (class 1259 OID 264186)
+-- Name: itemcobranca; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.itemcobranca (
+    id integer NOT NULL,
+    acrescimounitario double precision NOT NULL,
+    descontounitario double precision NOT NULL,
+    descricao character varying(255),
+    quantidade integer,
+    valorunitario double precision NOT NULL,
+    valortotal double precision NOT NULL,
+    cobranca_id integer,
+    compra integer,
+    mensalidade integer,
+    orcamento integer,
+    pagamentocobranca_id integer,
+    parcela_cobranca integer,
+    produto integer,
+    servico integer,
+    venda integer
+);
+
+
+ALTER TABLE public.itemcobranca OWNER TO postgres;
+
+--
+-- TOC entry 232 (class 1259 OID 264184)
+-- Name: itemcobranca_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.itemcobranca_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.itemcobranca_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3289 (class 0 OID 0)
+-- Dependencies: 232
+-- Name: itemcobranca_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.itemcobranca_id_seq OWNED BY public.itemcobranca.id;
+
+
+--
+-- TOC entry 235 (class 1259 OID 264194)
+-- Name: marca; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.marca (
+    id integer NOT NULL,
+    ativo boolean,
+    nome character varying(255)
+);
+
+
+ALTER TABLE public.marca OWNER TO postgres;
+
+--
+-- TOC entry 234 (class 1259 OID 264192)
+-- Name: marca_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.marca_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.marca_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3290 (class 0 OID 0)
+-- Dependencies: 234
+-- Name: marca_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.marca_id_seq OWNED BY public.marca.id;
+
+
+--
+-- TOC entry 237 (class 1259 OID 264202)
+-- Name: meiomovimentocaixa; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.meiomovimentocaixa (
+    id integer NOT NULL,
+    ativado boolean,
+    descricao character varying(255)
+);
+
+
+ALTER TABLE public.meiomovimentocaixa OWNER TO postgres;
+
+--
+-- TOC entry 236 (class 1259 OID 264200)
+-- Name: meiomovimentocaixa_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.meiomovimentocaixa_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.meiomovimentocaixa_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3291 (class 0 OID 0)
+-- Dependencies: 236
+-- Name: meiomovimentocaixa_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.meiomovimentocaixa_id_seq OWNED BY public.meiomovimentocaixa.id;
+
+
+--
+-- TOC entry 239 (class 1259 OID 264210)
+-- Name: mensalidade; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.mensalidade (
+    id integer NOT NULL,
+    datavencimetoalterada timestamp without time zone,
+    valorliquido double precision,
+    valororiginal double precision,
+    acrescimo double precision,
+    datapagamento timestamp without time zone,
+    datavencimentooriginal timestamp without time zone,
+    desconto double precision,
+    statusmensalidade integer,
+    operador integer
+);
+
+
+ALTER TABLE public.mensalidade OWNER TO postgres;
+
+--
+-- TOC entry 238 (class 1259 OID 264208)
+-- Name: mensalidade_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.mensalidade_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.mensalidade_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3292 (class 0 OID 0)
+-- Dependencies: 238
+-- Name: mensalidade_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.mensalidade_id_seq OWNED BY public.mensalidade.id;
+
+
+--
+-- TOC entry 240 (class 1259 OID 264216)
+-- Name: operador; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.operador (
+    nivelacesso integer,
+    primeirologin boolean NOT NULL,
+    senha character varying(255) NOT NULL,
+    usuario character varying(255) NOT NULL,
+    id integer NOT NULL
+);
+
+
+ALTER TABLE public.operador OWNER TO postgres;
+
+--
+-- TOC entry 196 (class 1259 OID 261773)
+-- Name: operador_cobrancarenegociada; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.operador_cobrancarenegociada (
+    operador_id integer NOT NULL,
+    cobrancasrenegociadaslist_id integer NOT NULL
+);
+
+
+ALTER TABLE public.operador_cobrancarenegociada OWNER TO postgres;
+
+--
+-- TOC entry 197 (class 1259 OID 261776)
+-- Name: operador_endereco; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.operador_endereco (
+    operador_id integer NOT NULL,
+    enderecolist_id integer NOT NULL
+);
+
+
+ALTER TABLE public.operador_endereco OWNER TO postgres;
+
+--
+-- TOC entry 241 (class 1259 OID 264224)
+-- Name: operador_grupooperador; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.operador_grupooperador (
+    operador_id integer NOT NULL,
+    grupos_id bigint NOT NULL
+);
+
+
+ALTER TABLE public.operador_grupooperador OWNER TO postgres;
+
+--
+-- TOC entry 198 (class 1259 OID 261782)
+-- Name: operador_informacaocontato; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.operador_informacaocontato (
+    operador_id integer NOT NULL,
+    informacaocontatolist_id integer NOT NULL
+);
+
+
+ALTER TABLE public.operador_informacaocontato OWNER TO postgres;
+
+--
+-- TOC entry 242 (class 1259 OID 264227)
+-- Name: orcamento; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.orcamento (
+    id integer NOT NULL,
+    datacadastro date,
+    dataultimaalteracao date,
+    observacoesadicionais character varying(255),
+    cliente_id integer,
+    operador_id integer
+);
+
+
+ALTER TABLE public.orcamento OWNER TO postgres;
+
+--
+-- TOC entry 244 (class 1259 OID 264234)
+-- Name: pagamentocobranca; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.pagamentocobranca (
+    id integer NOT NULL,
+    acrescimos double precision NOT NULL,
+    data_pagamento timestamp without time zone NOT NULL,
+    desconto double precision NOT NULL,
+    juros double precision NOT NULL,
+    mora double precision NOT NULL,
+    multa double precision NOT NULL,
+    tarifas double precision NOT NULL,
+    valor double precision NOT NULL
+);
+
+
+ALTER TABLE public.pagamentocobranca OWNER TO postgres;
+
+--
+-- TOC entry 243 (class 1259 OID 264232)
+-- Name: pagamentocobranca_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.pagamentocobranca_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.pagamentocobranca_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3293 (class 0 OID 0)
+-- Dependencies: 243
+-- Name: pagamentocobranca_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.pagamentocobranca_id_seq OWNED BY public.pagamentocobranca.id;
+
+
+--
+-- TOC entry 245 (class 1259 OID 264240)
+-- Name: pagamentocobranca_itemcobranca; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.pagamentocobranca_itemcobranca (
+    pagamentocobranca_id integer NOT NULL,
+    itemcobrancarecebimento_id integer NOT NULL
+);
+
+
+ALTER TABLE public.pagamentocobranca_itemcobranca OWNER TO postgres;
+
+--
+-- TOC entry 246 (class 1259 OID 264243)
+-- Name: pagamentocobranca_parcelacobranca; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.pagamentocobranca_parcelacobranca (
+    pagamentocobranca_id integer NOT NULL,
+    parcela_id integer NOT NULL
+);
+
+
+ALTER TABLE public.pagamentocobranca_parcelacobranca OWNER TO postgres;
+
+--
+-- TOC entry 248 (class 1259 OID 264248)
+-- Name: pais; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.pais (
+    id integer NOT NULL,
+    ativo boolean,
+    ddi character varying(255),
+    nome character varying(255)
+);
+
+
+ALTER TABLE public.pais OWNER TO postgres;
+
+--
+-- TOC entry 247 (class 1259 OID 264246)
+-- Name: pais_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.pais_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.pais_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3294 (class 0 OID 0)
+-- Dependencies: 247
+-- Name: pais_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.pais_id_seq OWNED BY public.pais.id;
+
+
+--
+-- TOC entry 250 (class 1259 OID 264259)
+-- Name: parcela; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.parcela (
+    id integer NOT NULL,
+    ativo boolean,
+    dias integer,
+    numero integer,
+    porcentagem double precision,
+    formapagamento_id integer
+);
+
+
+ALTER TABLE public.parcela OWNER TO postgres;
+
+--
+-- TOC entry 249 (class 1259 OID 264257)
+-- Name: parcela_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.parcela_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.parcela_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3295 (class 0 OID 0)
+-- Dependencies: 249
+-- Name: parcela_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.parcela_id_seq OWNED BY public.parcela.id;
+
+
+--
+-- TOC entry 252 (class 1259 OID 264267)
+-- Name: parcelacobranca; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.parcelacobranca (
+    id integer NOT NULL,
+    valorpendente double precision,
+    cancelada boolean NOT NULL,
+    data_vencimento date NOT NULL,
+    data_vencimento_original date NOT NULL,
+    datapagamento timestamp without time zone,
+    desconto double precision,
+    mora double precision,
+    multa double precision,
+    valor double precision NOT NULL,
+    valorrecebido double precision,
+    cobranca_id integer,
+    cobrancarenegociada integer,
+    pagamentocobrancalist_id integer
+);
+
+
+ALTER TABLE public.parcelacobranca OWNER TO postgres;
+
+--
+-- TOC entry 251 (class 1259 OID 264265)
+-- Name: parcelacobranca_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.parcelacobranca_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.parcelacobranca_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3296 (class 0 OID 0)
+-- Dependencies: 251
+-- Name: parcelacobranca_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.parcelacobranca_id_seq OWNED BY public.parcelacobranca.id;
+
+
+--
+-- TOC entry 254 (class 1259 OID 264275)
+-- Name: permissaoacesso; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.permissaoacesso (
+    id bigint NOT NULL,
+    modulo character varying(255) NOT NULL,
+    nivelacesso character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public.permissaoacesso OWNER TO postgres;
+
+--
+-- TOC entry 253 (class 1259 OID 264273)
+-- Name: permissaoacesso_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.permissaoacesso_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.permissaoacesso_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3297 (class 0 OID 0)
+-- Dependencies: 253
+-- Name: permissaoacesso_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.permissaoacesso_id_seq OWNED BY public.permissaoacesso.id;
+
+
+--
+-- TOC entry 256 (class 1259 OID 264286)
+-- Name: pessoa; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.pessoa (
+    id integer NOT NULL,
+    ativo boolean,
+    classe integer,
+    cpfcnpj character varying(255),
+    datacadastro date,
+    datanascimento date,
+    dataultalteracao date,
+    email character varying(255),
+    estadocivil character varying(255),
+    nome character varying(255),
+    nomefantasia_apelido character varying(255),
+    rgie character varying(255),
+    sexo integer,
+    telefone character varying(255),
+    telefonealternativo character varying(255),
+    tipo character varying(255),
+    endereco_id integer
+);
+
+
+ALTER TABLE public.pessoa OWNER TO postgres;
+
+--
+-- TOC entry 255 (class 1259 OID 264284)
+-- Name: pessoa_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.pessoa_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.pessoa_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3298 (class 0 OID 0)
+-- Dependencies: 255
+-- Name: pessoa_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.pessoa_id_seq OWNED BY public.pessoa.id;
+
+
+--
+-- TOC entry 258 (class 1259 OID 264297)
+-- Name: produto; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.produto (
+    id integer NOT NULL,
+    ativo boolean,
+    dt_cadastro date,
+    dt_ult_alteracao date,
+    nome character varying(255),
+    precocompra double precision,
+    quantidade integer,
+    quantidade_minima integer,
+    referencia character varying(255),
+    unidademedida character varying(255),
+    valor double precision,
+    grupo_id integer,
+    marca_id integer,
+    codbarras character varying
+);
+
+
+ALTER TABLE public.produto OWNER TO postgres;
+
+--
+-- TOC entry 200 (class 1259 OID 262239)
+-- Name: produto_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.produto_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.produto_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 257 (class 1259 OID 264295)
+-- Name: produto_id_seq1; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.produto_id_seq1
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.produto_id_seq1 OWNER TO postgres;
+
+--
+-- TOC entry 3299 (class 0 OID 0)
+-- Dependencies: 257
+-- Name: produto_id_seq1; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.produto_id_seq1 OWNED BY public.produto.id;
+
+
+--
+-- TOC entry 199 (class 1259 OID 261853)
+-- Name: produto_venda; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.produto_venda (
+    produto_id integer NOT NULL,
+    venda_id integer NOT NULL
+);
+
+
+ALTER TABLE public.produto_venda OWNER TO postgres;
+
+--
+-- TOC entry 260 (class 1259 OID 264308)
+-- Name: servico; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.servico (
+    id integer NOT NULL,
+    valor double precision,
+    ativo boolean,
+    dt_cadastro date,
+    dt_ult_alteracao date,
+    nome character varying(255),
+    qtdvend integer,
+    grupo_id integer
+);
+
+
+ALTER TABLE public.servico OWNER TO postgres;
+
+--
+-- TOC entry 201 (class 1259 OID 262247)
+-- Name: servico_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.servico_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.servico_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 259 (class 1259 OID 264306)
+-- Name: servico_id_seq1; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.servico_id_seq1
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.servico_id_seq1 OWNER TO postgres;
+
+--
+-- TOC entry 3300 (class 0 OID 0)
+-- Dependencies: 259
+-- Name: servico_id_seq1; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.servico_id_seq1 OWNED BY public.servico.id;
+
+
+--
+-- TOC entry 262 (class 1259 OID 264316)
+-- Name: tipomensalidade; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.tipomensalidade (
+    id integer NOT NULL,
+    desconto double precision,
+    descricao character varying(255),
+    valor double precision,
+    vencimento integer
+);
+
+
+ALTER TABLE public.tipomensalidade OWNER TO postgres;
+
+--
+-- TOC entry 261 (class 1259 OID 264314)
+-- Name: tipomensalidade_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.tipomensalidade_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.tipomensalidade_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3301 (class 0 OID 0)
+-- Dependencies: 261
+-- Name: tipomensalidade_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.tipomensalidade_id_seq OWNED BY public.tipomensalidade.id;
+
+
+--
+-- TOC entry 264 (class 1259 OID 264324)
+-- Name: tipooperador; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.tipooperador (
+    id bigint NOT NULL,
+    descricao character varying(255) NOT NULL,
+    observacoesadicionais character varying(255)
+);
+
+
+ALTER TABLE public.tipooperador OWNER TO postgres;
+
+--
+-- TOC entry 263 (class 1259 OID 264322)
+-- Name: tipooperador_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.tipooperador_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.tipooperador_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3302 (class 0 OID 0)
+-- Dependencies: 263
+-- Name: tipooperador_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.tipooperador_id_seq OWNED BY public.tipooperador.id;
+
+
+--
+-- TOC entry 265 (class 1259 OID 264333)
+-- Name: tipooperador_permissaoacesso; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.tipooperador_permissaoacesso (
+    tipooperador_id bigint NOT NULL,
+    permissoes_id bigint NOT NULL
+);
+
+
+ALTER TABLE public.tipooperador_permissaoacesso OWNER TO postgres;
+
+--
+-- TOC entry 266 (class 1259 OID 264336)
+-- Name: venda; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.venda (
+    id integer NOT NULL,
+    datavenda date,
+    devolvida boolean,
+    cobranca_id integer,
+    operador_id integer,
+    pessoa_id integer
+);
+
+
+ALTER TABLE public.venda OWNER TO postgres;
+
+--
+-- TOC entry 267 (class 1259 OID 264341)
+-- Name: view_situacao_cobranca; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.view_situacao_cobranca (
+    situacao character varying(255),
+    cobranca integer NOT NULL
+);
+
+
+ALTER TABLE public.view_situacao_cobranca OWNER TO postgres;
+
+--
+-- TOC entry 2904 (class 2604 OID 264072)
+-- Name: bairro id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.bairro ALTER COLUMN id SET DEFAULT nextval('public.bairro_id_seq'::regclass);
+
+
+--
+-- TOC entry 2905 (class 2604 OID 264083)
+-- Name: cidade id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.cidade ALTER COLUMN id SET DEFAULT nextval('public.cidade_id_seq'::regclass);
+
+
+--
+-- TOC entry 2906 (class 2604 OID 264091)
+-- Name: cobranca id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.cobranca ALTER COLUMN id SET DEFAULT nextval('public.cobranca_id_seq'::regclass);
+
+
+--
+-- TOC entry 2907 (class 2604 OID 264105)
+-- Name: cobrancarenegociada id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.cobrancarenegociada ALTER COLUMN id SET DEFAULT nextval('public.cobrancarenegociada_id_seq'::regclass);
+
+
+--
+-- TOC entry 2908 (class 2604 OID 264121)
+-- Name: condicaopagamento id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.condicaopagamento ALTER COLUMN id SET DEFAULT nextval('public.condicaopagamento_id_seq'::regclass);
+
+
+--
+-- TOC entry 2909 (class 2604 OID 264132)
+-- Name: endereco id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.endereco ALTER COLUMN id SET DEFAULT nextval('public.endereco_id_seq'::regclass);
+
+
+--
+-- TOC entry 2910 (class 2604 OID 264143)
+-- Name: estado id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.estado ALTER COLUMN id SET DEFAULT nextval('public.estado_id_seq'::regclass);
+
+
+--
+-- TOC entry 2911 (class 2604 OID 264151)
+-- Name: formapagamento id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.formapagamento ALTER COLUMN id SET DEFAULT nextval('public.formapagamento_id_seq'::regclass);
+
+
+--
+-- TOC entry 2912 (class 2604 OID 264159)
+-- Name: grupo id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.grupo ALTER COLUMN id SET DEFAULT nextval('public.grupo_id_seq'::regclass);
+
+
+--
+-- TOC entry 2913 (class 2604 OID 264167)
+-- Name: grupooperador id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.grupooperador ALTER COLUMN id SET DEFAULT nextval('public.grupooperador_id_seq'::regclass);
+
+
+--
+-- TOC entry 2914 (class 2604 OID 264178)
+-- Name: informacaocontato id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.informacaocontato ALTER COLUMN id SET DEFAULT nextval('public.informacaocontato_id_seq'::regclass);
+
+
+--
+-- TOC entry 2915 (class 2604 OID 264189)
+-- Name: itemcobranca id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.itemcobranca ALTER COLUMN id SET DEFAULT nextval('public.itemcobranca_id_seq'::regclass);
+
+
+--
+-- TOC entry 2916 (class 2604 OID 264197)
+-- Name: marca id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.marca ALTER COLUMN id SET DEFAULT nextval('public.marca_id_seq'::regclass);
+
+
+--
+-- TOC entry 2917 (class 2604 OID 264205)
+-- Name: meiomovimentocaixa id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.meiomovimentocaixa ALTER COLUMN id SET DEFAULT nextval('public.meiomovimentocaixa_id_seq'::regclass);
+
+
+--
+-- TOC entry 2918 (class 2604 OID 264213)
+-- Name: mensalidade id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.mensalidade ALTER COLUMN id SET DEFAULT nextval('public.mensalidade_id_seq'::regclass);
+
+
+--
+-- TOC entry 2919 (class 2604 OID 264237)
+-- Name: pagamentocobranca id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.pagamentocobranca ALTER COLUMN id SET DEFAULT nextval('public.pagamentocobranca_id_seq'::regclass);
+
+
+--
+-- TOC entry 2920 (class 2604 OID 264251)
+-- Name: pais id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.pais ALTER COLUMN id SET DEFAULT nextval('public.pais_id_seq'::regclass);
+
+
+--
+-- TOC entry 2921 (class 2604 OID 264262)
+-- Name: parcela id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.parcela ALTER COLUMN id SET DEFAULT nextval('public.parcela_id_seq'::regclass);
+
+
+--
+-- TOC entry 2922 (class 2604 OID 264270)
+-- Name: parcelacobranca id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.parcelacobranca ALTER COLUMN id SET DEFAULT nextval('public.parcelacobranca_id_seq'::regclass);
+
+
+--
+-- TOC entry 2923 (class 2604 OID 264278)
+-- Name: permissaoacesso id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.permissaoacesso ALTER COLUMN id SET DEFAULT nextval('public.permissaoacesso_id_seq'::regclass);
+
+
+--
+-- TOC entry 2924 (class 2604 OID 264289)
+-- Name: pessoa id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.pessoa ALTER COLUMN id SET DEFAULT nextval('public.pessoa_id_seq'::regclass);
+
+
+--
+-- TOC entry 2925 (class 2604 OID 264300)
+-- Name: produto id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.produto ALTER COLUMN id SET DEFAULT nextval('public.produto_id_seq1'::regclass);
+
+
+--
+-- TOC entry 2926 (class 2604 OID 264311)
+-- Name: servico id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.servico ALTER COLUMN id SET DEFAULT nextval('public.servico_id_seq1'::regclass);
+
+
+--
+-- TOC entry 2927 (class 2604 OID 264319)
+-- Name: tipomensalidade id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tipomensalidade ALTER COLUMN id SET DEFAULT nextval('public.tipomensalidade_id_seq'::regclass);
+
+
+--
+-- TOC entry 2928 (class 2604 OID 264327)
+-- Name: tipooperador id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tipooperador ALTER COLUMN id SET DEFAULT nextval('public.tipooperador_id_seq'::regclass);
+
+
+--
+-- TOC entry 3206 (class 0 OID 264069)
+-- Dependencies: 204
+-- Data for Name: bairro; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.bairro (id, cep, nome, cidade) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3207 (class 0 OID 264075)
+-- Dependencies: 205
+-- Data for Name: bairro_endereco; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.bairro_endereco (bairro_id, enderecos_id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3209 (class 0 OID 264080)
+-- Dependencies: 207
+-- Data for Name: cidade; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.cidade (id, ddd, ativo, codigo_ibge, nome, estado_id) FROM stdin;
+1	45	t	\N	FOZ	1
+2		t	\N	CIUDAD DEL LESTE	2
+\.
+
+
+--
+-- TOC entry 3211 (class 0 OID 264088)
+-- Dependencies: 209
+-- Data for Name: cobranca; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.cobranca (id, data_cobranca, forma_pagamento, sacado, supervisor) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3212 (class 0 OID 264094)
+-- Dependencies: 210
+-- Data for Name: cobranca_itemcobranca; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.cobranca_itemcobranca (cobranca_id, itenscobranca_id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3213 (class 0 OID 264097)
+-- Dependencies: 211
+-- Data for Name: cobranca_parcelacobranca; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.cobranca_parcelacobranca (cobranca_id, parcelacobrancalist_id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3215 (class 0 OID 264102)
+-- Dependencies: 213
+-- Data for Name: cobrancarenegociada; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.cobrancarenegociada (id, datarenegociacao, motivodescricao, cobranca_id, operador_id, solicitante_id, venda_id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3216 (class 0 OID 264108)
+-- Dependencies: 214
+-- Data for Name: cobrancarenegociada_mensalidade; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.cobrancarenegociada_mensalidade (cobrancarenegociada_id, novasmensalidadesgeradas_id, mensalidadesrenegociadas_id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3217 (class 0 OID 264111)
+-- Dependencies: 215
+-- Data for Name: compra; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.compra (id, datavenda, devolvida, cobranca_id, fornecedor_id, operador_id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3219 (class 0 OID 264118)
+-- Dependencies: 217
+-- Data for Name: condicaopagamento; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.condicaopagamento (id, aprazo, ativo, avista, desconto, juros, multa, nome, quantidadeparcelas) FROM stdin;
+8	t	t	f	0.050000000000000003	0.02	0.02	dfsdf	\N
+9	t	t	f	0	0.10000000000000001	0.050000000000000003	dfxzfdzf	\N
+10	f	t	t	0	0	0	adfasfas	\N
+11	t	t	f	0	0	0	asdsad	\N
+12	t	t	f	0	0	0	30/60/90 cheque	\N
+\.
+
+
+--
+-- TOC entry 3220 (class 0 OID 264124)
+-- Dependencies: 218
+-- Data for Name: condicaopagamento_parcela; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.condicaopagamento_parcela (condicaopagamento_id, parcelas_id) FROM stdin;
+8	6
+8	7
+9	8
+9	9
+11	10
+12	11
+12	12
+12	13
+\.
+
+
+--
+-- TOC entry 3222 (class 0 OID 264129)
+-- Dependencies: 220
+-- Data for Name: endereco; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.endereco (id, ativo, bairro, cep, complemento, logradouro, numero, referencia, cidade_id) FROM stdin;
+1	f	Bairro		\N		1	null	1
+2	f	Bairro		\N		1	null	1
+3	f	bairro n 1		\N		0	null	1
+4	f	CENTRO	  -   -   	\N		0	null	2
+\.
+
+
+--
+-- TOC entry 3224 (class 0 OID 264140)
+-- Dependencies: 222
+-- Data for Name: estado; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.estado (id, ativo, nome, sigla, pais_id) FROM stdin;
+1	f	PARANA	PR	1
+2	f	ALTO PARANA	AP	2
+\.
+
+
+--
+-- TOC entry 3226 (class 0 OID 264148)
+-- Dependencies: 224
+-- Data for Name: formapagamento; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.formapagamento (id, ativo, nome) FROM stdin;
+2	t	ESPECIES
+3	t	cheque
+\.
+
+
+--
+-- TOC entry 3228 (class 0 OID 264156)
+-- Dependencies: 226
+-- Data for Name: grupo; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.grupo (id, ativo, nome) FROM stdin;
+1	t	grupo geral e gerais
+\.
+
+
+--
+-- TOC entry 3230 (class 0 OID 264164)
+-- Dependencies: 228
+-- Data for Name: grupooperador; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.grupooperador (id, nome) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3231 (class 0 OID 264170)
+-- Dependencies: 229
+-- Data for Name: grupooperador_permissaoacesso; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.grupooperador_permissaoacesso (grupooperador_id, "permossões_id") FROM stdin;
+\.
+
+
+--
+-- TOC entry 3233 (class 0 OID 264175)
+-- Dependencies: 231
+-- Data for Name: informacaocontato; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.informacaocontato (id, ativo, tipo_informacao, valor, operador) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3235 (class 0 OID 264186)
+-- Dependencies: 233
+-- Data for Name: itemcobranca; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.itemcobranca (id, acrescimounitario, descontounitario, descricao, quantidade, valorunitario, valortotal, cobranca_id, compra, mensalidade, orcamento, pagamentocobranca_id, parcela_cobranca, produto, servico, venda) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3237 (class 0 OID 264194)
+-- Dependencies: 235
+-- Data for Name: marca; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.marca (id, ativo, nome) FROM stdin;
+1	t	Marca de chaves d chaves
+\.
+
+
+--
+-- TOC entry 3239 (class 0 OID 264202)
+-- Dependencies: 237
+-- Data for Name: meiomovimentocaixa; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.meiomovimentocaixa (id, ativado, descricao) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3241 (class 0 OID 264210)
+-- Dependencies: 239
+-- Data for Name: mensalidade; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.mensalidade (id, datavencimetoalterada, valorliquido, valororiginal, acrescimo, datapagamento, datavencimentooriginal, desconto, statusmensalidade, operador) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3242 (class 0 OID 264216)
+-- Dependencies: 240
+-- Data for Name: operador; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.operador (nivelacesso, primeirologin, senha, usuario, id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3198 (class 0 OID 261773)
+-- Dependencies: 196
+-- Data for Name: operador_cobrancarenegociada; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.operador_cobrancarenegociada (operador_id, cobrancasrenegociadaslist_id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3199 (class 0 OID 261776)
+-- Dependencies: 197
+-- Data for Name: operador_endereco; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.operador_endereco (operador_id, enderecolist_id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3243 (class 0 OID 264224)
+-- Dependencies: 241
+-- Data for Name: operador_grupooperador; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.operador_grupooperador (operador_id, grupos_id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3200 (class 0 OID 261782)
+-- Dependencies: 198
+-- Data for Name: operador_informacaocontato; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.operador_informacaocontato (operador_id, informacaocontatolist_id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3244 (class 0 OID 264227)
+-- Dependencies: 242
+-- Data for Name: orcamento; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.orcamento (id, datacadastro, dataultimaalteracao, observacoesadicionais, cliente_id, operador_id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3246 (class 0 OID 264234)
+-- Dependencies: 244
+-- Data for Name: pagamentocobranca; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.pagamentocobranca (id, acrescimos, data_pagamento, desconto, juros, mora, multa, tarifas, valor) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3247 (class 0 OID 264240)
+-- Dependencies: 245
+-- Data for Name: pagamentocobranca_itemcobranca; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.pagamentocobranca_itemcobranca (pagamentocobranca_id, itemcobrancarecebimento_id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3248 (class 0 OID 264243)
+-- Dependencies: 246
+-- Data for Name: pagamentocobranca_parcelacobranca; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.pagamentocobranca_parcelacobranca (pagamentocobranca_id, parcela_id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3250 (class 0 OID 264248)
+-- Dependencies: 248
+-- Data for Name: pais; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.pais (id, ativo, ddi, nome) FROM stdin;
+1	t	55	BRASIL
+2	t	595	PARAGUAY
+\.
+
+
+--
+-- TOC entry 3252 (class 0 OID 264259)
+-- Dependencies: 250
+-- Data for Name: parcela; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.parcela (id, ativo, dias, numero, porcentagem, formapagamento_id) FROM stdin;
+6	t	1	2	0	2
+7	t	1	1	0.050000000000000003	2
+8	t	2	2	0.050000000000000003	2
+9	t	3	1	0.050000000000000003	2
+10	t	0	0	100	2
+11	t	30	1	33.329999999999998	3
+12	t	60	2	33.329999999999998	3
+13	t	90	3	33.340000000000003	3
+\.
+
+
+--
+-- TOC entry 3254 (class 0 OID 264267)
+-- Dependencies: 252
+-- Data for Name: parcelacobranca; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.parcelacobranca (id, valorpendente, cancelada, data_vencimento, data_vencimento_original, datapagamento, desconto, mora, multa, valor, valorrecebido, cobranca_id, cobrancarenegociada, pagamentocobrancalist_id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3256 (class 0 OID 264275)
+-- Dependencies: 254
+-- Data for Name: permissaoacesso; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.permissaoacesso (id, modulo, nivelacesso) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3258 (class 0 OID 264286)
+-- Dependencies: 256
+-- Data for Name: pessoa; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.pessoa (id, ativo, classe, cpfcnpj, datacadastro, datanascimento, dataultalteracao, email, estadocivil, nome, nomefantasia_apelido, rgie, sexo, telefone, telefonealternativo, tipo, endereco_id) FROM stdin;
+1	t	0	083.519.759-07	2019-07-26	1998-01-13	2019-07-26		\N	Diego Matheus Lenz		12.346.453-7	2	45 999771678	45 999881578	0	2
+2	t	1	70.726.304/0001-16	2019-07-26	1990-01-12	2019-07-26		\N	Fornecedor 1		  .   .   - 	0	5445889879		1	3
+3	t	0	646.483.710-97	2019-07-26	2018-07-12	2019-07-26		\N	Joao		  .   .   - 	0	999771678		0	4
+\.
+
+
+--
+-- TOC entry 3260 (class 0 OID 264297)
+-- Dependencies: 258
+-- Data for Name: produto; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.produto (id, ativo, dt_cadastro, dt_ult_alteracao, nome, precocompra, quantidade, quantidade_minima, referencia, unidademedida, valor, grupo_id, marca_id, codbarras) FROM stdin;
+1	t	2019-07-26	2019-07-26	chave	\N	0	0	122	UN	\N	1	1	\N
+2	t	2019-07-26	2019-07-26	pneu e peneus	\N	0	0	8934238	UN	\N	1	1	55656
+3	t	2019-07-26	2019-07-26	PRODUTO BASE	\N	0	0	123	UN	\N	1	1	21315656
+\.
+
+
+--
+-- TOC entry 3201 (class 0 OID 261853)
+-- Dependencies: 199
+-- Data for Name: produto_venda; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.produto_venda (produto_id, venda_id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3262 (class 0 OID 264308)
+-- Dependencies: 260
+-- Data for Name: servico; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.servico (id, valor, ativo, dt_cadastro, dt_ult_alteracao, nome, qtdvend, grupo_id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3264 (class 0 OID 264316)
+-- Dependencies: 262
+-- Data for Name: tipomensalidade; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.tipomensalidade (id, desconto, descricao, valor, vencimento) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3266 (class 0 OID 264324)
+-- Dependencies: 264
+-- Data for Name: tipooperador; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.tipooperador (id, descricao, observacoesadicionais) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3267 (class 0 OID 264333)
+-- Dependencies: 265
+-- Data for Name: tipooperador_permissaoacesso; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.tipooperador_permissaoacesso (tipooperador_id, permissoes_id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3268 (class 0 OID 264336)
+-- Dependencies: 266
+-- Data for Name: venda; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.venda (id, datavenda, devolvida, cobranca_id, operador_id, pessoa_id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3269 (class 0 OID 264341)
+-- Dependencies: 267
+-- Data for Name: view_situacao_cobranca; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.view_situacao_cobranca (situacao, cobranca) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3303 (class 0 OID 0)
+-- Dependencies: 203
+-- Name: bairro_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.bairro_id_seq', 1, false);
+
+
+--
+-- TOC entry 3304 (class 0 OID 0)
+-- Dependencies: 206
+-- Name: cidade_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.cidade_id_seq', 2, true);
+
+
+--
+-- TOC entry 3305 (class 0 OID 0)
+-- Dependencies: 208
+-- Name: cobranca_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.cobranca_id_seq', 1, false);
+
+
+--
+-- TOC entry 3306 (class 0 OID 0)
+-- Dependencies: 212
+-- Name: cobrancarenegociada_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.cobrancarenegociada_id_seq', 1, false);
+
+
+--
+-- TOC entry 3307 (class 0 OID 0)
+-- Dependencies: 216
+-- Name: condicaopagamento_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.condicaopagamento_id_seq', 12, true);
+
+
+--
+-- TOC entry 3308 (class 0 OID 0)
+-- Dependencies: 219
+-- Name: endereco_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.endereco_id_seq', 4, true);
+
+
+--
+-- TOC entry 3309 (class 0 OID 0)
+-- Dependencies: 221
+-- Name: estado_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.estado_id_seq', 2, true);
+
+
+--
+-- TOC entry 3310 (class 0 OID 0)
+-- Dependencies: 223
+-- Name: formapagamento_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.formapagamento_id_seq', 3, true);
+
+
+--
+-- TOC entry 3311 (class 0 OID 0)
+-- Dependencies: 225
+-- Name: grupo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.grupo_id_seq', 1, true);
+
+
+--
+-- TOC entry 3312 (class 0 OID 0)
+-- Dependencies: 227
+-- Name: grupooperador_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.grupooperador_id_seq', 1, false);
+
+
+--
+-- TOC entry 3313 (class 0 OID 0)
+-- Dependencies: 202
+-- Name: hibernate_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.hibernate_sequence', 1, false);
+
+
+--
+-- TOC entry 3314 (class 0 OID 0)
+-- Dependencies: 230
+-- Name: informacaocontato_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.informacaocontato_id_seq', 1, false);
+
+
+--
+-- TOC entry 3315 (class 0 OID 0)
+-- Dependencies: 232
+-- Name: itemcobranca_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.itemcobranca_id_seq', 1, false);
+
+
+--
+-- TOC entry 3316 (class 0 OID 0)
+-- Dependencies: 234
+-- Name: marca_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.marca_id_seq', 1, true);
+
+
+--
+-- TOC entry 3317 (class 0 OID 0)
+-- Dependencies: 236
+-- Name: meiomovimentocaixa_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.meiomovimentocaixa_id_seq', 1, false);
+
+
+--
+-- TOC entry 3318 (class 0 OID 0)
+-- Dependencies: 238
+-- Name: mensalidade_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.mensalidade_id_seq', 1, false);
+
+
+--
+-- TOC entry 3319 (class 0 OID 0)
+-- Dependencies: 243
+-- Name: pagamentocobranca_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.pagamentocobranca_id_seq', 1, false);
+
+
+--
+-- TOC entry 3320 (class 0 OID 0)
+-- Dependencies: 247
+-- Name: pais_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.pais_id_seq', 2, true);
+
+
+--
+-- TOC entry 3321 (class 0 OID 0)
+-- Dependencies: 249
+-- Name: parcela_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.parcela_id_seq', 13, true);
+
+
+--
+-- TOC entry 3322 (class 0 OID 0)
+-- Dependencies: 251
+-- Name: parcelacobranca_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.parcelacobranca_id_seq', 1, false);
+
+
+--
+-- TOC entry 3323 (class 0 OID 0)
+-- Dependencies: 253
+-- Name: permissaoacesso_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.permissaoacesso_id_seq', 1, false);
+
+
+--
+-- TOC entry 3324 (class 0 OID 0)
+-- Dependencies: 255
+-- Name: pessoa_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.pessoa_id_seq', 3, true);
+
+
+--
+-- TOC entry 3325 (class 0 OID 0)
+-- Dependencies: 200
+-- Name: produto_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.produto_id_seq', 1, false);
+
+
+--
+-- TOC entry 3326 (class 0 OID 0)
+-- Dependencies: 257
+-- Name: produto_id_seq1; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.produto_id_seq1', 3, true);
+
+
+--
+-- TOC entry 3327 (class 0 OID 0)
+-- Dependencies: 201
+-- Name: servico_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.servico_id_seq', 2, true);
+
+
+--
+-- TOC entry 3328 (class 0 OID 0)
+-- Dependencies: 259
+-- Name: servico_id_seq1; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.servico_id_seq1', 1, true);
+
+
+--
+-- TOC entry 3329 (class 0 OID 0)
+-- Dependencies: 261
+-- Name: tipomensalidade_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.tipomensalidade_id_seq', 1, false);
+
+
+--
+-- TOC entry 3330 (class 0 OID 0)
+-- Dependencies: 263
+-- Name: tipooperador_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.tipooperador_id_seq', 1, false);
+
+
+--
+-- TOC entry 2936 (class 2606 OID 264074)
+-- Name: bairro bairro_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.bairro
+    ADD CONSTRAINT bairro_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2940 (class 2606 OID 264085)
+-- Name: cidade cidade_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.cidade
+    ADD CONSTRAINT cidade_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2942 (class 2606 OID 264093)
+-- Name: cobranca cobranca_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.cobranca
+    ADD CONSTRAINT cobranca_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2948 (class 2606 OID 264107)
+-- Name: cobrancarenegociada cobrancarenegociada_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.cobrancarenegociada
+    ADD CONSTRAINT cobrancarenegociada_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2954 (class 2606 OID 264115)
+-- Name: compra compra_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.compra
+    ADD CONSTRAINT compra_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2956 (class 2606 OID 264123)
+-- Name: condicaopagamento condicaopagamento_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.condicaopagamento
+    ADD CONSTRAINT condicaopagamento_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2960 (class 2606 OID 264137)
+-- Name: endereco endereco_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.endereco
+    ADD CONSTRAINT endereco_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2962 (class 2606 OID 264145)
+-- Name: estado estado_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.estado
+    ADD CONSTRAINT estado_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2964 (class 2606 OID 264153)
+-- Name: formapagamento formapagamento_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.formapagamento
+    ADD CONSTRAINT formapagamento_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2966 (class 2606 OID 264161)
+-- Name: grupo grupo_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.grupo
+    ADD CONSTRAINT grupo_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2968 (class 2606 OID 264169)
+-- Name: grupooperador grupooperador_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.grupooperador
+    ADD CONSTRAINT grupooperador_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2972 (class 2606 OID 264183)
+-- Name: informacaocontato informacaocontato_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.informacaocontato
+    ADD CONSTRAINT informacaocontato_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2974 (class 2606 OID 264191)
+-- Name: itemcobranca itemcobranca_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.itemcobranca
+    ADD CONSTRAINT itemcobranca_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2976 (class 2606 OID 264199)
+-- Name: marca marca_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.marca
+    ADD CONSTRAINT marca_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2978 (class 2606 OID 264207)
+-- Name: meiomovimentocaixa meiomovimentocaixa_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.meiomovimentocaixa
+    ADD CONSTRAINT meiomovimentocaixa_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2980 (class 2606 OID 264215)
+-- Name: mensalidade mensalidade_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.mensalidade
+    ADD CONSTRAINT mensalidade_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2982 (class 2606 OID 264223)
+-- Name: operador operador_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.operador
+    ADD CONSTRAINT operador_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2986 (class 2606 OID 264231)
+-- Name: orcamento orcamento_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.orcamento
+    ADD CONSTRAINT orcamento_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2988 (class 2606 OID 264239)
+-- Name: pagamentocobranca pagamentocobranca_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.pagamentocobranca
+    ADD CONSTRAINT pagamentocobranca_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2994 (class 2606 OID 264256)
+-- Name: pais pais_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.pais
+    ADD CONSTRAINT pais_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2996 (class 2606 OID 264264)
+-- Name: parcela parcela_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.parcela
+    ADD CONSTRAINT parcela_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2998 (class 2606 OID 264272)
+-- Name: parcelacobranca parcelacobranca_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.parcelacobranca
+    ADD CONSTRAINT parcelacobranca_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3000 (class 2606 OID 264283)
+-- Name: permissaoacesso permissaoacesso_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.permissaoacesso
+    ADD CONSTRAINT permissaoacesso_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3002 (class 2606 OID 264294)
+-- Name: pessoa pessoa_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.pessoa
+    ADD CONSTRAINT pessoa_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3004 (class 2606 OID 264305)
+-- Name: produto produto_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.produto
+    ADD CONSTRAINT produto_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3006 (class 2606 OID 264313)
+-- Name: servico servico_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.servico
+    ADD CONSTRAINT servico_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3008 (class 2606 OID 264321)
+-- Name: tipomensalidade tipomensalidade_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tipomensalidade
+    ADD CONSTRAINT tipomensalidade_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3010 (class 2606 OID 264332)
+-- Name: tipooperador tipooperador_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tipooperador
+    ADD CONSTRAINT tipooperador_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2950 (class 2606 OID 264355)
+-- Name: cobrancarenegociada_mensalidade uk_2ebr7jjwnfjhly1dab1m990a6; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.cobrancarenegociada_mensalidade
+    ADD CONSTRAINT uk_2ebr7jjwnfjhly1dab1m990a6 UNIQUE (mensalidadesrenegociadas_id);
+
+
+--
+-- TOC entry 2992 (class 2606 OID 264365)
+-- Name: pagamentocobranca_parcelacobranca uk_5ksxqa0un95rcup2jgf7722m8; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.pagamentocobranca_parcelacobranca
+    ADD CONSTRAINT uk_5ksxqa0un95rcup2jgf7722m8 UNIQUE (parcela_id);
+
+
+--
+-- TOC entry 2930 (class 2606 OID 261904)
+-- Name: operador_cobrancarenegociada uk_5pn0rdvqau2rbm8s2a9268o4q; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.operador_cobrancarenegociada
+    ADD CONSTRAINT uk_5pn0rdvqau2rbm8s2a9268o4q UNIQUE (cobrancasrenegociadaslist_id);
+
+
+--
+-- TOC entry 2934 (class 2606 OID 261910)
+-- Name: operador_informacaocontato uk_6cgdsjx8t4e3nsmk7hini5re6; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.operador_informacaocontato
+    ADD CONSTRAINT uk_6cgdsjx8t4e3nsmk7hini5re6 UNIQUE (informacaocontatolist_id);
+
+
+--
+-- TOC entry 2984 (class 2606 OID 264361)
+-- Name: operador_grupooperador uk_6hvh70min9tuwyxa9kaurojj0; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.operador_grupooperador
+    ADD CONSTRAINT uk_6hvh70min9tuwyxa9kaurojj0 UNIQUE (grupos_id);
+
+
+--
+-- TOC entry 2946 (class 2606 OID 264351)
+-- Name: cobranca_parcelacobranca uk_8psjnqqtma7rhhffipq5igtne; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.cobranca_parcelacobranca
+    ADD CONSTRAINT uk_8psjnqqtma7rhhffipq5igtne UNIQUE (parcelacobrancalist_id);
+
+
+--
+-- TOC entry 2990 (class 2606 OID 264363)
+-- Name: pagamentocobranca_itemcobranca uk_bxdhnhx14wcjkfsd0ijyd9phy; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.pagamentocobranca_itemcobranca
+    ADD CONSTRAINT uk_bxdhnhx14wcjkfsd0ijyd9phy UNIQUE (itemcobrancarecebimento_id);
+
+
+--
+-- TOC entry 3012 (class 2606 OID 264367)
+-- Name: tipooperador_permissaoacesso uk_d7tq0nmipvcy4w0kif9xsg4yw; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tipooperador_permissaoacesso
+    ADD CONSTRAINT uk_d7tq0nmipvcy4w0kif9xsg4yw UNIQUE (permissoes_id);
+
+
+--
+-- TOC entry 2970 (class 2606 OID 264359)
+-- Name: grupooperador_permissaoacesso uk_fol0got42dgyh29nysbyefc82; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.grupooperador_permissaoacesso
+    ADD CONSTRAINT uk_fol0got42dgyh29nysbyefc82 UNIQUE ("permossões_id");
+
+
+--
+-- TOC entry 2944 (class 2606 OID 264349)
+-- Name: cobranca_itemcobranca uk_g3625g02943av3k4e7rmo2r2i; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.cobranca_itemcobranca
+    ADD CONSTRAINT uk_g3625g02943av3k4e7rmo2r2i UNIQUE (itenscobranca_id);
+
+
+--
+-- TOC entry 2938 (class 2606 OID 264347)
+-- Name: bairro_endereco uk_l4kfk7d2xsxl1w5scogmj0hjp; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.bairro_endereco
+    ADD CONSTRAINT uk_l4kfk7d2xsxl1w5scogmj0hjp UNIQUE (enderecos_id);
+
+
+--
+-- TOC entry 2958 (class 2606 OID 264357)
+-- Name: condicaopagamento_parcela uk_nj2n2vuy538u74a4ynjohfwmd; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.condicaopagamento_parcela
+    ADD CONSTRAINT uk_nj2n2vuy538u74a4ynjohfwmd UNIQUE (parcelas_id);
+
+
+--
+-- TOC entry 2932 (class 2606 OID 261906)
+-- Name: operador_endereco uk_pyss0l965n15qavg89rculjl3; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.operador_endereco
+    ADD CONSTRAINT uk_pyss0l965n15qavg89rculjl3 UNIQUE (enderecolist_id);
+
+
+--
+-- TOC entry 2952 (class 2606 OID 264353)
+-- Name: cobrancarenegociada_mensalidade uk_rduspetjwyi7mvbqen0g8met1; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.cobrancarenegociada_mensalidade
+    ADD CONSTRAINT uk_rduspetjwyi7mvbqen0g8met1 UNIQUE (novasmensalidadesgeradas_id);
+
+
+--
+-- TOC entry 3014 (class 2606 OID 264340)
+-- Name: venda venda_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.venda
+    ADD CONSTRAINT venda_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3016 (class 2606 OID 264345)
+-- Name: view_situacao_cobranca view_situacao_cobranca_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.view_situacao_cobranca
+    ADD CONSTRAINT view_situacao_cobranca_pkey PRIMARY KEY (cobranca);
+
+
+--
+-- TOC entry 3021 (class 2606 OID 264388)
+-- Name: cobranca fk2jvias3edt4rm11lkhndjafcf; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.cobranca
+    ADD CONSTRAINT fk2jvias3edt4rm11lkhndjafcf FOREIGN KEY (sacado) REFERENCES public.pessoa(id);
+
+
+--
+-- TOC entry 3065 (class 2606 OID 264608)
+-- Name: parcelacobranca fk2or546f3vjxl8mvrhh439wdkt; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.parcelacobranca
+    ADD CONSTRAINT fk2or546f3vjxl8mvrhh439wdkt FOREIGN KEY (cobrancarenegociada) REFERENCES public.cobrancarenegociada(id);
+
+
+--
+-- TOC entry 3045 (class 2606 OID 264508)
+-- Name: itemcobranca fk3sd5wf17l0lb0d4c9b51jdnya; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.itemcobranca
+    ADD CONSTRAINT fk3sd5wf17l0lb0d4c9b51jdnya FOREIGN KEY (compra) REFERENCES public.compra(id);
+
+
+--
+-- TOC entry 3075 (class 2606 OID 264658)
+-- Name: venda fk47mnvfvvq8ovwvs52mhwrv207; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.venda
+    ADD CONSTRAINT fk47mnvfvvq8ovwvs52mhwrv207 FOREIGN KEY (pessoa_id) REFERENCES public.pessoa(id);
+
+
+--
+-- TOC entry 3064 (class 2606 OID 264603)
+-- Name: parcelacobranca fk4fs7rce5os2uh6thby5ku03qf; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.parcelacobranca
+    ADD CONSTRAINT fk4fs7rce5os2uh6thby5ku03qf FOREIGN KEY (cobranca_id) REFERENCES public.cobranca(id);
+
+
+--
+-- TOC entry 3022 (class 2606 OID 264393)
+-- Name: cobranca fk5icapsqs6sewq6gowdk2nefgj; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.cobranca
+    ADD CONSTRAINT fk5icapsqs6sewq6gowdk2nefgj FOREIGN KEY (supervisor) REFERENCES public.operador(id);
+
+
+--
+-- TOC entry 3017 (class 2606 OID 264368)
+-- Name: bairro fk60r3aysiw339apo88005c6d16; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.bairro
+    ADD CONSTRAINT fk60r3aysiw339apo88005c6d16 FOREIGN KEY (cidade) REFERENCES public.cidade(id);
+
+
+--
+-- TOC entry 3046 (class 2606 OID 264513)
+-- Name: itemcobranca fk6ev8fwbiy8v0p9gqt1qx04bta; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.itemcobranca
+    ADD CONSTRAINT fk6ev8fwbiy8v0p9gqt1qx04bta FOREIGN KEY (mensalidade) REFERENCES public.mensalidade(id);
+
+
+--
+-- TOC entry 3033 (class 2606 OID 264448)
+-- Name: cobrancarenegociada_mensalidade fk6id670koc0jh7h1cwniubcn62; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.cobrancarenegociada_mensalidade
+    ADD CONSTRAINT fk6id670koc0jh7h1cwniubcn62 FOREIGN KEY (mensalidadesrenegociadas_id) REFERENCES public.mensalidade(id);
+
+
+--
+-- TOC entry 3047 (class 2606 OID 264518)
+-- Name: itemcobranca fk7yqlwfkrrou1skkb4d80culck; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.itemcobranca
+    ADD CONSTRAINT fk7yqlwfkrrou1skkb4d80culck FOREIGN KEY (orcamento) REFERENCES public.orcamento(id);
+
+
+--
+-- TOC entry 3066 (class 2606 OID 264613)
+-- Name: parcelacobranca fk8e18x8lhpyn64rdt4t7sn06xc; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.parcelacobranca
+    ADD CONSTRAINT fk8e18x8lhpyn64rdt4t7sn06xc FOREIGN KEY (pagamentocobrancalist_id) REFERENCES public.pagamentocobranca(id);
+
+
+--
+-- TOC entry 3040 (class 2606 OID 264483)
+-- Name: estado fk8fjre8p0oxr7igfa3dhxlq4pd; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.estado
+    ADD CONSTRAINT fk8fjre8p0oxr7igfa3dhxlq4pd FOREIGN KEY (pais_id) REFERENCES public.pais(id);
+
+
+--
+-- TOC entry 3063 (class 2606 OID 264598)
+-- Name: parcela fk9bbxxpth2gj2y6ydvd1p8d9rw; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.parcela
+    ADD CONSTRAINT fk9bbxxpth2gj2y6ydvd1p8d9rw FOREIGN KEY (formapagamento_id) REFERENCES public.formapagamento(id);
+
+
+--
+-- TOC entry 3028 (class 2606 OID 264423)
+-- Name: cobrancarenegociada fk9do6nyhvnj3e687ksjt1o99nl; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.cobrancarenegociada
+    ADD CONSTRAINT fk9do6nyhvnj3e687ksjt1o99nl FOREIGN KEY (operador_id) REFERENCES public.operador(id);
+
+
+--
+-- TOC entry 3043 (class 2606 OID 264498)
+-- Name: informacaocontato fk9ibn560x5rieyi354a27elamj; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.informacaocontato
+    ADD CONSTRAINT fk9ibn560x5rieyi354a27elamj FOREIGN KEY (operador) REFERENCES public.operador(id);
+
+
+--
+-- TOC entry 3074 (class 2606 OID 264653)
+-- Name: venda fkalqt4km24prm1dj0rd76ow4uk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.venda
+    ADD CONSTRAINT fkalqt4km24prm1dj0rd76ow4uk FOREIGN KEY (operador_id) REFERENCES public.operador(id);
+
+
+--
+-- TOC entry 3041 (class 2606 OID 264488)
+-- Name: grupooperador_permissaoacesso fkax1y40aa1ivpmn9pavhpj0yvg; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.grupooperador_permissaoacesso
+    ADD CONSTRAINT fkax1y40aa1ivpmn9pavhpj0yvg FOREIGN KEY ("permossões_id") REFERENCES public.permissaoacesso(id);
+
+
+--
+-- TOC entry 3060 (class 2606 OID 264583)
+-- Name: pagamentocobranca_itemcobranca fkax8b07ee3vwrp0jsib00cbh1t; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.pagamentocobranca_itemcobranca
+    ADD CONSTRAINT fkax8b07ee3vwrp0jsib00cbh1t FOREIGN KEY (pagamentocobranca_id) REFERENCES public.pagamentocobranca(id);
+
+
+--
+-- TOC entry 3018 (class 2606 OID 264373)
+-- Name: bairro_endereco fkbghurtno8qgtaj114rbadoslm; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.bairro_endereco
+    ADD CONSTRAINT fkbghurtno8qgtaj114rbadoslm FOREIGN KEY (enderecos_id) REFERENCES public.endereco(id);
+
+
+--
+-- TOC entry 3038 (class 2606 OID 264473)
+-- Name: condicaopagamento_parcela fkbm2wvns96ka4nslrbywdildkt; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.condicaopagamento_parcela
+    ADD CONSTRAINT fkbm2wvns96ka4nslrbywdildkt FOREIGN KEY (condicaopagamento_id) REFERENCES public.condicaopagamento(id);
+
+
+--
+-- TOC entry 3059 (class 2606 OID 264578)
+-- Name: pagamentocobranca_itemcobranca fkbmcrcspolp2t9qtupdb9u1ggx; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.pagamentocobranca_itemcobranca
+    ADD CONSTRAINT fkbmcrcspolp2t9qtupdb9u1ggx FOREIGN KEY (itemcobrancarecebimento_id) REFERENCES public.itemcobranca(id);
+
+
+--
+-- TOC entry 3068 (class 2606 OID 264623)
+-- Name: produto fkbrgdjvb3ux84eemum09e7kkdc; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.produto
+    ADD CONSTRAINT fkbrgdjvb3ux84eemum09e7kkdc FOREIGN KEY (grupo_id) REFERENCES public.grupo(id);
+
+
+--
+-- TOC entry 3042 (class 2606 OID 264493)
+-- Name: grupooperador_permissaoacesso fkc3q7e6abe0k640v80hkwdt1xm; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.grupooperador_permissaoacesso
+    ADD CONSTRAINT fkc3q7e6abe0k640v80hkwdt1xm FOREIGN KEY (grupooperador_id) REFERENCES public.grupooperador(id);
+
+
+--
+-- TOC entry 3037 (class 2606 OID 264468)
+-- Name: condicaopagamento_parcela fkc5u17anr1rdy8s40qtgmdiodq; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.condicaopagamento_parcela
+    ADD CONSTRAINT fkc5u17anr1rdy8s40qtgmdiodq FOREIGN KEY (parcelas_id) REFERENCES public.parcela(id);
+
+
+--
+-- TOC entry 3024 (class 2606 OID 264403)
+-- Name: cobranca_itemcobranca fkcustcxjrlhm9qcy8tt8y5njr9; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.cobranca_itemcobranca
+    ADD CONSTRAINT fkcustcxjrlhm9qcy8tt8y5njr9 FOREIGN KEY (cobranca_id) REFERENCES public.cobranca(id);
+
+
+--
+-- TOC entry 3051 (class 2606 OID 264538)
+-- Name: itemcobranca fkdgale72t07fxvseycg454gpiv; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.itemcobranca
+    ADD CONSTRAINT fkdgale72t07fxvseycg454gpiv FOREIGN KEY (servico) REFERENCES public.servico(id);
+
+
+--
+-- TOC entry 3035 (class 2606 OID 264458)
+-- Name: compra fkdk77dtfh61wc3xiy4muhv6kx2; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.compra
+    ADD CONSTRAINT fkdk77dtfh61wc3xiy4muhv6kx2 FOREIGN KEY (fornecedor_id) REFERENCES public.pessoa(id);
+
+
+--
+-- TOC entry 3032 (class 2606 OID 264443)
+-- Name: cobrancarenegociada_mensalidade fkdxrvkd9g84n9dehxx8ua9swxx; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.cobrancarenegociada_mensalidade
+    ADD CONSTRAINT fkdxrvkd9g84n9dehxx8ua9swxx FOREIGN KEY (cobrancarenegociada_id) REFERENCES public.cobrancarenegociada(id);
+
+
+--
+-- TOC entry 3070 (class 2606 OID 264633)
+-- Name: servico fke30pmc7aeahxx2omk3orish6o; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.servico
+    ADD CONSTRAINT fke30pmc7aeahxx2omk3orish6o FOREIGN KEY (grupo_id) REFERENCES public.grupo(id);
+
+
+--
+-- TOC entry 3067 (class 2606 OID 264618)
+-- Name: pessoa fketlggxage7ixu17gaf2nx53ij; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.pessoa
+    ADD CONSTRAINT fketlggxage7ixu17gaf2nx53ij FOREIGN KEY (endereco_id) REFERENCES public.endereco(id);
+
+
+--
+-- TOC entry 3049 (class 2606 OID 264528)
+-- Name: itemcobranca fkfo52xf3qpfi2srgjmhylhj5cm; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.itemcobranca
+    ADD CONSTRAINT fkfo52xf3qpfi2srgjmhylhj5cm FOREIGN KEY (parcela_cobranca) REFERENCES public.parcelacobranca(id);
+
+
+--
+-- TOC entry 3031 (class 2606 OID 264438)
+-- Name: cobrancarenegociada_mensalidade fkfpw34p5t6vs5r8f3s9f2fj5h8; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.cobrancarenegociada_mensalidade
+    ADD CONSTRAINT fkfpw34p5t6vs5r8f3s9f2fj5h8 FOREIGN KEY (novasmensalidadesgeradas_id) REFERENCES public.mensalidade(id);
+
+
+--
+-- TOC entry 3027 (class 2606 OID 264418)
+-- Name: cobrancarenegociada fkftbs9aecpyh6l0lh0ki6qc5vc; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.cobrancarenegociada
+    ADD CONSTRAINT fkftbs9aecpyh6l0lh0ki6qc5vc FOREIGN KEY (cobranca_id) REFERENCES public.cobranca(id);
+
+
+--
+-- TOC entry 3076 (class 2606 OID 264663)
+-- Name: view_situacao_cobranca fkg01ipx6adfrfo2nxob8qqfugn; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.view_situacao_cobranca
+    ADD CONSTRAINT fkg01ipx6adfrfo2nxob8qqfugn FOREIGN KEY (cobranca) REFERENCES public.cobranca(id);
+
+
+--
+-- TOC entry 3052 (class 2606 OID 264543)
+-- Name: itemcobranca fkg8ykbaux9lxn4dh5rdtwkp1pj; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.itemcobranca
+    ADD CONSTRAINT fkg8ykbaux9lxn4dh5rdtwkp1pj FOREIGN KEY (venda) REFERENCES public.venda(id);
+
+
+--
+-- TOC entry 3034 (class 2606 OID 264453)
+-- Name: compra fkgo94pcta8r33lh6c1lyalmg3k; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.compra
+    ADD CONSTRAINT fkgo94pcta8r33lh6c1lyalmg3k FOREIGN KEY (cobranca_id) REFERENCES public.cobranca(id);
+
+
+--
+-- TOC entry 3025 (class 2606 OID 264408)
+-- Name: cobranca_parcelacobranca fkgp2il53q8ffrbgl7tgwe2wb0l; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.cobranca_parcelacobranca
+    ADD CONSTRAINT fkgp2il53q8ffrbgl7tgwe2wb0l FOREIGN KEY (parcelacobrancalist_id) REFERENCES public.parcelacobranca(id);
+
+
+--
+-- TOC entry 3073 (class 2606 OID 264648)
+-- Name: venda fkgr0jv3bconnyijmdeubd8pw20; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.venda
+    ADD CONSTRAINT fkgr0jv3bconnyijmdeubd8pw20 FOREIGN KEY (cobranca_id) REFERENCES public.cobranca(id);
+
+
+--
+-- TOC entry 3030 (class 2606 OID 264433)
+-- Name: cobrancarenegociada fkgt3dg3jpd7whfmuy1fopoy10c; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.cobrancarenegociada
+    ADD CONSTRAINT fkgt3dg3jpd7whfmuy1fopoy10c FOREIGN KEY (venda_id) REFERENCES public.venda(id);
+
+
+--
+-- TOC entry 3029 (class 2606 OID 264428)
+-- Name: cobrancarenegociada fkgveppgnwf2bspw8vhmrug3mbt; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.cobrancarenegociada
+    ADD CONSTRAINT fkgveppgnwf2bspw8vhmrug3mbt FOREIGN KEY (solicitante_id) REFERENCES public.pessoa(id);
+
+
+--
+-- TOC entry 3057 (class 2606 OID 264568)
+-- Name: orcamento fkgw6t22em3tedd15dbeb4wfgxt; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.orcamento
+    ADD CONSTRAINT fkgw6t22em3tedd15dbeb4wfgxt FOREIGN KEY (cliente_id) REFERENCES public.pessoa(id);
+
+
+--
+-- TOC entry 3058 (class 2606 OID 264573)
+-- Name: orcamento fkjsjva6jrhx58qa9c8xw6yyih6; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.orcamento
+    ADD CONSTRAINT fkjsjva6jrhx58qa9c8xw6yyih6 FOREIGN KEY (operador_id) REFERENCES public.operador(id);
+
+
+--
+-- TOC entry 3069 (class 2606 OID 264628)
+-- Name: produto fkk1rkkokyj8lgp301ac8m7cp1j; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.produto
+    ADD CONSTRAINT fkk1rkkokyj8lgp301ac8m7cp1j FOREIGN KEY (marca_id) REFERENCES public.marca(id);
+
+
+--
+-- TOC entry 3053 (class 2606 OID 264548)
+-- Name: mensalidade fkkrdnvnb5nr7xx9figs6cchihk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.mensalidade
+    ADD CONSTRAINT fkkrdnvnb5nr7xx9figs6cchihk FOREIGN KEY (operador) REFERENCES public.operador(id);
+
+
+--
+-- TOC entry 3048 (class 2606 OID 264523)
+-- Name: itemcobranca fkksriy6le0jmct5y9s86w57pwj; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.itemcobranca
+    ADD CONSTRAINT fkksriy6le0jmct5y9s86w57pwj FOREIGN KEY (pagamentocobranca_id) REFERENCES public.pagamentocobranca(id);
+
+
+--
+-- TOC entry 3023 (class 2606 OID 264398)
+-- Name: cobranca_itemcobranca fkkth9rmlm59qiam9fbw4bwq97j; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.cobranca_itemcobranca
+    ADD CONSTRAINT fkkth9rmlm59qiam9fbw4bwq97j FOREIGN KEY (itenscobranca_id) REFERENCES public.itemcobranca(id);
+
+
+--
+-- TOC entry 3055 (class 2606 OID 264558)
+-- Name: operador_grupooperador fkkudqevokfd47mmhv0y8ov093b; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.operador_grupooperador
+    ADD CONSTRAINT fkkudqevokfd47mmhv0y8ov093b FOREIGN KEY (grupos_id) REFERENCES public.grupooperador(id);
+
+
+--
+-- TOC entry 3062 (class 2606 OID 264593)
+-- Name: pagamentocobranca_parcelacobranca fklraq4k3tdu19eku7jkxlqc637; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.pagamentocobranca_parcelacobranca
+    ADD CONSTRAINT fklraq4k3tdu19eku7jkxlqc637 FOREIGN KEY (pagamentocobranca_id) REFERENCES public.pagamentocobranca(id);
+
+
+--
+-- TOC entry 3056 (class 2606 OID 264563)
+-- Name: operador_grupooperador fkm1cg6nsgsqgn3r5umma4qrsvs; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.operador_grupooperador
+    ADD CONSTRAINT fkm1cg6nsgsqgn3r5umma4qrsvs FOREIGN KEY (operador_id) REFERENCES public.operador(id);
+
+
+--
+-- TOC entry 3071 (class 2606 OID 264638)
+-- Name: tipooperador_permissaoacesso fkmh3jj4a0bemqe28t6vv1fesjd; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tipooperador_permissaoacesso
+    ADD CONSTRAINT fkmh3jj4a0bemqe28t6vv1fesjd FOREIGN KEY (permissoes_id) REFERENCES public.permissaoacesso(id);
+
+
+--
+-- TOC entry 3061 (class 2606 OID 264588)
+-- Name: pagamentocobranca_parcelacobranca fkmv80iix47d8rfl8j0khb7mk67; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.pagamentocobranca_parcelacobranca
+    ADD CONSTRAINT fkmv80iix47d8rfl8j0khb7mk67 FOREIGN KEY (parcela_id) REFERENCES public.parcelacobranca(id);
+
+
+--
+-- TOC entry 3072 (class 2606 OID 264643)
+-- Name: tipooperador_permissaoacesso fknkpkunoi3bh8v9qgum5opxn92; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tipooperador_permissaoacesso
+    ADD CONSTRAINT fknkpkunoi3bh8v9qgum5opxn92 FOREIGN KEY (tipooperador_id) REFERENCES public.tipooperador(id);
+
+
+--
+-- TOC entry 3050 (class 2606 OID 264533)
+-- Name: itemcobranca fknnrxhao50tsxbqu5l5f32yho0; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.itemcobranca
+    ADD CONSTRAINT fknnrxhao50tsxbqu5l5f32yho0 FOREIGN KEY (produto) REFERENCES public.produto(id);
+
+
+--
+-- TOC entry 3019 (class 2606 OID 264378)
+-- Name: bairro_endereco fkpeddqwsrek30suhgwsljcqtlj; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.bairro_endereco
+    ADD CONSTRAINT fkpeddqwsrek30suhgwsljcqtlj FOREIGN KEY (bairro_id) REFERENCES public.bairro(id);
+
+
+--
+-- TOC entry 3036 (class 2606 OID 264463)
+-- Name: compra fkqalcul6n7yj8j6uj9ccf9u3jy; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.compra
+    ADD CONSTRAINT fkqalcul6n7yj8j6uj9ccf9u3jy FOREIGN KEY (operador_id) REFERENCES public.operador(id);
+
+
+--
+-- TOC entry 3054 (class 2606 OID 264553)
+-- Name: operador fkreppjems2n4l5hyhya3u3jcww; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.operador
+    ADD CONSTRAINT fkreppjems2n4l5hyhya3u3jcww FOREIGN KEY (id) REFERENCES public.pessoa(id);
+
+
+--
+-- TOC entry 3026 (class 2606 OID 264413)
+-- Name: cobranca_parcelacobranca fkrxj3mafwguchmvvih0x59tbsk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.cobranca_parcelacobranca
+    ADD CONSTRAINT fkrxj3mafwguchmvvih0x59tbsk FOREIGN KEY (cobranca_id) REFERENCES public.cobranca(id);
+
+
+--
+-- TOC entry 3020 (class 2606 OID 264383)
+-- Name: cidade fksatretdvg03if89kwwmiagnyd; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.cidade
+    ADD CONSTRAINT fksatretdvg03if89kwwmiagnyd FOREIGN KEY (estado_id) REFERENCES public.estado(id);
+
+
+--
+-- TOC entry 3039 (class 2606 OID 264478)
+-- Name: endereco fksq6fa88clryv3uqsbgvva4fne; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.endereco
+    ADD CONSTRAINT fksq6fa88clryv3uqsbgvva4fne FOREIGN KEY (cidade_id) REFERENCES public.cidade(id);
+
+
+--
+-- TOC entry 3044 (class 2606 OID 264503)
+-- Name: itemcobranca fkvdwyq98o32mdg6kr1usv3eai; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.itemcobranca
+    ADD CONSTRAINT fkvdwyq98o32mdg6kr1usv3eai FOREIGN KEY (cobranca_id) REFERENCES public.cobranca(id);
+
+
+-- Completed on 2019-07-29 00:01:45
+
+--
+-- PostgreSQL database dump complete
+--
+

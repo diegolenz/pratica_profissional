@@ -1,0 +1,758 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 10.6
+-- Dumped by pg_dump version 10.5
+
+-- Started on 2019-07-29 00:00:10
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- TOC entry 3206 (class 0 OID 264069)
+-- Dependencies: 204
+-- Data for Name: bairro; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.bairro (id, cep, nome, cidade) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3207 (class 0 OID 264075)
+-- Dependencies: 205
+-- Data for Name: bairro_endereco; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.bairro_endereco (bairro_id, enderecos_id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3209 (class 0 OID 264080)
+-- Dependencies: 207
+-- Data for Name: cidade; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.cidade (id, ddd, ativo, codigo_ibge, nome, estado_id) FROM stdin;
+1	45	t	\N	FOZ	1
+2		t	\N	CIUDAD DEL LESTE	2
+\.
+
+
+--
+-- TOC entry 3211 (class 0 OID 264088)
+-- Dependencies: 209
+-- Data for Name: cobranca; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.cobranca (id, data_cobranca, forma_pagamento, sacado, supervisor) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3212 (class 0 OID 264094)
+-- Dependencies: 210
+-- Data for Name: cobranca_itemcobranca; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.cobranca_itemcobranca (cobranca_id, itenscobranca_id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3213 (class 0 OID 264097)
+-- Dependencies: 211
+-- Data for Name: cobranca_parcelacobranca; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.cobranca_parcelacobranca (cobranca_id, parcelacobrancalist_id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3215 (class 0 OID 264102)
+-- Dependencies: 213
+-- Data for Name: cobrancarenegociada; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.cobrancarenegociada (id, datarenegociacao, motivodescricao, cobranca_id, operador_id, solicitante_id, venda_id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3216 (class 0 OID 264108)
+-- Dependencies: 214
+-- Data for Name: cobrancarenegociada_mensalidade; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.cobrancarenegociada_mensalidade (cobrancarenegociada_id, novasmensalidadesgeradas_id, mensalidadesrenegociadas_id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3217 (class 0 OID 264111)
+-- Dependencies: 215
+-- Data for Name: compra; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.compra (id, datavenda, devolvida, cobranca_id, fornecedor_id, operador_id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3219 (class 0 OID 264118)
+-- Dependencies: 217
+-- Data for Name: condicaopagamento; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.condicaopagamento (id, aprazo, ativo, avista, desconto, juros, multa, nome, quantidadeparcelas) FROM stdin;
+8	t	t	f	0.050000000000000003	0.02	0.02	dfsdf	\N
+9	t	t	f	0	0.10000000000000001	0.050000000000000003	dfxzfdzf	\N
+10	f	t	t	0	0	0	adfasfas	\N
+11	t	t	f	0	0	0	asdsad	\N
+12	t	t	f	0	0	0	30/60/90 cheque	\N
+\.
+
+
+--
+-- TOC entry 3220 (class 0 OID 264124)
+-- Dependencies: 218
+-- Data for Name: condicaopagamento_parcela; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.condicaopagamento_parcela (condicaopagamento_id, parcelas_id) FROM stdin;
+8	6
+8	7
+9	8
+9	9
+11	10
+12	11
+12	12
+12	13
+\.
+
+
+--
+-- TOC entry 3222 (class 0 OID 264129)
+-- Dependencies: 220
+-- Data for Name: endereco; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.endereco (id, ativo, bairro, cep, complemento, logradouro, numero, referencia, cidade_id) FROM stdin;
+1	f	Bairro		\N		1	null	1
+2	f	Bairro		\N		1	null	1
+3	f	bairro n 1		\N		0	null	1
+4	f	CENTRO	  -   -   	\N		0	null	2
+\.
+
+
+--
+-- TOC entry 3224 (class 0 OID 264140)
+-- Dependencies: 222
+-- Data for Name: estado; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.estado (id, ativo, nome, sigla, pais_id) FROM stdin;
+1	f	PARANA	PR	1
+2	f	ALTO PARANA	AP	2
+\.
+
+
+--
+-- TOC entry 3226 (class 0 OID 264148)
+-- Dependencies: 224
+-- Data for Name: formapagamento; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.formapagamento (id, ativo, nome) FROM stdin;
+2	t	ESPECIES
+3	t	cheque
+\.
+
+
+--
+-- TOC entry 3228 (class 0 OID 264156)
+-- Dependencies: 226
+-- Data for Name: grupo; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.grupo (id, ativo, nome) FROM stdin;
+1	t	grupo geral e gerais
+\.
+
+
+--
+-- TOC entry 3230 (class 0 OID 264164)
+-- Dependencies: 228
+-- Data for Name: grupooperador; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.grupooperador (id, nome) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3231 (class 0 OID 264170)
+-- Dependencies: 229
+-- Data for Name: grupooperador_permissaoacesso; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.grupooperador_permissaoacesso (grupooperador_id, "permossões_id") FROM stdin;
+\.
+
+
+--
+-- TOC entry 3233 (class 0 OID 264175)
+-- Dependencies: 231
+-- Data for Name: informacaocontato; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.informacaocontato (id, ativo, tipo_informacao, valor, operador) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3235 (class 0 OID 264186)
+-- Dependencies: 233
+-- Data for Name: itemcobranca; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.itemcobranca (id, acrescimounitario, descontounitario, descricao, quantidade, valorunitario, valortotal, cobranca_id, compra, mensalidade, orcamento, pagamentocobranca_id, parcela_cobranca, produto, servico, venda) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3237 (class 0 OID 264194)
+-- Dependencies: 235
+-- Data for Name: marca; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.marca (id, ativo, nome) FROM stdin;
+1	t	Marca de chaves d chaves
+\.
+
+
+--
+-- TOC entry 3239 (class 0 OID 264202)
+-- Dependencies: 237
+-- Data for Name: meiomovimentocaixa; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.meiomovimentocaixa (id, ativado, descricao) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3241 (class 0 OID 264210)
+-- Dependencies: 239
+-- Data for Name: mensalidade; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.mensalidade (id, datavencimetoalterada, valorliquido, valororiginal, acrescimo, datapagamento, datavencimentooriginal, desconto, statusmensalidade, operador) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3242 (class 0 OID 264216)
+-- Dependencies: 240
+-- Data for Name: operador; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.operador (nivelacesso, primeirologin, senha, usuario, id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3198 (class 0 OID 261773)
+-- Dependencies: 196
+-- Data for Name: operador_cobrancarenegociada; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.operador_cobrancarenegociada (operador_id, cobrancasrenegociadaslist_id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3199 (class 0 OID 261776)
+-- Dependencies: 197
+-- Data for Name: operador_endereco; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.operador_endereco (operador_id, enderecolist_id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3243 (class 0 OID 264224)
+-- Dependencies: 241
+-- Data for Name: operador_grupooperador; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.operador_grupooperador (operador_id, grupos_id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3200 (class 0 OID 261782)
+-- Dependencies: 198
+-- Data for Name: operador_informacaocontato; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.operador_informacaocontato (operador_id, informacaocontatolist_id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3244 (class 0 OID 264227)
+-- Dependencies: 242
+-- Data for Name: orcamento; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.orcamento (id, datacadastro, dataultimaalteracao, observacoesadicionais, cliente_id, operador_id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3246 (class 0 OID 264234)
+-- Dependencies: 244
+-- Data for Name: pagamentocobranca; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.pagamentocobranca (id, acrescimos, data_pagamento, desconto, juros, mora, multa, tarifas, valor) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3247 (class 0 OID 264240)
+-- Dependencies: 245
+-- Data for Name: pagamentocobranca_itemcobranca; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.pagamentocobranca_itemcobranca (pagamentocobranca_id, itemcobrancarecebimento_id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3248 (class 0 OID 264243)
+-- Dependencies: 246
+-- Data for Name: pagamentocobranca_parcelacobranca; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.pagamentocobranca_parcelacobranca (pagamentocobranca_id, parcela_id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3250 (class 0 OID 264248)
+-- Dependencies: 248
+-- Data for Name: pais; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.pais (id, ativo, ddi, nome) FROM stdin;
+1	t	55	BRASIL
+2	t	595	PARAGUAY
+\.
+
+
+--
+-- TOC entry 3252 (class 0 OID 264259)
+-- Dependencies: 250
+-- Data for Name: parcela; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.parcela (id, ativo, dias, numero, porcentagem, formapagamento_id) FROM stdin;
+6	t	1	2	0	2
+7	t	1	1	0.050000000000000003	2
+8	t	2	2	0.050000000000000003	2
+9	t	3	1	0.050000000000000003	2
+10	t	0	0	100	2
+11	t	30	1	33.329999999999998	3
+12	t	60	2	33.329999999999998	3
+13	t	90	3	33.340000000000003	3
+\.
+
+
+--
+-- TOC entry 3254 (class 0 OID 264267)
+-- Dependencies: 252
+-- Data for Name: parcelacobranca; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.parcelacobranca (id, valorpendente, cancelada, data_vencimento, data_vencimento_original, datapagamento, desconto, mora, multa, valor, valorrecebido, cobranca_id, cobrancarenegociada, pagamentocobrancalist_id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3256 (class 0 OID 264275)
+-- Dependencies: 254
+-- Data for Name: permissaoacesso; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.permissaoacesso (id, modulo, nivelacesso) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3258 (class 0 OID 264286)
+-- Dependencies: 256
+-- Data for Name: pessoa; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.pessoa (id, ativo, classe, cpfcnpj, datacadastro, datanascimento, dataultalteracao, email, estadocivil, nome, nomefantasia_apelido, rgie, sexo, telefone, telefonealternativo, tipo, endereco_id) FROM stdin;
+1	t	0	083.519.759-07	2019-07-26	1998-01-13	2019-07-26		\N	Diego Matheus Lenz		12.346.453-7	2	45 999771678	45 999881578	0	2
+2	t	1	70.726.304/0001-16	2019-07-26	1990-01-12	2019-07-26		\N	Fornecedor 1		  .   .   - 	0	5445889879		1	3
+3	t	0	646.483.710-97	2019-07-26	2018-07-12	2019-07-26		\N	Joao		  .   .   - 	0	999771678		0	4
+\.
+
+
+--
+-- TOC entry 3260 (class 0 OID 264297)
+-- Dependencies: 258
+-- Data for Name: produto; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.produto (id, ativo, dt_cadastro, dt_ult_alteracao, nome, precocompra, quantidade, quantidade_minima, referencia, unidademedida, valor, grupo_id, marca_id, codbarras) FROM stdin;
+1	t	2019-07-26	2019-07-26	chave	\N	0	0	122	UN	\N	1	1	\N
+2	t	2019-07-26	2019-07-26	pneu e peneus	\N	0	0	8934238	UN	\N	1	1	55656
+3	t	2019-07-26	2019-07-26	PRODUTO BASE	\N	0	0	123	UN	\N	1	1	21315656
+\.
+
+
+--
+-- TOC entry 3201 (class 0 OID 261853)
+-- Dependencies: 199
+-- Data for Name: produto_venda; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.produto_venda (produto_id, venda_id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3262 (class 0 OID 264308)
+-- Dependencies: 260
+-- Data for Name: servico; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.servico (id, valor, ativo, dt_cadastro, dt_ult_alteracao, nome, qtdvend, grupo_id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3264 (class 0 OID 264316)
+-- Dependencies: 262
+-- Data for Name: tipomensalidade; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.tipomensalidade (id, desconto, descricao, valor, vencimento) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3266 (class 0 OID 264324)
+-- Dependencies: 264
+-- Data for Name: tipooperador; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.tipooperador (id, descricao, observacoesadicionais) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3267 (class 0 OID 264333)
+-- Dependencies: 265
+-- Data for Name: tipooperador_permissaoacesso; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.tipooperador_permissaoacesso (tipooperador_id, permissoes_id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3268 (class 0 OID 264336)
+-- Dependencies: 266
+-- Data for Name: venda; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.venda (id, datavenda, devolvida, cobranca_id, operador_id, pessoa_id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3269 (class 0 OID 264341)
+-- Dependencies: 267
+-- Data for Name: view_situacao_cobranca; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.view_situacao_cobranca (situacao, cobranca) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3303 (class 0 OID 0)
+-- Dependencies: 203
+-- Name: bairro_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.bairro_id_seq', 1, false);
+
+
+--
+-- TOC entry 3304 (class 0 OID 0)
+-- Dependencies: 206
+-- Name: cidade_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.cidade_id_seq', 2, true);
+
+
+--
+-- TOC entry 3305 (class 0 OID 0)
+-- Dependencies: 208
+-- Name: cobranca_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.cobranca_id_seq', 1, false);
+
+
+--
+-- TOC entry 3306 (class 0 OID 0)
+-- Dependencies: 212
+-- Name: cobrancarenegociada_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.cobrancarenegociada_id_seq', 1, false);
+
+
+--
+-- TOC entry 3307 (class 0 OID 0)
+-- Dependencies: 216
+-- Name: condicaopagamento_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.condicaopagamento_id_seq', 12, true);
+
+
+--
+-- TOC entry 3308 (class 0 OID 0)
+-- Dependencies: 219
+-- Name: endereco_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.endereco_id_seq', 4, true);
+
+
+--
+-- TOC entry 3309 (class 0 OID 0)
+-- Dependencies: 221
+-- Name: estado_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.estado_id_seq', 2, true);
+
+
+--
+-- TOC entry 3310 (class 0 OID 0)
+-- Dependencies: 223
+-- Name: formapagamento_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.formapagamento_id_seq', 3, true);
+
+
+--
+-- TOC entry 3311 (class 0 OID 0)
+-- Dependencies: 225
+-- Name: grupo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.grupo_id_seq', 1, true);
+
+
+--
+-- TOC entry 3312 (class 0 OID 0)
+-- Dependencies: 227
+-- Name: grupooperador_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.grupooperador_id_seq', 1, false);
+
+
+--
+-- TOC entry 3313 (class 0 OID 0)
+-- Dependencies: 202
+-- Name: hibernate_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.hibernate_sequence', 1, false);
+
+
+--
+-- TOC entry 3314 (class 0 OID 0)
+-- Dependencies: 230
+-- Name: informacaocontato_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.informacaocontato_id_seq', 1, false);
+
+
+--
+-- TOC entry 3315 (class 0 OID 0)
+-- Dependencies: 232
+-- Name: itemcobranca_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.itemcobranca_id_seq', 1, false);
+
+
+--
+-- TOC entry 3316 (class 0 OID 0)
+-- Dependencies: 234
+-- Name: marca_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.marca_id_seq', 1, true);
+
+
+--
+-- TOC entry 3317 (class 0 OID 0)
+-- Dependencies: 236
+-- Name: meiomovimentocaixa_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.meiomovimentocaixa_id_seq', 1, false);
+
+
+--
+-- TOC entry 3318 (class 0 OID 0)
+-- Dependencies: 238
+-- Name: mensalidade_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.mensalidade_id_seq', 1, false);
+
+
+--
+-- TOC entry 3319 (class 0 OID 0)
+-- Dependencies: 243
+-- Name: pagamentocobranca_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.pagamentocobranca_id_seq', 1, false);
+
+
+--
+-- TOC entry 3320 (class 0 OID 0)
+-- Dependencies: 247
+-- Name: pais_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.pais_id_seq', 2, true);
+
+
+--
+-- TOC entry 3321 (class 0 OID 0)
+-- Dependencies: 249
+-- Name: parcela_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.parcela_id_seq', 13, true);
+
+
+--
+-- TOC entry 3322 (class 0 OID 0)
+-- Dependencies: 251
+-- Name: parcelacobranca_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.parcelacobranca_id_seq', 1, false);
+
+
+--
+-- TOC entry 3323 (class 0 OID 0)
+-- Dependencies: 253
+-- Name: permissaoacesso_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.permissaoacesso_id_seq', 1, false);
+
+
+--
+-- TOC entry 3324 (class 0 OID 0)
+-- Dependencies: 255
+-- Name: pessoa_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.pessoa_id_seq', 3, true);
+
+
+--
+-- TOC entry 3325 (class 0 OID 0)
+-- Dependencies: 200
+-- Name: produto_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.produto_id_seq', 1, false);
+
+
+--
+-- TOC entry 3326 (class 0 OID 0)
+-- Dependencies: 257
+-- Name: produto_id_seq1; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.produto_id_seq1', 3, true);
+
+
+--
+-- TOC entry 3327 (class 0 OID 0)
+-- Dependencies: 201
+-- Name: servico_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.servico_id_seq', 2, true);
+
+
+--
+-- TOC entry 3328 (class 0 OID 0)
+-- Dependencies: 259
+-- Name: servico_id_seq1; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.servico_id_seq1', 1, true);
+
+
+--
+-- TOC entry 3329 (class 0 OID 0)
+-- Dependencies: 261
+-- Name: tipomensalidade_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.tipomensalidade_id_seq', 1, false);
+
+
+--
+-- TOC entry 3330 (class 0 OID 0)
+-- Dependencies: 263
+-- Name: tipooperador_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.tipooperador_id_seq', 1, false);
+
+
+-- Completed on 2019-07-29 00:00:11
+
+--
+-- PostgreSQL database dump complete
+--
+

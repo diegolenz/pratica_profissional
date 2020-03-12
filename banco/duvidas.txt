@@ -1,0 +1,22 @@
+
+ duvidas
+
+	como vão ser os calculos da multa e juros ? (diariamente, mensalmente .... Não deveria 	
+	estar na condição de pagamento ??))
+	R: multa é um valor fixo, juros é um valor calculado diariamente
+	
+
+	desconto vai ser dado toda vez que a parcela for paga antes do vencimento?
+	R: 
+
+	calculo de frete, explicação 
+	R: 
+
+	o usuario poderá apenas inserir o desconto e o acrescimo nos itens ou tambem poderá inserir 
+	de forma global? 
+	R: 
+
+		
+	Como funcionará o pagamento de uma conta a pagar ??? (ex se uma conta a pagar é criada como  	a vista, para 0 dias e será recebido na hora da compra, posso salvar ela como paga /
+	Como sera feito o controle de pagamento de compra )
+	R
