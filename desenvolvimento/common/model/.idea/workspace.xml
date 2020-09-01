@@ -1,12 +1,275 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ab22913d-ad8d-4670-818c-e9ddb95b845d" name="Default Changelist" comment="" />
+    <list default="true" id="ab22913d-ad8d-4670-818c-e9ddb95b845d" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../service/.idea/$PRODUCT_WORKSPACE_FILE$" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../service/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../service/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../service/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../service/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../service/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../service/src/main/java/lib/service/CidadeService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../service/src/main/java/lib/service/ClienteService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../service/src/main/java/lib/service/CompraService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../service/src/main/java/lib/service/CondicaoPagamentoService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../service/src/main/java/lib/service/ContaPagarService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../service/src/main/java/lib/service/ContaReceberService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../service/src/main/java/lib/service/EstadoService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../service/src/main/java/lib/service/FormaPagamentoService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../service/src/main/java/lib/service/FornecedorService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../service/src/main/java/lib/service/FuncionarioService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../service/src/main/java/lib/service/GrupoFuncionarioService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../service/src/main/java/lib/service/GrupoService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../service/src/main/java/lib/service/MarcaService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../service/src/main/java/lib/service/OrdemServicoService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../service/src/main/java/lib/service/PaisService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../service/src/main/java/lib/service/ParcelaService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../service/src/main/java/lib/service/ProdutoService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../service/src/main/java/lib/service/Service.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../service/src/main/java/lib/service/ServicoService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../service/src/main/java/lib/service/VendaProdutoService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../service/src/main/java/lib/service/VendaServicoService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../service/src/main/java/lib/service/financeiro/caixa/AberturaCaixaService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../service/src/main/java/lib/service/financeiro/caixa/CaixaService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../service/target/classes/lib/service/CidadeService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../service/target/classes/lib/service/ClienteService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../service/target/classes/lib/service/CompraService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../service/target/classes/lib/service/CondicaoPagamentoService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../service/target/classes/lib/service/ContaPagarService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../service/target/classes/lib/service/ContaReceberService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../service/target/classes/lib/service/EstadoService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../service/target/classes/lib/service/FormaPagamentoService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../service/target/classes/lib/service/FornecedorService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../service/target/classes/lib/service/FuncionarioService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../service/target/classes/lib/service/GrupoFuncionarioService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../service/target/classes/lib/service/GrupoService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../service/target/classes/lib/service/MarcaService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../service/target/classes/lib/service/OrdemServicoService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../service/target/classes/lib/service/PaisService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../service/target/classes/lib/service/ParcelaService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../service/target/classes/lib/service/ProdutoService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../service/target/classes/lib/service/Service.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../service/target/classes/lib/service/ServicoService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../service/target/classes/lib/service/VendaProdutoService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../service/target/classes/lib/service/VendaServicoService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../service/target/classes/lib/service/financeiro/caixa/AberturaCaixaService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../service/target/classes/lib/service/financeiro/caixa/CaixaService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../service/target/maven-archiver/pom.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../service/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../service/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../service/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../service/target/service-1.0-SNAPSHOT.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../util/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../dao/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../dao/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/lib/model/financeiro/contas/ContaReceber.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/lib/model/financeiro/contas/ContaReceber.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-archiver/pom.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/model-1.0-SNAPSHOT.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/model-1.0-SNAPSHOT.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../util/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../util/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../util/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../util/target/maven-archiver/pom.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../util/target/util-1.0-SNAPSHOT.jar" beforeDir="false" afterPath="$PROJECT_DIR$/../util/target/util-1.0-SNAPSHOT.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../util/util.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../service/service.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas.rar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/.mvn/wrapper/MavenWrapperDownloader.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/.mvn/wrapper/maven-wrapper.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/mvnw" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/mvnw.cmd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/nb-configuration.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/java/com/contas/ContasApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/java/com/contas/IndexController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/java/com/contas/domain/service/ContasResource.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/application.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/public/error/404.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/public/error/500.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/data/flot-data.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/data/morris-data.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/dist/css/sb-admin-2.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/dist/css/sb-admin-2.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/dist/js/sb-admin-2.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/dist/js/sb-admin-2.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/js/sb-admin-2.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/less/mixins.less" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/less/sb-admin-2.less" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/less/variables.less" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/bootstrap-social/bootstrap-social.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/bootstrap-social/bootstrap-social.less" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/bootstrap-social/bootstrap-social.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/bootstrap/css/bootstrap.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/bootstrap/css/bootstrap.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/bootstrap/fonts/glyphicons-halflings-regular.eot" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/bootstrap/fonts/glyphicons-halflings-regular.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/bootstrap/fonts/glyphicons-halflings-regular.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/bootstrap/fonts/glyphicons-halflings-regular.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/bootstrap/fonts/glyphicons-halflings-regular.woff2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/bootstrap/js/bootstrap.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/bootstrap/js/bootstrap.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/datatables-plugins/dataTables.bootstrap.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/datatables-plugins/dataTables.bootstrap.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/datatables-plugins/dataTables.bootstrap.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/datatables-plugins/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/datatables-responsive/dataTables.responsive.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/datatables-responsive/dataTables.responsive.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/datatables-responsive/dataTables.responsive.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/datatables/css/dataTables.bootstrap.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/datatables/css/dataTables.bootstrap.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/datatables/css/dataTables.bootstrap4.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/datatables/css/dataTables.bootstrap4.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/datatables/css/dataTables.foundation.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/datatables/css/dataTables.foundation.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/datatables/css/dataTables.jqueryui.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/datatables/css/dataTables.jqueryui.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/datatables/css/dataTables.material.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/datatables/css/dataTables.material.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/datatables/css/dataTables.semanticui.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/datatables/css/dataTables.semanticui.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/datatables/css/dataTables.uikit.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/datatables/css/dataTables.uikit.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/datatables/css/jquery.dataTables.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/datatables/css/jquery.dataTables.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/datatables/css/jquery.dataTables_themeroller.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/datatables/images/Sorting icons.psd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/datatables/images/favicon.ico" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/datatables/images/sort_asc.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/datatables/images/sort_asc_disabled.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/datatables/images/sort_both.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/datatables/images/sort_desc.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/datatables/images/sort_desc_disabled.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/datatables/js/dataTables.bootstrap.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/datatables/js/dataTables.bootstrap.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/datatables/js/dataTables.bootstrap4.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/datatables/js/dataTables.bootstrap4.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/datatables/js/dataTables.foundation.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/datatables/js/dataTables.foundation.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/datatables/js/dataTables.jqueryui.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/datatables/js/dataTables.jqueryui.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/datatables/js/dataTables.material.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/datatables/js/dataTables.material.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/datatables/js/dataTables.semanticui.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/datatables/js/dataTables.semanticui.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/datatables/js/dataTables.uikit.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/datatables/js/dataTables.uikit.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/datatables/js/jquery.dataTables.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/datatables/js/jquery.dataTables.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/datatables/js/jquery.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/flot-tooltip/jquery.flot.tooltip.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/flot-tooltip/jquery.flot.tooltip.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/flot-tooltip/jquery.flot.tooltip.source.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/flot/excanvas.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/flot/excanvas.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/flot/jquery.colorhelpers.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/flot/jquery.flot.canvas.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/flot/jquery.flot.categories.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/flot/jquery.flot.crosshair.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/flot/jquery.flot.errorbars.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/flot/jquery.flot.fillbetween.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/flot/jquery.flot.image.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/flot/jquery.flot.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/flot/jquery.flot.navigate.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/flot/jquery.flot.pie.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/flot/jquery.flot.resize.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/flot/jquery.flot.selection.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/flot/jquery.flot.stack.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/flot/jquery.flot.symbol.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/flot/jquery.flot.threshold.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/flot/jquery.flot.time.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/flot/jquery.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/font-awesome/HELP-US-OUT.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/font-awesome/css/font-awesome.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/font-awesome/css/font-awesome.css.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/font-awesome/css/font-awesome.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/font-awesome/fonts/FontAwesome.otf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/font-awesome/fonts/fontawesome-webfont.eot" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/font-awesome/fonts/fontawesome-webfont.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/font-awesome/fonts/fontawesome-webfont.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/font-awesome/fonts/fontawesome-webfont.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/font-awesome/fonts/fontawesome-webfont.woff2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/font-awesome/less/animated.less" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/font-awesome/less/bordered-pulled.less" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/font-awesome/less/core.less" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/font-awesome/less/extras.less" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/font-awesome/less/fixed-width.less" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/font-awesome/less/font-awesome.less" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/font-awesome/less/icons.less" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/font-awesome/less/larger.less" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/font-awesome/less/list.less" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/font-awesome/less/mixins.less" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/font-awesome/less/path.less" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/font-awesome/less/rotated-flipped.less" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/font-awesome/less/screen-reader.less" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/font-awesome/less/spinning.less" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/font-awesome/less/stacked.less" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/font-awesome/less/variables.less" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/font-awesome/scss/_animated.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/font-awesome/scss/_bordered-pulled.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/font-awesome/scss/_core.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/font-awesome/scss/_extras.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/font-awesome/scss/_fixed-width.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/font-awesome/scss/_icons.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/font-awesome/scss/_larger.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/font-awesome/scss/_list.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/font-awesome/scss/_mixins.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/font-awesome/scss/_path.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/font-awesome/scss/_rotated-flipped.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/font-awesome/scss/_screen-reader.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/font-awesome/scss/_spinning.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/font-awesome/scss/_stacked.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/font-awesome/scss/_variables.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/font-awesome/scss/font-awesome.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/jquery/jquery.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/jquery/jquery.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/metisMenu/metisMenu.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/metisMenu/metisMenu.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/metisMenu/metisMenu.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/metisMenu/metisMenu.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/morrisjs/morris.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/morrisjs/morris.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/morrisjs/morris.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/raphael/raphael.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/static/vendor/raphael/raphael.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/templates/bower.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/templates/fragments/alert.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/templates/fragments/footer.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/templates/fragments/header.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/templates/gulpfile.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/templates/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/templates/login.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/templates/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/templates/pages/cliente.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/templates/pages/filme.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/templates/pages/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/main/resources/templates/pages/locacao.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ux/contas/contas/src/test/java/com/contas/contas/ContasApplicationTests.java" beforeDir="false" />
+    </list>
+    <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FUSProjectUsageTrigger">
+    <session id="760962768">
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.closed" value="1" />
+          <entry key="project.open.time.1" value="1" />
+          <entry key="project.opened" value="1" />
+        </counts>
+      </usages-collector>
+    </session>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../.." />
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="MavenImportPreferences">
     <option name="importingSettings">
@@ -15,11 +278,85 @@
       </MavenImportingSettings>
     </option>
   </component>
+  <component name="MavenProjectNavigator">
+    <treeState>
+      <expand>
+        <path>
+          <item name="" type="16c1761:MavenProjectsStructure$RootNode" />
+          <item name="model" type="9519ce18:MavenProjectsStructure$ProjectNode" />
+        </path>
+        <path>
+          <item name="" type="16c1761:MavenProjectsStructure$RootNode" />
+          <item name="model" type="9519ce18:MavenProjectsStructure$ProjectNode" />
+          <item name="Lifecycle" type="58874e2:MavenProjectsStructure$LifecycleNode" />
+        </path>
+      </expand>
+      <select />
+    </treeState>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="1382" />
+    <option name="height" value="744" />
+  </component>
   <component name="ProjectId" id="1XuyrfYgsySxQ1nrZz9gvIoj5PW" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="model" type="b2602c69:ProjectViewProjectNode" />
+              <item name="model" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="model" type="b2602c69:ProjectViewProjectNode" />
+              <item name="model" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="model" type="b2602c69:ProjectViewProjectNode" />
+              <item name="model" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="model" type="b2602c69:ProjectViewProjectNode" />
+              <item name="model" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="model" type="b2602c69:ProjectViewProjectNode" />
+              <item name="model" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="model" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
+      <pane id="AndroidView" />
+    </panes>
+  </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../util" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -54,10 +391,68 @@
       <updated>1581910892323</updated>
       <workItem from="1581910893674" duration="4006000" />
       <workItem from="1582381011646" duration="1741000" />
+      <workItem from="1584804194625" duration="1930000" />
+      <workItem from="1585695076224" duration="1061000" />
     </task>
     <servers />
   </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="1061000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <layout>
+      <window_info id="Image Layers" />
+      <window_info id="Designer" />
+      <window_info id="UI Designer" />
+      <window_info id="Capture Tool" />
+      <window_info id="Favorites" side_tool="true" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24962178" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info anchor="bottom" id="Database Changes" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" />
+      <window_info anchor="bottom" id="Terminal" />
+      <window_info anchor="bottom" id="Event Log" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.3295082" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="right" id="Palette" />
+      <window_info anchor="right" id="Theme Preview" />
+      <window_info anchor="right" id="Capture Analysis" />
+      <window_info anchor="right" id="Palette&#9;" />
+      <window_info anchor="right" id="Database" />
+      <window_info active="true" anchor="right" id="Maven Projects" visible="true" weight="0.32980332" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+    </layout>
+  </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="RECENTLY_FILTERED_USER_GROUPS">
+                <collection />
+              </option>
+              <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+                <collection />
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
   </component>
 </project>

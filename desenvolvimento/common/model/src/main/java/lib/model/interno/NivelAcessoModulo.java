@@ -18,7 +18,8 @@ import java.io.Serializable;
 public enum NivelAcessoModulo implements Serializable {
     
     SOMENTE_LEITURA("Somente leitura"),
-    LEITURA_GRAVACAO("Leitura e gravação");
+    LEITURA_GRAVACAO("Leitura e gravação"),
+    NAO_POSSUI_RESTRICAO("Não envolve permissão");
     
     private final String descricao;
 

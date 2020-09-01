@@ -35,6 +35,31 @@ public class OrdemServicoDao extends AbstractDao {
         return ordens;
     }
 
+    public List<OrdemServico> findByFilters(String descricao, Date dtInicial, Date dtFinal, String status) throws SQLException {
+        String sql = "select * from ordem_servico os INNER JOIN cliente c on (os.cliente_id = c.id)" +
+                "where (upper(c.nome) like upper('%"+ descricao+"%') OR upper('"+ descricao +"') = 'NULL' )";
+        if (dtInicial != null) {
+            sql += " AND os.data_cadastro >= '" + dtInicial + "' ";
+        }
+        if (dtFinal != null) {
+            sql += " AND os.data_cadastro <= '" + dtFinal + "' ";
+        }
+        if (status.equalsIgnoreCase("Cancelada")) {
+            sql += " AND cancelada = true ";
+        } else if (status.equalsIgnoreCase("Concluida")) {
+            sql += " AND fechada = true ";
+        } else if (status.equalsIgnoreCase("EM_ANDAMENTO") || status.equalsIgnoreCase("Em andamento") ) {
+            sql += " AND (fechada = false or fechada is null ) AND (cancelada = false or cancelada is null )";
+        }
+        sql += " ;";
+        ResultSet rs =this.st.getConnection().prepareStatement(sql).executeQuery();
+        List<OrdemServico> ordens = new ArrayList<>();
+        while (rs.next()) {
+            ordens.add(getById(rs.getInt("id")));
+        }
+        return ordens;
+    }
+
     public List<ItemServico> getItensByIdOrdem(Integer id, OrdemServico ordemServico) throws SQLException {
         ResultSet rs = this.st.getConnection().prepareStatement("select * from item_servico_os where os_id = " + id + " ;").executeQuery();
         List<ItemServico> itens = new ArrayList<>();
@@ -88,8 +113,8 @@ public class OrdemServicoDao extends AbstractDao {
 
         String sql = "insert into ordem_servico (data_cadastro, data_ultima_alteracao, funcionario_cadastro_id, " +
                 "funcionario_ultima_alteracao_id, condicao_pagamento_id, cancelada, numero_venda_produto, serie_venda_produto, modelo_venda_produto," +
-                "numero_venda_servico, serie_venda_servico, modelo_venda_servico, cliente_id, responsavel_id, modelo_id, chassis, placa, cor, ano, descricao_problema, descricao_solucao) values ('" + new Date() + "', '" + new Date() + "'," +
-                os.getFuncionarioUltimaAtualizacao().getId() + ", " + os.getFuncionarioUltimaAtualizacao().getId() + ", " + idCond +
+                "numero_venda_servico, serie_venda_servico, modelo_venda_servico, cliente_id, responsavel_id, modelo_id, chassis, placa, cor, ano, descricao_problema, descricao_solucao, observacao) values ('" + new Date() + "', '" + new Date() + "'," +
+                os.getFuncionarioCadastro().getId() + ", " + os.getFuncionarioUltimaAtualizacao().getId() + ", " + idCond +
                 ", " + os.getCancelada();
         if (os.getVendaProduto() != null) {
             sql += "," + os.getVendaProduto().getNumeroNota() + ", " + os.getVendaProduto().getNumSerieNota() + ", '" + os.getVendaProduto().getModeloNota() + "'";
@@ -102,7 +127,7 @@ public class OrdemServicoDao extends AbstractDao {
             sql += "," + null + "," + null + ", " + null + "";
         }
         sql += ", " + os.getCliente().getId() + ", "+idResp+", "+os.getModelo().getId()+", '"+os.getChassis()+"', '"+os.getPlaca()+"', '"+os.getCor()+"', "+os.getAno()+", " +
-                "'"+os.getDescricaoProblema() + "', '"+ os.getDescricaoConclusao()+"' );";
+                "'"+os.getDescricaoProblema() + "', '"+ os.getDescricaoConclusao()+"', '"+os.getObservacao()+"' );";
 
         this.st.getConnection().prepareStatement(sql).executeUpdate();
         os.setId(getUltimoIdOs());
@@ -144,8 +169,9 @@ public class OrdemServicoDao extends AbstractDao {
                 " numero_venda_produto=" + numVendaProd + ", serie_venda_produto=" + serieVendaProd + ", modelo_venda_produto='" + modVendaProd + "', numero_venda_servico=" + numVendaS + ", " +
                 "serie_venda_servico=" + serieVendaS + ", modelo_venda_servico='" + modVendaS + "', cliente_id=" + os.getCliente().getId() + " " +
                 ", chassis = '"+os.getChassis() + "', km = "+os.getKm() + ", placa = '"+ os.getPlaca() + "', " +
-                "cor = '"+os.getCor()+"', ano = "+os.getAno()+", descricao_problema = '" + os.getDescricaoProblema() + "' , descricao_solucao = '" + os.getDescricaoConclusao() +
-                "' WHERE id= "+os.getId()+" ;";
+                "cor = '"+os.getCor()+"', ano = "+ os.getAno()+", descricao_problema = '" + os.getDescricaoProblema() + "' , descricao_solucao = '" + os.getDescricaoConclusao() +
+                "', fechada = " + os.getFechada() + "" +
+                ",  observacao = '"+ os.getObservacao() +"' WHERE id= "+os.getId()+" ;";
 
         this.st.getConnection().prepareStatement(sql).executeUpdate();
     }
@@ -175,6 +201,7 @@ public class OrdemServicoDao extends AbstractDao {
             ordemServico.setItensProdutos(this.getItensProdutosByIdOrdem(ordemServico.getId(), ordemServico));
             ordemServico.setCondicaoPagamento(new CondicaoPagamentoDAO().getByID(rs.getInt("condicao_pagamento_id")));
             ordemServico.setCancelada(rs.getBoolean("cancelada"));
+            ordemServico.setFechada(rs.getBoolean("fechada"));
             ordemServico.setModelo(new ModeloDao().getByID(rs.getInt("modelo_id")));
             ordemServico.setChassis(rs.getString("chassis"));
             ordemServico.setAno(rs.getInt("ano"));
@@ -187,6 +214,7 @@ public class OrdemServicoDao extends AbstractDao {
             ordemServico.setResponsavel(new FuncionarioDao().getByID(rs.getInt("responsavel_id")));
             ordemServico.setFuncionarioCadastro(new FuncionarioDao().getByID(rs.getInt("funcionario_cadastro_id")));
             ordemServico.setFuncionarioUltimaAtualizacao(new FuncionarioDao().getByID(rs.getInt("funcionario_ultima_alteracao_id")));
+            ordemServico.setObservacao(rs.getString("observacao"));
             ordemServico.setVendaProduto((VendaProduto) new VendaProdutoDao().getByID(
                     rs.getString("modelo_venda_produto"),
                     rs.getInt("numero_venda_produto"),

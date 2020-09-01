@@ -2,6 +2,7 @@ package imp.endereco.cidade;
 
 import imp.AbstractDao;
 import imp.endereco.estado.EstadoDao;
+import imp.sistema.FuncionarioDao;
 import lib.model.endereco.cidade.Cidade;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -37,8 +38,9 @@ public class CidadeDao extends AbstractDao {
     public void save(Object obj) throws Exception {
         Cidade cidade = (Cidade) obj;
         String sql = "";
-        sql = ("INSERT INTO cidade (nome, DDD, estado_id, ativo ) values (" +
-                "'" + cidade.getNome() + "','" + cidade.getDDD() + "', " + cidade.getEstado().getId() + ", " + cidade.getAtivo() + " );");
+        sql = ("INSERT INTO cidade (nome, DDD, estado_id, ativo, data_cadastro, data_ultima_alteracao, funcionario_cadastro, funcionario_ultima_alteracao ) values (" +
+                "'" + cidade.getNome() + "','" + cidade.getDDD() + "', " + cidade.getEstado().getId() + ", " + cidade.getAtivo() + ", now(), now(), + " +
+                " "+ cidade.getFuncionarioCadastro().getId()+", " + cidade.getFuncionarioUltimaAtualizacao().getId() +" );");
 
         this.st.executeUpdate(sql);
     }
@@ -71,12 +73,7 @@ public class CidadeDao extends AbstractDao {
         List<Cidade> cidades = new ArrayList<>();
 
         while (rs.next()) {
-            Cidade cidade = new Cidade();
-            cidade.setId(rs.getInt("id"));
-            cidade.setNome(rs.getString("nome"));
-            cidade.setDDD(rs.getString("DDD"));
-            cidade.setEstado(estadoService.getByID(rs.getInt("estado_id")));
-            cidade.setAtivo(rs.getBoolean("ativo"));
+            Cidade cidade =  this.getByID(rs.getInt("id"));
             cidades.add(cidade);
         }
         return cidades;
@@ -94,20 +91,15 @@ public class CidadeDao extends AbstractDao {
         List<Cidade> cidades = new ArrayList<>();
 
         while (rs.next()) {
-            Cidade cidade = new Cidade();
-            cidade.setId(rs.getInt("id"));
-            cidade.setNome(rs.getString("nome"));
-            cidade.setDDD(rs.getString("DDD"));
-            cidade.setEstado(estadoService.getByID(rs.getInt("estado_id")));
-            cidade.setAtivo(rs.getBoolean("ativo"));
-            cidades.add(cidade);
+            cidades.add(getByID(rs.getInt("id")));
         }
         return cidades;
     }
 
     public void update(Object obj) throws SQLException {
         cidade = (Cidade) obj;
-        String sql = "UPDATE cidade SET nome = '" + cidade.getNome() + "', DDD = '" + cidade.getDDD() + "', estado_id=" + cidade.getEstado().getId() + ", ativo=" + cidade.getAtivo() + " WHERE id = " + cidade.getId() + " ;";
+        String sql = "UPDATE cidade SET nome = '" + cidade.getNome() + "', DDD = '" + cidade.getDDD() + "', estado_id=" + cidade.getEstado().getId() + ", ativo=" + cidade.getAtivo() + "" +
+                ", funcionario_ultima_alteracao = " + cidade.getFuncionarioUltimaAtualizacao().getId() +", data_ultima_alteracao = now() WHERE id = " + cidade.getId() + " ;";
         this.st.executeUpdate(sql);
     }
 
@@ -130,6 +122,10 @@ public class CidadeDao extends AbstractDao {
             cidade.setNome(rs.getString("nome"));
             cidade.setDDD(rs.getString("DDD"));
             cidade.setAtivo(rs.getBoolean("ativo"));
+            cidade.setFuncionarioCadastro(new FuncionarioDao().getByID(rs.getInt("funcionario_cadastro")));
+            cidade.setFuncionarioUltimaAtualizacao(new FuncionarioDao().getByID(rs.getInt("funcionario_ultima_alteracao")));
+            cidade.setDataCadastro(rs.getDate("data_cadastro"));
+            cidade.setDataUltimaAlteracao(rs.getDate("data_ultima_alteracao"));
             cidade.setEstado(this.estadoService.getByID(rs.getInt("estado_id")));
         }
         return cidade;

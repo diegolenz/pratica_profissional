@@ -12,12 +12,13 @@
 
     create table Estado (
         id  serial not null,
-        ativo boolean,
+        ativo boolean not null,
         nome varchar(99) not null,
         sigla varchar(255),
-        pais_id int references pais(id),
+        pais_id int references pais(id) not null,
         primary key (id)
     ); 
+
     
 	
     create table Cidade (
@@ -26,7 +27,7 @@
         ativo boolean,
         CODIGO_IBGE varchar(10),
         nome varchar(255) not null,
-        estado_id int references estado(id),
+        estado_id int references estado(id) not null,
         primary key (id)
     );
 
@@ -437,8 +438,23 @@ create table veiculo (
 
 alter table ordem_servico add column responsavel_id int references funcionario;
 alter table ordem_servico  alter column data_cadastro set not null;
-
-
+	alter table cliente add column if not exists funcionario_cadastro int references funcionario(id);
+alter table cliente add column if not exists funcionario_ultima_alteracao int references funcionario(id);
+alter table funcionario add column if not exists funcionario_cadastro int references funcionario(id);
+alter table funcionario add column if not exists funcionario_ultima_alteracao int references funcionario(id);
+alter table fornecedor add column if not exists funcionario_cadastro int references funcionario(id);
+alter table fornecedor add column if not exists funcionario_ultima_alteracao int references funcionario(id);
+alter table funcionario add column if not exists alterar_senha_proximo_login boolean default false;
+alter table cidade add column if not exists funcionario_cadastro int references funcionario(id);
+alter table cidade add column if not exists funcionario_ultima_alteracao int references funcionario(id);
+alter table cidade add column if not exists data_cadastro date not null, 
+alter table cidade add column if not exists data_ultima_alteracao date not null;
+alter table cidade add column if not exists data_cadastro date ;
+alter table cidade add column if not exists data_ultima_alteracao date ;
+alter table pais add column if not exists data_cadastro date ;
+alter table pais add column if not exists data_ultima_alteracao date ;
+alter table estado add column if not exists data_cadastro date ;
+alter table estado add column if not exists data_ultima_alteracao date ;
 
 
 

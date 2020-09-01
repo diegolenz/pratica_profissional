@@ -1,6 +1,7 @@
 package lib.model.servico;
 
 import lib.model.grupo.Grupo;
+import lib.model.interno.Funcionario;
 
 import java.util.Date;
 
@@ -21,6 +22,26 @@ public class Servico {
     private boolean ativo;
 
     private Grupo grupo;
+
+    private Funcionario funcionarioUltimaAtualizacao;
+
+    private Funcionario funcionarioCadastro;
+
+    public Funcionario getFuncionarioUltimaAtualizacao() {
+        return funcionarioUltimaAtualizacao;
+    }
+
+    public void setFuncionarioUltimaAtualizacao(Funcionario funcionarioUltimaAtualizacao) {
+        this.funcionarioUltimaAtualizacao = funcionarioUltimaAtualizacao;
+    }
+
+    public Funcionario getFuncionarioCadastro() {
+        return funcionarioCadastro;
+    }
+
+    public void setFuncionarioCadastro(Funcionario funcionarioCadastro) {
+        this.funcionarioCadastro = funcionarioCadastro;
+    }
 
     public Servico buildServico(ItemServico itemProduto){
         Servico p = new Servico();

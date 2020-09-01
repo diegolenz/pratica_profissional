@@ -1,6 +1,7 @@
 package lib.model.os;
 
 public enum StatusOs {
+    TODOS("Todos"),
     CANCELADA("Cancelada"),
     EM_ANDAMENTO("Em andamento"),
     CONCLUIDA("Concluida");
@@ -14,5 +15,8 @@ public enum StatusOs {
         return descricao;
     }
 
-
+    @Override
+    public String toString() {
+        return descricao;
+    }
 }

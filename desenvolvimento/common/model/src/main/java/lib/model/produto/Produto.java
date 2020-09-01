@@ -2,6 +2,7 @@ package lib.model.produto;
 
 import lib.model.comercial.ItemProduto;
 import lib.model.grupo.Grupo;
+import lib.model.interno.Funcionario;
 import lib.model.marca.Marca;
 import lib.model.pessoa.fornecedor.Fornecedor;
 
@@ -42,6 +43,10 @@ public class Produto {
     private Fornecedor ultimoFornecedor;
 
     private Boolean ativo;
+
+    private Funcionario funcionarioUltimaAtualizacao;
+
+    private Funcionario funcionarioCadastro;
 
     public Integer getId() {
         return id;
@@ -198,5 +203,21 @@ public class Produto {
 
     public void setDataUltimaVenda(Date dataUltimaVenda) {
         this.dataUltimaVenda = dataUltimaVenda;
+    }
+
+    public Funcionario getFuncionarioUltimaAtualizacao() {
+        return funcionarioUltimaAtualizacao;
+    }
+
+    public void setFuncionarioUltimaAtualizacao(Funcionario funcionarioUltimaAtualizacao) {
+        this.funcionarioUltimaAtualizacao = funcionarioUltimaAtualizacao;
+    }
+
+    public Funcionario getFuncionarioCadastro() {
+        return funcionarioCadastro;
+    }
+
+    public void setFuncionarioCadastro(Funcionario funcionarioCadastro) {
+        this.funcionarioCadastro = funcionarioCadastro;
     }
 }

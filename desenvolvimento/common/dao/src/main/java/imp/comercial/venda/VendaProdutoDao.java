@@ -10,6 +10,7 @@ import lib.model.comercial.VendaProduto;
 import lib.model.comercial.frete.TipoFrete;
 import lib.model.financeiro.contas.ContaReceber;
 import lib.model.produto.Produto;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -50,7 +51,7 @@ public class VendaProdutoDao extends AbstractDao {
                 " data_chegada," +
                 " data_emissao," +
                 " cliente_id," +
-                //" funcionario_id," +
+                " funcionario_id," +
                 " valor_frete, " +
                 " valor_seguro," +
                 " outras_despesas, " +
@@ -64,7 +65,7 @@ public class VendaProdutoDao extends AbstractDao {
                 + venda.getDtChegada() + "', '"
                 + venda.getDtEmisssao() + "', "
                 + venda.getCliente().getId() + ", "
-                //  + venda.getFuncionario().getId() + ", "
+                + venda.getFuncionario().getId() + ", "
                 + venda.getValorFrete() + ", "
                 + venda.getValorSeguro() + ", "
                 + venda.getOutrasDespesas() + ", "
@@ -87,9 +88,13 @@ public class VendaProdutoDao extends AbstractDao {
 
     public void saveContas(List<ContaReceber> contas) throws SQLException {
         for (ContaReceber conta : contas) {
-            String sql = "INSERT INTO conta_receber (modelo_venda , serie_venda, numero_venda, valor, data_Lancamento, data_Vencimento, forma_pagamento_id) "
-                    + "values ('" +
-                    conta.getVenda().getModeloNota() + "', " +
+            String sql = "INSERT INTO conta_receber (juros, desconto, multa, descricao, modelo_venda , serie_venda, numero_venda, valor, data_Lancamento, data_Vencimento, forma_pagamento_id) "
+                    + "values (" +
+                    + conta.getMulta() + ", "
+                    + conta.getDesconto() + ", "
+                    + conta.getMulta() + ", "
+                    + " '" + conta.getDescricao() + "', " +
+                    " '" + conta.getVenda().getModeloNota() + "', " +
                     conta.getVenda().getNumSerieNota() + ", " +
                     conta.getVenda().getNumeroNota() + ", " +
                     conta.getValor() + ", " +
@@ -202,7 +207,7 @@ public class VendaProdutoDao extends AbstractDao {
         String sql = "Select * from venda_produto where numero = " + numero + " and serie = " + serie + " and modelo = '" + modelo + "' ;";
         PreparedStatement preparedStatement = st.getConnection().prepareStatement(sql);
         ResultSet rs = preparedStatement.executeQuery();
-        VendaProduto  venda = null;
+        VendaProduto venda = null;
         while (rs.next()) {
             venda = new VendaProduto();
             venda.setNumeroNota(rs.getInt("numero"));

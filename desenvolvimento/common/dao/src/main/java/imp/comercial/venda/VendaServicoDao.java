@@ -21,13 +21,12 @@ public class VendaServicoDao extends AbstractDao {
 
     public void saveItens(List<ItemServico> itens) throws SQLException {
         for (ItemServico itemServico : itens) {
-            String sql = "INSERT INTO item_servico (id,cliente_id, quantidade, valor_unitario, desconto_unitario, acrescimo_unitario, valor_rateio, valor_total, servico_id, " +
+            String sql = "INSERT INTO item_servico (cliente_id, quantidade, valor_unitario, desconto_unitario, acrescimo_unitario, valor_rateio, valor_total, servico_id, " +
                     "serie_venda, " +
                     "numero_venda," +
                     "modelo_venda)" +
-                    " VALUES ("
-                    + itemServico.getId() +
-                    ", " + itemServico.getVenda().getCliente().getId() +
+                    " VALUES (" +
+                    itemServico.getVenda().getCliente().getId() +
                     ", " + itemServico.getQuantidade() +
                     ", " + itemServico.getValorUnitario() +
                     ", " + itemServico.getDescontoUnitario() +
@@ -87,8 +86,10 @@ public class VendaServicoDao extends AbstractDao {
 
     public void saveContas(List<ContaReceber> contas) throws SQLException {
         for (ContaReceber conta : contas) {
-            String sql = "INSERT INTO conta_receber (modelo_venda , serie_venda, numero_venda, valor, data_Lancamento, data_Vencimento, forma_pagamento_id) "
-                    + "values ('" +
+            String sql = "INSERT INTO conta_receber (descricao, modelo_venda , serie_venda, numero_venda, valor, data_Lancamento, data_Vencimento, forma_pagamento_id) "
+                    + "values (" +
+                    "'"+ conta.getDescricao() +"', " +
+                    "'" +
                     conta.getVendaServico().getModeloNota() + "', " +
                     conta.getVendaServico().getNumSerieNota() + ", " +
                     conta.getVendaServico().getNumeroNota() + ", " +

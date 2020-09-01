@@ -1,9 +1,12 @@
 package lib.model.endereco.cidade;
 
 import lib.model.endereco.estado.Estado;
+import lib.model.interno.Funcionario;
+
+import java.util.Date;
 
 
-public class Cidade implements Comparable<Cidade>{
+public class Cidade implements Comparable<Cidade> {
 
 
     private Integer id;
@@ -17,6 +20,15 @@ public class Cidade implements Comparable<Cidade>{
     private Estado estado;
 
     private Boolean ativo;
+
+
+    private Date dataCadastro;
+
+    private Date dataUltimaAlteracao;
+
+    private Funcionario funcionarioUltimaAtualizacao;
+
+    private Funcionario funcionarioCadastro;
 
     public Cidade() {
         ativo = true;
@@ -76,6 +88,39 @@ public class Cidade implements Comparable<Cidade>{
 
     public String getNomeCompleto() {
         return nome + ", " + estado.getSigla();
+    }
+
+
+    public Date getDataCadastro() {
+        return dataCadastro;
+    }
+
+    public void setDataCadastro(Date dataCadastro) {
+        this.dataCadastro = dataCadastro;
+    }
+
+    public Date getDataUltimaAlteracao() {
+        return dataUltimaAlteracao;
+    }
+
+    public void setDataUltimaAlteracao(Date dataUltimaAlteracao) {
+        this.dataUltimaAlteracao = dataUltimaAlteracao;
+    }
+
+    public Funcionario getFuncionarioUltimaAtualizacao() {
+        return funcionarioUltimaAtualizacao;
+    }
+
+    public void setFuncionarioUltimaAtualizacao(Funcionario funcionarioUltimaAtualizacao) {
+        this.funcionarioUltimaAtualizacao = funcionarioUltimaAtualizacao;
+    }
+
+    public Funcionario getFuncionarioCadastro() {
+        return funcionarioCadastro;
+    }
+
+    public void setFuncionarioCadastro(Funcionario funcionarioCadastro) {
+        this.funcionarioCadastro = funcionarioCadastro;
     }
 
     @Override

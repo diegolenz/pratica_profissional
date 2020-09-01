@@ -18,7 +18,11 @@ public class Funcionario extends Pessoa {
 
     private Date dataCadastro;
 
-    private Date dataUltAlteracao;
+    private Date dataUltimaAlteracao;
+
+    private Funcionario funcionarioUltimaAtualizacao;
+
+    private Funcionario funcionarioCadastro;
 
     private boolean ativo;
 
@@ -64,9 +68,16 @@ public class Funcionario extends Pessoa {
             return true;
         }
 
+        if (grupos == null || grupos.isEmpty()) {
+            return false;
+        }
+
         return getGrupos()
                 .stream()
-                .findAny().isPresent();
+                .anyMatch(grupoFuncionario ->
+                        grupoFuncionario.getPermissoes().stream().anyMatch(permissaoAcesso -> permissaoAcesso.getModulo().equals(modulo)
+                                && (permissaoAcesso.getNivelAcesso().equals(nivel) || nivel.equals(NivelAcessoModulo.SOMENTE_LEITURA)))
+                );
 
     }
 
@@ -140,12 +151,28 @@ public class Funcionario extends Pessoa {
         return serialVersionUID;
     }
 
-    public Date getDataUltAlteracao() {
-        return dataUltAlteracao;
+    public Date getDataUltimaAlteracao() {
+        return dataUltimaAlteracao;
     }
 
-    public void setDataUltAlteracao(Date dataUltAlteracao) {
-        this.dataUltAlteracao = dataUltAlteracao;
+    public void setDataUltimaAlteracao(Date dataUltimaAlteracao) {
+        this.dataUltimaAlteracao = dataUltimaAlteracao;
+    }
+
+    public Funcionario getFuncionarioUltimaAtualizacao() {
+        return funcionarioUltimaAtualizacao;
+    }
+
+    public void setFuncionarioUltimaAtualizacao(Funcionario funcionarioUltimaAtualizacao) {
+        this.funcionarioUltimaAtualizacao = funcionarioUltimaAtualizacao;
+    }
+
+    public Funcionario getFuncionarioCadastro() {
+        return funcionarioCadastro;
+    }
+
+    public void setFuncionarioCadastro(Funcionario funcionarioCadastro) {
+        this.funcionarioCadastro = funcionarioCadastro;
     }
 
     public Boolean getPrimeiroLogin() {

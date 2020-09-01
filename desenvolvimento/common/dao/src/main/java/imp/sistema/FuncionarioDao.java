@@ -51,8 +51,11 @@ public class FuncionarioDao extends AbstractDao {
                 " numero_residencial, " +
                 " cep ," +
                 " ativo," +
+                " alterar_senha_proximo_login, " +
                 " data_cadastro," +
                 " data_ultima_alteracao," +
+                " funcionario_cadastro, " +
+                " funcionario_ultima_alteracao, " +
                 " data_admissao, " +
                 " data_demissao, " +
                 " primeiro_login, " +
@@ -60,9 +63,9 @@ public class FuncionarioDao extends AbstractDao {
                 " senha " +
                 ") values (" +
                 "'" + funcionario.getNome() +
-                "','" + funcionario.getCpfCnpj() + "'," ;
-        sql += funcionario.getDataNascimento() != null ? "'" + funcionario.getDataNascimento() + "'," :  "null,";
-        sql +=  "'" + funcionario.getEmail() +
+                "','" + funcionario.getCpfCnpj() + "',";
+        sql += funcionario.getDataNascimento() != null ? "'" + funcionario.getDataNascimento() + "'," : "null,";
+        sql += "'" + funcionario.getEmail() +
                 "', " + funcionario.getSexo().ordinal() +
                 ", '" + funcionario.getNomeFantasia_Apelido() +
                 "', '" + funcionario.getRgIe() +
@@ -76,11 +79,22 @@ public class FuncionarioDao extends AbstractDao {
                 "', '" + funcionario.getNumeroResidencial() +
                 "', '" + funcionario.getCep() +
                 "', " + funcionario.isAtivo() +
-                ", '" + funcionario.getDataCadastro() +
-                "','" + funcionario.getDataUltAlteracao() +
-                "', '" + funcionario.getDataAdmissao() ;
+                ", " + funcionario.isAlterarSenhaProximoLogin() +
+                ", now()" +
+                ", now()";
+        if (funcionario.getFuncionarioCadastro() != null) {
+            sql += ", " + funcionario.getFuncionarioCadastro().getId();
+        } else {
+            sql += ", null ";
+        }
+        if (funcionario.getFuncionarioUltimaAtualizacao() != null) {
+            sql += ", " + funcionario.getFuncionarioUltimaAtualizacao().getId();
+        } else {
+            sql += ", null ";
+        }
+        sql += ", '" + funcionario.getDataAdmissao();
         sql += funcionario.getDataDemissao() != null ? "', '" + funcionario.getDataDemissao() + "'," : "', null,";
-        sql +=  funcionario.getPrimeiroLogin() +
+        sql += funcionario.getPrimeiroLogin() +
                 ", '" + funcionario.getUsuario() +
                 "', '" + funcionario.getSenha() +
                 "' );";
@@ -150,16 +164,20 @@ public class FuncionarioDao extends AbstractDao {
                         "', cep ='" + funcionario.getCep() +
                         "', cidade_ID = " + funcionario.getCidade().getId() +
                         ", numero_residencial = '" + funcionario.getNumeroResidencial() +
-                        "'    WHERE id = " + funcionario.getId() + " ;";
-        sql = " ativo = " + funcionario.isAtivo() +
-                ", usuario='" + funcionario.getUsuario() +
-                "', senha='" + funcionario.getSenha() +
-                "', data_admissao ='" + funcionario.getDataAdmissao() +
-                "',  data_cadastro = '" + funcionario.getDataCadastro();
+                        "', ativo = " + funcionario.isAtivo() +
+                        ", alterar_senha_proximo_login = " + funcionario.isAlterarSenhaProximoLogin() +
+                        ", usuario='" + funcionario.getUsuario() +
+                        "', senha='" + funcionario.getSenha() +
+                        "', data_admissao ='" + funcionario.getDataAdmissao() +
+                        "', data_cadastro = '" + funcionario.getDataCadastro();
         if (funcionario.getDataDemissao() != null) {
             sql += "', data_demissao = ' " + funcionario.getDataDemissao();
         }
-        sql += "', data_ultima_alteracao = '" + funcionario.getDataUltAlteracao() + "' where id = " + funcionario.getId() + " ;";
+        sql += "', data_ultima_alteracao = '" + funcionario.getDataUltimaAlteracao() + "' ";
+        if (funcionario.getFuncionarioUltimaAtualizacao() != null) {
+            sql += ", funcionario_ultima_alteracao = " + funcionario.getFuncionarioUltimaAtualizacao().getId();
+        }
+        sql += " where id = " + funcionario.getId() + " ;" ;
         this.st.executeUpdate(sql);
     }
 
@@ -181,14 +199,28 @@ public class FuncionarioDao extends AbstractDao {
         return pessoas;
     }
 
-    public Funcionario getByLogin(String user, String passwors)throws SQLException{
-        ResultSet rs = st.getConnection().prepareStatement("select * from funcionario where usuario = '"+user +"' and senha ='" + passwors + "' ;").executeQuery();
-        if (rs.next()){
+    public Funcionario getByLogin(String user, String passwors) throws SQLException {
+        ResultSet rs = st.getConnection().prepareStatement("select * from funcionario where usuario = '" + user + "' and senha ='" + passwors + "' ;").executeQuery();
+        if (rs.next()) {
             Funcionario funcionario = new Funcionario();
             funcionario = getByID(rs.getInt("id"));
             return funcionario;
         }
         return null;
+    }
+
+    public Funcionario getNomeById(Integer id) throws SQLException {
+        PreparedStatement preparedStatement = st.getConnection().prepareStatement("SELECT nome, ativo, id FROM funcionario WHERE ID = " + id + ";");
+        ResultSet rs = preparedStatement.executeQuery();
+        Funcionario funcionario = null;
+        while (rs.next()) {
+            funcionario = new Funcionario();
+            funcionario.setAtivo(rs.getBoolean("ativo"));
+            funcionario.setNome(rs.getString("nome"));
+            funcionario.setId(rs.getInt("id"));
+        }
+        return funcionario;
+
     }
 
     public Funcionario getByID(Integer id) throws SQLException {
@@ -199,8 +231,10 @@ public class FuncionarioDao extends AbstractDao {
             funcionario = new Funcionario();
 
             funcionario.setAtivo(rs.getBoolean("ativo"));
-            funcionario.setDataUltAlteracao(rs.getDate("data_ultima_alteracao"));
+            funcionario.setDataUltimaAlteracao(rs.getDate("data_ultima_alteracao"));
             funcionario.setDataCadastro(rs.getDate("data_cadastro"));
+            funcionario.setFuncionarioCadastro(this.getNomeById(rs.getInt("funcionario_cadastro")));
+            funcionario.setFuncionarioUltimaAtualizacao(this.getNomeById(rs.getInt("funcionario_ultima_alteracao")));
             funcionario.setUsuario(rs.getString("usuario"));
             funcionario.setSenha(rs.getString("senha"));
             funcionario.setDataDemissao(rs.getDate("data_demissao"));
@@ -216,10 +250,10 @@ public class FuncionarioDao extends AbstractDao {
             funcionario.setTelefone(rs.getString("telefone"));
             funcionario.setTelefoneAlternativo(rs.getString("telefone_alternativo"));
             funcionario.setDataNascimento(rs.getDate("data_nascimento"));
+            funcionario.setAlterarSenhaProximoLogin(rs.getBoolean("alterar_senha_proximo_login"));
             funcionario.setRgIe(rs.getString("rg_ie"));
             funcionario.setCpfCnpj(rs.getString("cpf_cnpj"));
             funcionario.setEmail(rs.getString("email"));
-
             Integer sexo = rs.getInt("sexo");
             switch (sexo) {
                 case 0:
@@ -245,7 +279,7 @@ public class FuncionarioDao extends AbstractDao {
             }
 
             funcionario.setId(rs.getInt("id"));
-            funcionario.setGrupos(getGrupos(operador.getId()));
+            funcionario.setGrupos(getGrupos(funcionario.getId()));
         }
         return funcionario;
     }

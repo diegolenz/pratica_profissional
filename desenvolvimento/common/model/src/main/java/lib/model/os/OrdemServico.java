@@ -22,8 +22,6 @@ public class OrdemServico {
 
     private Integer id;
 
-    private String observações;
-
     private List<ItemServico> itensServicos;
 
     private List<ItemProduto> itensProdutos;
@@ -66,12 +64,14 @@ public class OrdemServico {
 
     private String descricaoConclusao;
 
-    public String getStatus(){
+    private String observacao;
+
+    public StatusOs getStatus(){
         if (cancelada)
-            return "Cancelada";
+            return StatusOs.CANCELADA;
         if (fechada)
-            return "Concluida";
-        return  "Em andamento";
+            return StatusOs.CONCLUIDA;
+        return  StatusOs.EM_ANDAMENTO;
     }
 
     public Double getTotal(){
@@ -91,7 +91,7 @@ public class OrdemServico {
     public Double getTotalProdutos(){
         Double total = 0D;
         //  total += getItensProdutos().stream().mapToDouble(ItemProduto::getTotaisCustoUn).sum();
-        total += getItensServicos().stream().mapToDouble(ItemServico::getTotaisCustoUn).sum();
+        total = getItensProdutos().stream().mapToDouble(ItemProduto::getTotaisCustoUn).sum();
         return total;
     }
 
@@ -126,14 +126,6 @@ public class OrdemServico {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getObservações() {
-        return observações;
-    }
-
-    public void setObservações(String observações) {
-        this.observações = observações;
     }
 
     public List<ItemServico> getItensServicos() {
@@ -300,13 +292,20 @@ public class OrdemServico {
         this.descricaoConclusao = descricaoConclusao;
     }
 
+    public String getObservacao() {
+        return observacao;
+    }
+
+    public void setObservacao(String observacao) {
+        this.observacao = observacao;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         OrdemServico that = (OrdemServico) o;
         return id.equals(that.id) &&
-                observações.equals(that.observações) &&
                 itensServicos.equals(that.itensServicos) &&
                 itensProdutos.equals(that.itensProdutos) &&
                 vendaServico.equals(that.vendaServico) &&

@@ -4,6 +4,7 @@ import lib.model.comercial.VendaProduto;
 import lib.model.comercial.VendaServico;
 import lib.model.financeiro.StatusConta;
 import lib.model.financeiro.formaPagamento.FormaPagamento;
+import lib.model.interno.Funcionario;
 import lib.model.pessoa.cliente.Cliente;
 
 import java.util.Calendar;
@@ -22,6 +23,8 @@ public class ContaReceber {
     private Cliente recebedor;
 
     private boolean ativo;
+
+   // private Double
 
     public boolean isAtivo() {
         return ativo;
@@ -66,7 +69,58 @@ public class ContaReceber {
     private boolean paga;
 
     private Date dataPagamento;
+
+    private Funcionario funcionarioPagamento;
+
     private Double valorPago;
+
+    private Date dataCadastro;
+
+    private Date dataUltAlteracao;
+
+    private Funcionario funcionarioCadastro;
+
+    private Funcionario funcionarioUltimaAlteracao;
+
+    public Funcionario getFuncionarioPagamento() {
+        return funcionarioPagamento;
+    }
+
+    public void setFuncionarioPagamento(Funcionario funcionarioPagamento) {
+        this.funcionarioPagamento = funcionarioPagamento;
+    }
+
+    public Date getDataCadastro() {
+        return dataCadastro;
+    }
+
+    public void setDataCadastro(Date dataCadastro) {
+        this.dataCadastro = dataCadastro;
+    }
+
+    public Date getDataUltAlteracao() {
+        return dataUltAlteracao;
+    }
+
+    public void setDataUltAlteracao(Date dataUltAlteracao) {
+        this.dataUltAlteracao = dataUltAlteracao;
+    }
+
+    public Funcionario getFuncionarioCadastro() {
+        return funcionarioCadastro;
+    }
+
+    public void setFuncionarioCadastro(Funcionario funcionarioCadastro) {
+        this.funcionarioCadastro = funcionarioCadastro;
+    }
+
+    public Funcionario getFuncionarioUltimaAlteracao() {
+        return funcionarioUltimaAlteracao;
+    }
+
+    public void setFuncionarioUltimaAlteracao(Funcionario funcionarioUltimaAlteracao) {
+        this.funcionarioUltimaAlteracao = funcionarioUltimaAlteracao;
+    }
 
     public Date getDataLancamento() {
         return dataLancamento;

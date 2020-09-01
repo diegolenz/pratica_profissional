@@ -20,6 +20,8 @@ public class ContaPagar {
 
     private Integer numParcela;
 
+
+
     public Integer getNumParcela() {
         return numParcela;
     }

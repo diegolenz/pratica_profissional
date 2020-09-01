@@ -42,8 +42,18 @@ public class GrupoOperadorDao extends AbstractDao {
         return grupo;
     }
 
-    public GrupoFuncionario update(GrupoFuncionario grupoFuncionario) {
-      return null;
+    public GrupoFuncionario update(GrupoFuncionario grupoFuncionario) throws SQLException {
+        String sql = "UPDATE grupo_funcionario set nome = '" + grupoFuncionario.getNome() + "' ;";
+        this.st.executeUpdate(sql);
+        String sqlDeletePermisoes = "delete from permissao_acesso where grupo_funcionario_id = " + grupoFuncionario.getId() + " ;";
+        this.st.executeUpdate(sqlDeletePermisoes);
+        for (PermissaoAcesso permissaoAcesso : grupoFuncionario.getPermissoes()) {
+            String sqlPermissoes = "insert into permissao_acesso (grupo_funcionario_id, modulo, nivel_acesso) values " +
+                    "(" + grupoFuncionario.getId() + ", " + permissaoAcesso.getModulo().ordinal() + ", " + permissaoAcesso.getNivelAcesso().ordinal() + " );";
+            this.st.executeUpdate(sqlPermissoes);
+        }
+        return  grupoFuncionario;
+
     }
 
     public void delete(GrupoFuncionario grupoFuncionario)throws SQLException{

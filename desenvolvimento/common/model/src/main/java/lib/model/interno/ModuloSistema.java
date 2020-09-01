@@ -44,6 +44,7 @@ public enum ModuloSistema implements Serializable {
     //Sistema
     SISTEMA_GRUPO_OPERADORES(CategoriaModuloSistema.SISTEMA, "Grupos de operadores"),
     SISTEMA_OPERADORES(CategoriaModuloSistema.SISTEMA, "Operadores"),
+    TROCAR_SENHA(CategoriaModuloSistema.SISTEMA, "Trocar senha"),
 
     //CADASTROS
     ENDERECO(CategoriaModuloSistema.CADASTROS, "Endereços"),

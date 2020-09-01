@@ -1,6 +1,7 @@
 package lib.model.pessoa.cliente;
 
 import lib.model.financeiro.CondicaoPagamento.CondicaoPagamento;
+import lib.model.interno.Funcionario;
 import lib.model.pessoa.Pessoa;
 
 import java.util.ArrayList;
@@ -13,6 +14,10 @@ public class Cliente extends Pessoa {
     private Date dataCadastro;
 
     private Date dataUltAlteracao;
+
+    private Funcionario funcionarioCadastro;
+
+    private Funcionario funcionarioUltimaAlteracao;
 
     private List<CondicaoPagamento> condicaoPagamentos;
 
@@ -51,5 +56,21 @@ public class Cliente extends Pessoa {
 
     public void setAtivo(Boolean ativo) {
         this.ativo = ativo;
+    }
+
+    public Funcionario getFuncionarioCadastro() {
+        return funcionarioCadastro;
+    }
+
+    public void setFuncionarioCadastro(Funcionario funcionarioCadastro) {
+        this.funcionarioCadastro = funcionarioCadastro;
+    }
+
+    public Funcionario getFuncionarioUltimaAlteracao() {
+        return funcionarioUltimaAlteracao;
+    }
+
+    public void setFuncionarioUltimaAlteracao(Funcionario funcionarioUltimaAlteracao) {
+        this.funcionarioUltimaAlteracao = funcionarioUltimaAlteracao;
     }
 }

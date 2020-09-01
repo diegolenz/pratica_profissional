@@ -3,7 +3,9 @@ package imp.pessoa;
 import imp.AbstractDao;
 import imp.endereco.cidade.CidadeDao;
 import imp.financeiro.condicaoPagamentoDAO.CondicaoPagamentoDAO;
+import imp.sistema.FuncionarioDao;
 import lib.model.financeiro.CondicaoPagamento.CondicaoPagamento;
+import lib.model.interno.Funcionario;
 import lib.model.pessoa.Sexo;
 import lib.model.pessoa.TipoPessoa;
 import lib.model.pessoa.cliente.Cliente;
@@ -57,7 +59,9 @@ public class ClienteDAO extends AbstractDao {
                 " cep," +
                 " ativo, " +
                 " data_cadastro," +
-                " data_ultima_alteracao" +
+                " data_ultima_alteracao, " +
+                " funcionario_cadastro, " +
+                " funcionario_ultima_alteracao " +
                 ") values (" +
                 "'" + cliente.getNome() +
                 "','" + cliente.getCpfCnpj();
@@ -65,22 +69,24 @@ public class ClienteDAO extends AbstractDao {
             sql += "', '" + cliente.getDataNascimento();
         }
         sql += "', '" + cliente.getEmail() +
-                "', " + cliente.getSexo().ordinal() +
-                ", '" + cliente.getNomeFantasia_Apelido() +
+                "', '" + cliente.getSexo() +
+                "', '" + cliente.getNomeFantasia_Apelido() +
                 "', '" + cliente.getRgIe() +
                 "', '" + cliente.getTelefone() +
                 "', '" + cliente.getTelefoneAlternativo() +
-                "', " + cliente.getTipo().ordinal() +
-                ", " + cliente.getCidade().getId() +
+                "', '" + cliente.getTipo() +
+                "', " + cliente.getCidade().getId() +
                 ", '" + cliente.getBairro() +
                 "', '" + cliente.getLogradouro() +
                 "', '" + cliente.getComplemento() +
                 "', '" + cliente.getNumeroResidencial() +
                 "', '" + cliente.getCep() +
                 "', " + cliente.getAtivo() +
-                ", '" + cliente.getDataCadastro() +
-                "', '" + cliente.getDataUltAlteracao() +
-                "');";
+                ", now()" +
+                ", now()" +
+                ", " + cliente.getFuncionarioCadastro().getId() +
+                ", " + cliente.getFuncionarioUltimaAlteracao().getId() +
+                ");";
 
         this.st.executeUpdate(sql);
         this.saveCondicoesPagamento(cliente.getCondicaoPagamentos(), getUltimoIdCliente());
@@ -133,18 +139,18 @@ public class ClienteDAO extends AbstractDao {
     public void update(Object obj) throws SQLException {
         cliente = (Cliente) obj;
         String sql = "UPDATE cliente SET nome = '" + cliente.getNome() +
-                "', sexo = " + cliente.getSexo().ordinal() +
-                ",  ativo=" + cliente.getAtivo() +
+                "', sexo = '" + cliente.getSexo() +
+                "',  ativo=" + cliente.getAtivo() +
                 ",  nome_fantasia_apelido = '" + cliente.getNomeFantasia_Apelido() +
                 "', rg_ie = '" + cliente.getRgIe() +
                 "', telefone = '" + cliente.getTelefone() +
                 "', telefone_alternativo = '" + cliente.getTelefoneAlternativo() +
-                "', tipo = " + cliente.getTipo().ordinal() +
-                ",  data_cadastro = '" + cliente.getDataCadastro() +
-                "', data_ultima_alteracao = '" + cliente.getDataUltAlteracao();
+                "', tipo = '" + cliente.getTipo() +
+                "',  data_cadastro = '" + cliente.getDataCadastro() +
+                "', data_ultima_alteracao = now()";
         if (cliente.getDataNascimento() != null)
-            sql += "', data_nascimento = '" + cliente.getDataNascimento();
-        sql += "', email = '" + cliente.getEmail() +
+            sql += ", data_nascimento = '" + cliente.getDataNascimento() +"'";
+        sql += ", email = '" + cliente.getEmail() +
                 "', logradouro = '" + cliente.getLogradouro() +
                 "', complemento = '" + cliente.getComplemento() +
                 "', cep ='" + cliente.getCep() +
@@ -178,26 +184,27 @@ public class ClienteDAO extends AbstractDao {
             cliente.setRgIe(rs.getString("rg_ie"));
             cliente.setCpfCnpj(rs.getString("cpf_cnpj"));
             cliente.setEmail(rs.getString("email"));
+            cliente.setFuncionarioCadastro(new FuncionarioDao().getByID(rs.getInt("funcionario_cadastro")));
+            cliente.setFuncionarioUltimaAlteracao(new FuncionarioDao().getByID(rs.getInt("funcionario_ultima_alteracao")));
 
-            Integer sexo = rs.getInt("sexo");
-            switch (sexo) {
-                case 0:
-                    cliente.setSexo(Sexo.MASCULINO);
-                case 1:
-                    cliente.setSexo(Sexo.FEMININO);
-                case 2:
-                    cliente.setSexo(Sexo.OUTROS);
-            }
 
-            Integer tipo = rs.getInt("tipo");
-            switch (tipo) {
-                case 0:
-                    cliente.setTipo(TipoPessoa.FISICA);
-                case 1:
-                    cliente.setTipo(TipoPessoa.JURIDICA);
-                case 2:
-                    cliente.setTipo(TipoPessoa.ESTRANGEIRO);
-            }
+            String sexo = rs.getString("sexo");
+            if (sexo.equalsIgnoreCase(Sexo.MASCULINO.toString()))
+                cliente.setSexo(Sexo.MASCULINO);
+            else if (sexo.equalsIgnoreCase(Sexo.FEMININO.toString()))
+                cliente.setSexo(Sexo.FEMININO);
+            else
+                cliente.setSexo(Sexo.OUTROS);
+
+            String tipo = rs.getString("tipo");
+            if (tipo.equalsIgnoreCase(TipoPessoa.FISICA.toString()))
+                cliente.setTipo(TipoPessoa.FISICA);
+            else if (tipo.equalsIgnoreCase(TipoPessoa.JURIDICA.toString()))
+                cliente.setTipo(TipoPessoa.JURIDICA);
+            else
+                cliente.setTipo(TipoPessoa.ESTRANGEIRO);
+
+
             cliente.setCondicaoPagamentos(getCondicaoByFornecedor(cliente.getId()));
         }
         return cliente;
