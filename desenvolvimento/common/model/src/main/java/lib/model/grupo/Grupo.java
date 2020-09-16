@@ -1,8 +1,10 @@
 package lib.model.grupo;
 
 
+import lib.model.interno.Funcionario;
 import lib.model.interno.PermissaoAcesso;
 
+import java.util.Date;
 import java.util.List;
 
 public class Grupo {
@@ -14,6 +16,46 @@ public class Grupo {
     private String nome;
 
     private Boolean ativo;
+
+    private Date dataUltimaAlteracao;
+
+    private Date dataCadastro;
+
+    private Funcionario funcionarioUltimaAtualizacao;
+
+    private Funcionario funcionarioCadastro;
+
+    public Date getDataUltimaAlteracao() {
+        return dataUltimaAlteracao;
+    }
+
+    public void setDataUltimaAlteracao(Date dataUltimaAlteracao) {
+        this.dataUltimaAlteracao = dataUltimaAlteracao;
+    }
+
+    public Date getDataCadastro() {
+        return dataCadastro;
+    }
+
+    public void setDataCadastro(Date dataCadastro) {
+        this.dataCadastro = dataCadastro;
+    }
+
+    public Funcionario getFuncionarioUltimaAtualizacao() {
+        return funcionarioUltimaAtualizacao;
+    }
+
+    public void setFuncionarioUltimaAtualizacao(Funcionario funcionarioUltimaAtualizacao) {
+        this.funcionarioUltimaAtualizacao = funcionarioUltimaAtualizacao;
+    }
+
+    public Funcionario getFuncionarioCadastro() {
+        return funcionarioCadastro;
+    }
+
+    public void setFuncionarioCadastro(Funcionario funcionarioCadastro) {
+        this.funcionarioCadastro = funcionarioCadastro;
+    }
 
     List<PermissaoAcesso> permissaoAcessos;
 

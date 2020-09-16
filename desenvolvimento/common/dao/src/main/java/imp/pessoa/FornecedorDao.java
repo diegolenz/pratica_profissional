@@ -3,10 +3,12 @@ package imp.pessoa;
 import imp.AbstractDao;
 import imp.endereco.cidade.CidadeDao;
 import imp.financeiro.condicaoPagamentoDAO.CondicaoPagamentoDAO;
+import imp.sistema.FuncionarioDao;
 import lib.model.financeiro.CondicaoPagamento.CondicaoPagamento;
 import lib.model.pessoa.Sexo;
 import lib.model.pessoa.TipoPessoa;
 import lib.model.pessoa.fornecedor.Fornecedor;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -84,7 +86,9 @@ public class FornecedorDao extends AbstractDao {
                 " cep, " +
                 " ativo," +
                 " data_cadastro," +
-                " data_ultima_alteracao" +
+                " data_ultima_alteracao, " +
+                " funcionario_cadastro, " +
+                " funcionario_ultima_alteracao" +
                 ") values (" +
                 "'" + fornecedor.getNome() +
                 "','" + fornecedor.getCpfCnpj() + "',";
@@ -92,12 +96,12 @@ public class FornecedorDao extends AbstractDao {
             sql += " '" + date + "',";
 
         sql += " '" + fornecedor.getEmail() +
-                "', " + fornecedor.getSexo().ordinal() +
+                "', '" + fornecedor.getSexo() + "' " +
                 ", '" + fornecedor.getNomeFantasia_Apelido() +
                 "', '" + fornecedor.getRgIe() +
                 "', '" + fornecedor.getTelefone() +
                 "', '" + fornecedor.getTelefoneAlternativo() +
-                "', " + fornecedor.getTipo().ordinal() +
+                "', '" + fornecedor.getTipo() + "' " +
                 ", " + fornecedor.getCidade().getId() +
                 ", '" + fornecedor.getBairro() +
                 "', '" + fornecedor.getLogradouro() +
@@ -107,7 +111,9 @@ public class FornecedorDao extends AbstractDao {
                 "', " +
                 fornecedor.getAtivo() + ", '" +
                 fornecedor.getDataCadastro() + "','" +
-                fornecedor.getDataUltAlteracao() + "'" +
+                fornecedor.getDataUltAlteracao() + "'," +
+                "" + fornecedor.getFuncionarioCadastro().getId() + ", " +
+                "" + fornecedor.getFuncionarioUltimaAlteracao() +
                 " );";
 
         this.st.getConnection().prepareStatement(sql).executeUpdate();
@@ -149,13 +155,14 @@ public class FornecedorDao extends AbstractDao {
         fornecedor = (Fornecedor) obj;
 
         String sql = "UPDATE fornecedor SET nome = '" + fornecedor.getNome() +
-                "', sexo = " + fornecedor.getSexo().ordinal() +
+                "', sexo = '" + fornecedor.getSexo() + "' " +
+                ", funcionario_ultima_alteracao = " + fornecedor.getFuncionarioUltimaAlteracao().getId() +
                 ",  nome_fantasia_apelido = '" + fornecedor.getNomeFantasia_Apelido() +
                 "', cpf_cnpj = '" + fornecedor.getCpfCnpj() +
                 "', rg_ie = '" + fornecedor.getRgIe() +
                 "', telefone = '" + fornecedor.getTelefone() +
                 "', telefone_alternativo = '" + fornecedor.getTelefoneAlternativo() +
-                "', tipo = " + fornecedor.getTipo().ordinal() +
+                "', tipo = '" + fornecedor.getTipo() + "'" +
                 ",";
         if (fornecedor.getDataNascimento() != null) {
             sql += "  data_nascimento = '" + fornecedor.getDataNascimento() + "', ";
@@ -184,6 +191,8 @@ public class FornecedorDao extends AbstractDao {
             fornecedor.setAtivo(rs.getBoolean("ativo"));
             fornecedor.setDataUltAlteracao(rs.getDate("data_ultima_alteracao"));
             fornecedor.setDataCadastro(rs.getDate("data_cadastro"));
+            fornecedor.setFuncionarioCadastro(new FuncionarioDao().getByID(rs.getInt("funcionario_cadastro")));
+            fornecedor.setFuncionarioUltimaAlteracao(new FuncionarioDao().getByID(rs.getInt("funcionario_ultima_alteracao")));
             fornecedor.setCondicoesPagamentos(getCondicaoByFornecedor(fornecedor.getId()));
             fornecedor.setId(rs.getInt("id"));
             fornecedor.setNome(rs.getString("nome"));
@@ -203,29 +212,21 @@ public class FornecedorDao extends AbstractDao {
             fornecedor.setCondicoesPagamentos(getCondicaoByFornecedor(fornecedor.getId()));
 
 
-            Integer sexo = rs.getInt("sexo");
-            switch (sexo) {
-                case 0:
-                    fornecedor.setSexo(Sexo.MASCULINO);
-                    break;
-                case 1:
-                    fornecedor.setSexo(Sexo.FEMININO);
-                    break;
-                case 2:
-                    fornecedor.setSexo(Sexo.OUTROS);
-            }
+            String sexo = rs.getString("sexo");
+            if (sexo.equalsIgnoreCase(Sexo.FEMININO.toString()))
+                fornecedor.setSexo(Sexo.FEMININO);
+            else if (sexo.equalsIgnoreCase(Sexo.MASCULINO.toString()))
+                fornecedor.setSexo(Sexo.MASCULINO);
+            else if (sexo.equalsIgnoreCase(Sexo.OUTROS.toString()))
+                fornecedor.setSexo(Sexo.OUTROS);
 
-            Integer tipo = rs.getInt("tipo");
-            switch (tipo) {
-                case 0:
-                    fornecedor.setTipo(TipoPessoa.FISICA);
-                    break;
-                case 1:
-                    fornecedor.setTipo(TipoPessoa.JURIDICA);
-                    break;
-                case 2:
-                    fornecedor.setTipo(TipoPessoa.ESTRANGEIRO);
-            }
+            String tipo = rs.getString("tipo");
+            if (tipo.equalsIgnoreCase(TipoPessoa.FISICA.toString()))
+                fornecedor.setTipo(TipoPessoa.FISICA);
+            else if (tipo.equalsIgnoreCase(TipoPessoa.JURIDICA.toString()))
+                fornecedor.setTipo(TipoPessoa.JURIDICA);
+            else
+                fornecedor.setTipo(TipoPessoa.ESTRANGEIRO);
         }
         return fornecedor;
     }

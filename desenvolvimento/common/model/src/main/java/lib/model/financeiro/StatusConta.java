@@ -5,7 +5,8 @@ public enum StatusConta {
     ATRASADO("Atrasada"),
     QUITADA("Quitada"),
     PENDENTE("Pendete"),
-    PAGA_COM_ATRASO("Paga com atraso");
+    PAGA_COM_ATRASO("Paga com atraso"),
+    CANCELADA("Cancelada");
 
     private String descricao;
 

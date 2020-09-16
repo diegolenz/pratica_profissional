@@ -18,9 +18,9 @@ public class ContaPagarService {
         contasPagarDao = new ContasPagarDao();
     }
 
-    public ContaPagar getById(Integer id)throws SQLException{
-        return contasPagarDao.getById(id);
-    }
+//    public ContaPagar getById(Integer id)throws SQLException{
+//        return contasPagarDao.getById(id);
+//    }
 
     public void save(ContaPagar contaPagar)throws SQLException{
         contasPagarDao.save(contaPagar);

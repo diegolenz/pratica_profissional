@@ -2,6 +2,7 @@ package imp.comercial.venda;
 
 import imp.AbstractDao;
 import imp.financeiro.condicaoPagamentoDAO.CondicaoPagamentoDAO;
+import imp.financeiro.contas_a_receber.ContaReceberDao;
 import imp.financeiro.formaPagamentoDAO.FormaPagamentoDAO;
 import imp.pessoa.ClienteDAO;
 import imp.servico.ServicoDao;
@@ -86,46 +87,54 @@ public class VendaServicoDao extends AbstractDao {
 
     public void saveContas(List<ContaReceber> contas) throws SQLException {
         for (ContaReceber conta : contas) {
-            String sql = "INSERT INTO conta_receber (descricao, modelo_venda , serie_venda, numero_venda, valor, data_Lancamento, data_Vencimento, forma_pagamento_id) "
-                    + "values (" +
-                    "'"+ conta.getDescricao() +"', " +
-                    "'" +
-                    conta.getVendaServico().getModeloNota() + "', " +
-                    conta.getVendaServico().getNumSerieNota() + ", " +
-                    conta.getVendaServico().getNumeroNota() + ", " +
-                    conta.getValor() + ", " +
-                    "'" + conta.getDataLancamento() + "', " +
-                    "' " + conta.getDataVencimento() + "', " +
-                    " " + conta.getFormaPagamento().getId() + " " +
-                    //  conta.getStatusConta().ordinal() + ", " +
-                    ");";
-            this.st.execute(sql);
+            new ContaReceberDao().save(conta);
+//            String sql = "INSERT INTO conta_receber ( modelo , serie, num, valor, data_Lancamento, data_Vencimento, forma_pagamento_id) "
+//                    + "values (" +
+//                    conta.getVendaServico().getModeloNota() + "', " +
+//                    conta.getVendaServico().getNumSerieNota() + ", " +
+//                    conta.getVendaServico().getNumeroNota() + ", " +
+//                    conta.getValor() + ", " +
+//                    "'" + conta.getDataLancamento() + "', " +
+//                    "' " + conta.getDataVencimento() + "', " +
+//                    " " + conta.getFormaPagamento().getId() + " " +
+//                    //  conta.getStatusConta().ordinal() + ", " +
+//                    ");";
+//            this.st.execute(sql);
         }
         //return "Salvo com sucesso";
     }
 
     public List<ContaReceber> getAllContasByVenda(VendaServico venda) throws SQLException {
-        String sql = "SELECT * FROM conta_receber WHERE modelo_venda = '" + venda.getModeloNota() + "' and numero_venda = " + venda.getNumeroNota() + " and serie_venda =" + venda.getNumSerieNota() + ";";
+        String sql = "SELECT * FROM conta_receber WHERE modelo = '" + venda.getModeloNota() + "' and num = " + venda.getNumeroNota() + " and serie =" + venda.getNumSerieNota() + ";";
         PreparedStatement preparedStatement = st.getConnection().prepareStatement(sql);
         ResultSet rs = preparedStatement.executeQuery();
         List<ContaReceber> contas = new ArrayList<ContaReceber>();
         while (rs.next()) {
-            ContaReceber contaPagar = new ContaReceber();
+            ContaReceber contaPagar = new ContaReceberDao().getById(
+                    venda.getNumeroNota(),
+                    rs.getInt("num_parcela"),
+                    venda.getNumSerieNota(),
+                    venda.getCliente().getId(),
+                    venda.getModeloNota()
+            );
+            if (contaPagar != null) {
+                contas.add(contaPagar);
+            }
             // contaPagar.setParcela(new ParcelaDAO().getByID(rs.getInt("parcela_id")));
-            contaPagar.setDataVencimento(rs.getDate("data_vencimento"));
-            contaPagar.setDataLancamento(rs.getDate("data_lancamento"));
-            contaPagar.setDataPagamento(rs.getDate("data_pagamento"));
-            contaPagar.setDesconto(rs.getDouble("desconto"));
-            contaPagar.setJuros(rs.getDouble("juros"));
-            contaPagar.setMulta(rs.getDouble("multa"));
-            contaPagar.setValorPago(rs.getDouble("valor_pago"));
-            contaPagar.setVendaServico(venda);
-            // contaPagar.setFormaPagamento((FormaPagamento) new FormaPagamentoDAO().getByID(rs.getInt("forma_pagamento_id")));
-            contaPagar.setValor(rs.getDouble("valor"));
-            //contaPagar.setValorRecebido(rs.getDouble("valor_recebido"));
-            contaPagar.setPaga(rs.getBoolean("paga"));
-            contaPagar.setFormaPagamento(new FormaPagamentoDAO().getByID(rs.getInt("forma_pagamento_id")));
-            contas.add(contaPagar);
+//            contaPagar.setDataVencimento(rs.getDate("data_vencimento"));
+//            contaPagar.setDataLancamento(rs.getDate("data_lancamento"));
+//            contaPagar.setDataPagamento(rs.getDate("data_pagamento"));
+//            contaPagar.setDesconto(rs.getDouble("desconto"));
+//            contaPagar.setJuros(rs.getDouble("juros"));
+//            contaPagar.setMulta(rs.getDouble("multa"));
+//            contaPagar.setValorPago(rs.getDouble("valor_pago"));
+//            contaPagar.setVendaServico(venda);
+//            // contaPagar.setFormaPagamento((FormaPagamento) new FormaPagamentoDAO().getByID(rs.getInt("forma_pagamento_id")));
+//            contaPagar.setValor(rs.getDouble("valor"));
+//            //contaPagar.setValorRecebido(rs.getDouble("valor_recebido"));
+//            contaPagar.setPaga(rs.getBoolean("paga"));
+//            contaPagar.setFormaPagamento(new FormaPagamentoDAO().getByID(rs.getInt("forma_pagamento_id")));
+          //  contas.add(contaPagar);
         }
         return contas;
     }
@@ -195,9 +204,10 @@ public class VendaServicoDao extends AbstractDao {
             venda.setValorFrete(rs.getDouble("valor_frete"));
             venda.setAtivo(rs.getBoolean("ativo"));
             //venda.setCliente(new ClienteService().getByID(rs.getInt("funcionario_id")));
+            venda.setCliente(new ClienteDAO().getByID(rs.getInt("cliente_id")));
             venda.setContas(getAllContasByVenda(venda));
             venda.setCondicaoPagamento(new CondicaoPagamentoDAO().getByID(rs.getInt("condicao_pagamento_id")));
-            venda.setCliente(new ClienteDAO().getByID(rs.getInt("cliente_id")));
+
             venda.setItensServicos(getAllItensByVenda(venda));
         }
         return venda;

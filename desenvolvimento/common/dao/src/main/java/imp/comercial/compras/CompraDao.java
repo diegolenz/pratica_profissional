@@ -2,6 +2,7 @@ package imp.comercial.compras;
 
 import imp.AbstractDao;
 import imp.financeiro.condicaoPagamentoDAO.CondicaoPagamentoDAO;
+import imp.financeiro.contas.contas_a_pagar.ContasPagarDao;
 import imp.financeiro.formaPagamentoDAO.FormaPagamentoDAO;
 import imp.pessoa.FornecedorDao;
 import imp.produto.ProdutoDao;
@@ -80,25 +81,26 @@ public class CompraDao extends AbstractDao {
 
     }
 
-    public void cancelar(Compra compra) throws SQLException{
-        String sql = "update compra set ativo = false, motivo_cancelamento = '"+ compra.getMotivoCancelamento() + "' where modelo = '"+compra.getModeloNota()+"' and numero = "+ compra.getNumeroNota()+" and serie ="+ compra.getNumSerieNota()+" ;";
+    public void cancelar(Compra compra) throws SQLException {
+        String sql = "update compra set ativo = false, motivo_cancelamento = '" + compra.getMotivoCancelamento() + "' where modelo = '" + compra.getModeloNota() + "' and numero = " + compra.getNumeroNota() + " and serie =" + compra.getNumSerieNota() + " ;";
         this.st.execute(sql);
     }
 
     public void saveContas(List<ContaPagar> contas) throws SQLException {
         for (ContaPagar conta : contas) {
-            String sql = "INSERT INTO conta_pagar (modelo_compra , serie_compra, numero_compra, valor, data_Lancamento, data_Vencimento, forma_pagamento_id) "
-                    + "values ('" +
-                    conta.getCompra().getModeloNota() + "', " +
-                    conta.getCompra().getNumSerieNota() + ", " +
-                    conta.getCompra().getNumeroNota() + ", " +
-                    conta.getValor() + ", " +
-                    "'" + conta.getDataLancamento() + "', " +
-                    "' " + conta.getDataVencimento() + "', " +
-                    " " + conta.getFormaPagamento().getId() + " " +
-                    //  conta.getStatusConta().ordinal() + ", " +
-                    ");";
-            this.st.execute(sql);
+            new ContasPagarDao().save(conta);
+//            String sql = "INSERT INTO conta_pagar (modelo, serie, num, valor, data_Lancamento, data_Vencimento, forma_pagamento_id) "
+//                    + "values ('" +
+//                    conta.getModelo() + "', " +
+//                    conta.getSerie() + ", " +
+//                    conta.getNumNota() + ", " +
+//                    conta.getValor() + ", " +
+//                    "'" + conta.getDataLancamento() + "', " +
+//                    "' " + conta.getDataVencimento() + "', " +
+//                    " " + conta.getFormaPagamento().getId() + " " +
+//                    //  conta.getStatusConta().ordinal() + ", " +
+//                    ");";
+//            this.st.execute(sql);
         }
         //return "Salvo com sucesso";
     }
@@ -110,7 +112,7 @@ public class CompraDao extends AbstractDao {
         List<ContaPagar> contas = new ArrayList<ContaPagar>();
         while (rs.next()) {
             ContaPagar contaPagar = new ContaPagar();
-           // contaPagar.setParcela(new ParcelaDAO().getByID(rs.getInt("parcela_id")));
+            // contaPagar.setParcela(new ParcelaDAO().getByID(rs.getInt("parcela_id")));
             contaPagar.setDataVencimento(rs.getDate("data_vencimento"));
             contaPagar.setDataLancamento(rs.getDate("data_lancamento"));
             contaPagar.setCompra(compra);
@@ -201,7 +203,7 @@ public class CompraDao extends AbstractDao {
 
     public Object getByID(String modelo, Integer numero, Integer serie, Integer fornecedorId) throws Exception {
         String sql = "Select * from compra where numero = " + numero + " and serie = " + serie + " and modelo = '" + modelo + "' and" +
-                " fornecedor_id = "+ fornecedorId +" ;";
+                " fornecedor_id = " + fornecedorId + " ;";
         PreparedStatement preparedStatement = st.getConnection().prepareStatement(sql);
         ResultSet rs = preparedStatement.executeQuery();
         Compra compra = null;

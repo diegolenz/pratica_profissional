@@ -6,21 +6,28 @@ import lib.model.financeiro.StatusConta;
 import lib.model.financeiro.formaPagamento.FormaPagamento;
 import lib.model.interno.Funcionario;
 import lib.model.pessoa.cliente.Cliente;
+import lib.model.pessoa.fornecedor.Fornecedor;
 
 import java.util.Calendar;
 import java.util.Date;
 
 
 public class ContaReceber {
-    private Integer id;
+
+    //pk
+    private Integer numNota;
+    //pk
+    private Integer serie;
+    //pk
+    private String modelo;
+    //pk
+    private Integer numParcela;
+    //pk
+    private Cliente recebedor;
 
     private VendaProduto venda;
 
     private VendaServico vendaServico;
-
-    private String descricao;
-
-    private Cliente recebedor;
 
     private boolean ativo;
 
@@ -42,15 +49,30 @@ public class ContaReceber {
         this.recebedor = recebedor;
     }
 
-    public String getDescricao() {
-        return descricao;
+    public Integer getNumNota() {
+        return numNota;
     }
 
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
+    public void setNumNota(Integer numNota) {
+        this.numNota = numNota;
     }
-// private Parcela parcela;
+
+    public Integer getSerie() {
+        return serie;
+    }
+
+    public void setSerie(Integer serie) {
+        this.serie = serie;
+    }
+
+    public String getModelo() {
+        return modelo;
+    }
+
+    public void setModelo(String modelo) {
+        this.modelo = modelo;
+    }
+    // private Parcela parcela;
 
     private Double valor;
 
@@ -88,6 +110,11 @@ public class ContaReceber {
 
     public void setFuncionarioPagamento(Funcionario funcionarioPagamento) {
         this.funcionarioPagamento = funcionarioPagamento;
+    }
+
+    public ContaReceber() {
+        this.ativo = true;
+        this.paga = false;
     }
 
     public Date getDataCadastro() {
@@ -162,14 +189,6 @@ public class ContaReceber {
         this.dataPagamento = dataPagamento;
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
     public VendaProduto getVenda() {
         return venda;
     }
@@ -226,20 +245,24 @@ public class ContaReceber {
         this.vendaServico = vendaServico;
     }
 
+    public Integer getNumParcela() {
+        return numParcela;
+    }
+
+    public void setNumParcela(Integer numParcela) {
+        this.numParcela = numParcela;
+    }
+
     public StatusConta getStatusConta() {
-        Calendar dtAtual = Calendar.getInstance();
-        Calendar dtVencimento = Calendar.getInstance();
-        Calendar dtPagamento = Calendar.getInstance();
-        if (dataVencimento != null)
-            dtVencimento.set(dataVencimento.getDate(), dataVencimento.getMonth(), dataVencimento.getDay());
-        if (dataPagamento != null)
-            dtPagamento.set(dataPagamento.getDate(), dataPagamento.getMonth(), dataPagamento.getDay());
+        if (!ativo) {
+            return StatusConta.CANCELADA;
+        }
         if (!paga) {
-            if (dtVencimento.getTime() != null || dtVencimento.getTime().compareTo(dtAtual.getTime()) >= 0)
+            if (this.dataVencimento != null && this.dataVencimento.compareTo(new Date()) >= 0)
                 return StatusConta.PENDENTE;
             else return StatusConta.ATRASADO;
         } else {
-            if (paga && (dtVencimento.getTime() == null || dtVencimento.getTime().compareTo(dtPagamento.getTime()) >= 0))
+            if (paga && (this.dataVencimento != null && this.dataVencimento.compareTo(this.dataPagamento) >= 0))
                 return StatusConta.QUITADA;
             else return StatusConta.PAGA_COM_ATRASO;
         }

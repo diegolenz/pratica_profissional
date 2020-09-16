@@ -18,9 +18,9 @@ public class ContaReceberService {
         contasReceberDao = new ContaReceberDao();
     }
 
-    public ContaReceber getById(Integer id)throws SQLException{
-        return contasReceberDao.getById(id);
-    }
+//    public ContaReceber getById(Integer id)throws SQLException{
+//        return contasReceberDao.getById(id);
+//    }
 
     public void save(ContaReceber contaReceber)throws SQLException{
         contasReceberDao.save(contaReceber);

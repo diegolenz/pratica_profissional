@@ -455,6 +455,29 @@ alter table pais add column if not exists data_cadastro date ;
 alter table pais add column if not exists data_ultima_alteracao date ;
 alter table estado add column if not exists data_cadastro date ;
 alter table estado add column if not exists data_ultima_alteracao date ;
+alter table produto add column if not exists funcionario_cadastro int references funcionario(id);
+alter table produto add column if not exists funcionario_ultima_alteracao int references funcionario(id);
+alter table marca add column if not exists funcionario_cadastro int references funcionario(id);
+alter table marca add column if not exists funcionario_ultima_alteracao int references funcionario(id);
+alter table marca add column if not exists data_cadastro timestamp;
+alter table marca add column if not exists data_ultima_alteracao timestamp ;
+
+
+alter table conta_pagar add column if not exists funcionario_cadastro int references funcionario(id);
+alter table conta_pagar add column if not exists funcionario_ultima_alteracao int references funcionario(id);
+alter table conta_pagar add column if not exists data_cadastro timestamp;
+alter table conta_pagar add column if not exists data_ultima_alteracao timestamp;
+
+alter table conta_receber add column if not exists funcionario_cadastro int references funcionario(id);
+alter table conta_receber add column if not exists funcionario_ultima_alteracao int references funcionario(id);
+alter table conta_receber add column if not exists data_cadastro timestamp;
+alter table conta_receber add column if not exists data_ultima_alteracao timestamp;
+alter table conta_pagar add column if not exists ativo boolean;
+alter table conta_receber add column if not exists ativo boolean;
+alter table conta_receber add column if not exists funcionario_cadastro int references funcionario(id);
+alter table conta_receber add column if not exists funcionario_ultima_alteracao int references funcionario(id);
+alter table conta_receber add column if not exists data_cadastro timestamp;
+alter table conta_receber add column if not exists data_ultima_alteracao timestamp;
 
 
 

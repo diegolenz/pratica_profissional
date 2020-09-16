@@ -3,8 +3,11 @@ package imp.financeiro.contas.contas_a_pagar;
 import imp.AbstractDao;
 import imp.financeiro.formaPagamentoDAO.FormaPagamentoDAO;
 import imp.pessoa.FornecedorDao;
+import imp.sistema.FuncionarioDao;
 import lib.model.financeiro.contas.ContaPagar;
+import lib.model.interno.Funcionario;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -64,21 +67,10 @@ public class ContasPagarDao extends AbstractDao {
         List<ContaPagar> contas = new ArrayList<>();
         ResultSet resultSet = this.st.executeQuery(sql);
         while (resultSet.next()) {
-            ContaPagar contaPagar = new ContaPagar();
-            contaPagar.setDescricao(resultSet.getString("descricao"));
-            contaPagar.setDesconto(resultSet.getDouble("desconto"));
-            contaPagar.setMulta(resultSet.getDouble("multa"));
-            contaPagar.setJuros(resultSet.getDouble("juros"));
-            contaPagar.setValor(resultSet.getDouble("valor"));
-            contaPagar.setFormaPagamento(new FormaPagamentoDAO().getByID(resultSet.getInt("forma_pagamento_id")));
-            contaPagar.setRecebedor(new FornecedorDao().getByID(resultSet.getInt("fornecedor_id")));
-            contaPagar.setPaga(resultSet.getBoolean("paga"));
-            contaPagar.setValorPago(resultSet.getDouble("valor_pago"));
-            contaPagar.setDataLancamento(resultSet.getDate("data_lancamento"));
-            contaPagar.setDataVencimento(resultSet.getDate("data_vencimento"));
-            contaPagar.setDataPagamento(resultSet.getDate("data_pagamento"));
-            contaPagar.setId(resultSet.getInt("id"));
-            contas.add(contaPagar);
+            ContaPagar contaPagar = this.getById(resultSet.getInt("num"), resultSet.getInt("num_parcela"),  resultSet.getInt("serie"),
+                    resultSet.getInt("fornecedor_id"), resultSet.getString("modelo"));
+            if (contaPagar != null)
+                contas.add(contaPagar);
         }
         return contas;
 
@@ -97,13 +89,14 @@ public class ContasPagarDao extends AbstractDao {
 //        return null;
 //    }
 
-    public ContaPagar getById(Integer id) throws SQLException {
-        String sql = "select * from conta_pagar where id = " + id + " ;";
-        ResultSet rs = this.st.executeQuery(sql);
+    public ContaPagar getById(Integer num, Integer numParcela, Integer serie, Integer fornecedorId, String modelo) throws SQLException {
+        String sql = "select * from conta_pagar where num = " + num + " and num_parcela = " + numParcela + " and fornecedor_id =" + fornecedorId +
+                " and modelo = '" + modelo + "' and serie = " + serie + ";";
+        PreparedStatement preparedStatement = this.st.getConnection().prepareStatement(sql);
+        ResultSet rs = preparedStatement.executeQuery();
         ContaPagar contaPagar = null;
         if (rs.next()) {
             contaPagar = new ContaPagar();
-            contaPagar.setDescricao(rs.getString("descricao"));
             contaPagar.setDesconto(rs.getDouble("desconto"));
             contaPagar.setMulta(rs.getDouble("multa"));
             contaPagar.setJuros(rs.getDouble("juros"));
@@ -112,38 +105,48 @@ public class ContasPagarDao extends AbstractDao {
             contaPagar.setRecebedor(new FornecedorDao().getByID(rs.getInt("fornecedor_id")));
             contaPagar.setPaga(rs.getBoolean("paga"));
             contaPagar.setValorPago(rs.getDouble("valor_pago"));
+            contaPagar.setDataCadastro(rs.getDate("data_cadastro"));
+            contaPagar.setDataUltAlteracao(rs.getDate("data_ultima_alteracao"));
+            contaPagar.setFuncionarioCadastro(new FuncionarioDao().getByID(rs.getInt("funcionario_cadastro")));
+            contaPagar.setFuncionarioUltimaAlteracao(new FuncionarioDao().getByID(rs.getInt("funcionario_ultima_alteracao")));
             contaPagar.setDataLancamento(rs.getDate("data_lancamento"));
             contaPagar.setDataVencimento(rs.getDate("data_vencimento"));
             contaPagar.setDataPagamento(rs.getDate("data_pagamento"));
-            contaPagar.setId(rs.getInt("id"));
+            contaPagar.setNumNota(rs.getInt("num"));
+            contaPagar.setModelo(rs.getString("modelo"));
+            contaPagar.setSerie(rs.getInt("serie"));
+            //contaPagar.setId(rs.getInt("id"));
+            contaPagar.setAtivo(rs.getBoolean("ativo"));
+            contaPagar.setNumParcela(rs.getInt("num_parcela"));
         }
         return contaPagar;
     }
 
-
     public void save(ContaPagar conta) throws SQLException {
 
-        String sql = "INSERT INTO conta_pagar (descricao,";
-        if (conta.getCompra() != null) {
-            sql += "modelo_compra, serie_compra, numero_compra,";
-        }
-        sql += "valor, data_Lancamento, data_Vencimento,  forma_pagamento_id, fornecedor_id, multa, desconto, juros, num_parcela) "
-                + "values ('" +
-                conta.getDescricao() + "', ";
+        String sql = "INSERT INTO conta_pagar (";
+        sql += "modelo, serie, num,";
 
-        if (conta.getCompra() != null)
-            sql += conta.getCompra().getModeloNota() + "', " +
-                    conta.getCompra().getNumSerieNota() + ", " +
-                    conta.getCompra().getNumeroNota() + ", ";
+        sql += "valor, data_Lancamento, data_cadastro, data_ultima_alteracao, funcionario_cadastro, funcionario_ultima_alteracao, data_Vencimento,  forma_pagamento_id, fornecedor_id, multa, desconto, juros, num_parcela, ativo) "
+                + "values ( ";
+
+        sql += "'" + conta.getModelo() + "', " +
+                conta.getSerie() + ", " +
+                conta.getNumNota() + ", ";
         sql += conta.getValor() + ", " +
                 "'" + conta.getDataLancamento() + "', " +
-                "' " + conta.getDataVencimento() + "', " +
+                " now(), " +
+                " now(), " +
+                conta.getFuncionarioCadastro().getId() + ", " +
+                conta.getFuncionarioUltimaAlteracao().getId() + ", " +
+                "'" + conta.getDataVencimento() + "', " +
                 " " + conta.getFormaPagamento().getId() + ", " +
                 " " + conta.getRecebedor().getId() + ", " +
                 " " + conta.getMulta() + ", " +
                 " " + conta.getDesconto() + ", " +
                 " " + conta.getJuros() + ", " +
-                " " + conta.getNumParcela() + " " +
+                " " + conta.getNumParcela() + "," +
+                " " + conta.isAtivo() +
                 ");";
         this.st.execute(sql);
 
@@ -151,27 +154,32 @@ public class ContasPagarDao extends AbstractDao {
     }
 
     public ContaPagar update(ContaPagar conta) throws SQLException {
-        String sql = "UPDATE conta_pagar set descricao = '" + conta.getDescricao() + "', ";
-        if (conta.getCompra() != null) {
-            sql += "  modelo_compra = '" + conta.getCompra().getModeloNota() + "', " +
-                    " serie_compra = " + conta.getCompra().getNumSerieNota() + ", numero_compra = " + conta.getCompra().getNumSerieNota() + ", ";
-        }
+
+//        if (conta.getCompra() != null) {
+//            sql += "  modelo_compra = '" + conta.getCompra().getModeloNota() + "', " +
+//                    " serie_compra = " + conta.getCompra().getNumSerieNota() + ", num_compra = " + conta.getCompra().getNumSerieNota() + ", ";
+//        }
+        String sql = "UPDATE conta_pagar set ";
         if (conta.isPaga()) {
             sql += "data_pagamento = '" + conta.getDataPagamento() + "',";
         }
 
-        sql += " valor = " + conta.getValor() + ", data_Lancamento = '" + conta.getDataLancamento() + "', data_Vencimento = '" + conta.getDataVencimento() + "'," +
-                "  forma_pagamento_id= " + conta.getFormaPagamento().getId() + ",  fornecedor_id = " + conta.getRecebedor().getId() +
-                ", multa =" + conta.getMulta() +
-                ", desconto = " + conta.getDesconto() + ", juros = " + conta.getJuros() + ", paga = " + conta.isPaga() + " where id = " + conta.getId() + " ;";
+        sql += " valor = " + conta.getValor() + ", data_Lancamento = '" + conta.getDataLancamento() + "', data_Vencimento = '" + conta.getDataVencimento() + "',";
+        if (conta.getFormaPagamento() != null) {
+            sql += " forma_pagamento_id = " + conta.getFormaPagamento().getId();
+        }
+        if (conta.getRecebedor() != null) {
+            sql += ", fornecedor_id = " + conta.getRecebedor().getId();
+        }
+        sql += ", multa =" + conta.getMulta() +
+                ", desconto = " + conta.getDesconto() + ", juros = " + conta.getJuros() + ", paga = " + conta.isPaga() + " " +
+                ", ativo = " + conta.isAtivo() +
+                " where  num = " + conta.getNumNota() + " and num_parcela = " + conta.getNumParcela() + " and fornecedor_id = " + conta.getRecebedor().getId() + "" +
+                " and modelo = '" + conta.getModelo() + "' and serie = " + conta.getSerie() + ";";
 
         this.st.execute(sql);
 
-        ResultSet rs = this.st.executeQuery("Select max(id) from conta_pagar");
-        if (rs.next()) {
-            return getById(rs.getInt("max"));
-        }
-        return null;
+        return conta;
     }
 
 

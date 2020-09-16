@@ -3,6 +3,7 @@ package lib.model.financeiro.contas;
 import lib.model.comercial.Compra;
 import lib.model.financeiro.StatusConta;
 import lib.model.financeiro.formaPagamento.FormaPagamento;
+import lib.model.interno.Funcionario;
 import lib.model.pessoa.fornecedor.Fornecedor;
 
 import java.util.Calendar;
@@ -10,17 +11,87 @@ import java.util.Date;
 
 public class ContaPagar {
 
-    private Integer id;
+    public ContaPagar() {
+        this.ativo = true;
+        this.paga = false;
+    }
+
+    //pk
+    private Integer numNota;
+    //pk
+    private Integer serie;
+    //pk
+    private String modelo;
+    //pk
+    private Integer numParcela;
+    //pk
+    private Fornecedor recebedor;
 
     private Compra compra;
 
-    private String descricao;
+    private Date dataCadastro;
 
-    private Fornecedor recebedor;
+    private Date dataUltAlteracao;
 
-    private Integer numParcela;
+    private Funcionario funcionarioCadastro;
 
+    private Funcionario funcionarioUltimaAlteracao;
 
+    public Integer getNumNota() {
+        return numNota;
+    }
+
+    public void setNumNota(Integer numNota) {
+        this.numNota = numNota;
+    }
+
+    public Integer getSerie() {
+        return serie;
+    }
+
+    public void setSerie(Integer serie) {
+        this.serie = serie;
+    }
+
+    public String getModelo() {
+        return modelo;
+    }
+
+    public void setModelo(String modelo) {
+        this.modelo = modelo;
+    }
+
+    public Date getDataCadastro() {
+        return dataCadastro;
+    }
+
+    public void setDataCadastro(Date dataCadastro) {
+        this.dataCadastro = dataCadastro;
+    }
+
+    public Date getDataUltAlteracao() {
+        return dataUltAlteracao;
+    }
+
+    public void setDataUltAlteracao(Date dataUltAlteracao) {
+        this.dataUltAlteracao = dataUltAlteracao;
+    }
+
+    public Funcionario getFuncionarioCadastro() {
+        return funcionarioCadastro;
+    }
+
+    public void setFuncionarioCadastro(Funcionario funcionarioCadastro) {
+        this.funcionarioCadastro = funcionarioCadastro;
+    }
+
+    public Funcionario getFuncionarioUltimaAlteracao() {
+        return funcionarioUltimaAlteracao;
+    }
+
+    public void setFuncionarioUltimaAlteracao(Funcionario funcionarioUltimaAlteracao) {
+        this.funcionarioUltimaAlteracao = funcionarioUltimaAlteracao;
+    }
 
     public Integer getNumParcela() {
         return numParcela;
@@ -48,15 +119,7 @@ public class ContaPagar {
         this.recebedor = recebedor;
     }
 
-    public String getDescricao() {
-        return descricao;
-    }
-
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-// private Parcela parcela;
+   // private Parcela parcela;
 
     private Double valor;
 
@@ -76,6 +139,17 @@ public class ContaPagar {
 
     private Date dataPagamento;
     private Double valorPago;
+
+
+    private Funcionario funcionarioPagamento;
+
+    public Funcionario getFuncionarioPagamento() {
+        return funcionarioPagamento;
+    }
+
+    public void setFuncionarioPagamento(Funcionario funcionarioPagamento) {
+        this.funcionarioPagamento = funcionarioPagamento;
+    }
 
     public Date getDataLancamento() {
         return dataLancamento;
@@ -115,14 +189,6 @@ public class ContaPagar {
 
     public void setDataPagamento(Date dataPagamento) {
         this.dataPagamento = dataPagamento;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public Compra getCompra() {
@@ -174,19 +240,15 @@ public class ContaPagar {
     }
 
     public StatusConta getStatusConta() {
-        Calendar dtAtual = Calendar.getInstance();
-        Calendar dtVencimento = Calendar.getInstance();
-        Calendar dtPagamento = Calendar.getInstance();
-        if (dataVencimento != null)
-            dtVencimento.set(dataVencimento.getDate(), dataVencimento.getMonth(), dataVencimento.getDay());
-        if (dataPagamento != null)
-            dtPagamento.set(dataPagamento.getDate(), dataPagamento.getMonth(), dataPagamento.getDay());
+        if (!ativo) {
+            return StatusConta.CANCELADA;
+        }
         if (!paga) {
-            if (dtVencimento.getTime() != null || dtVencimento.getTime().compareTo(dtAtual.getTime()) >= 0)
+            if (this.dataVencimento != null && this.dataVencimento.compareTo(new Date()) >= 0)
                 return StatusConta.PENDENTE;
             else return StatusConta.ATRASADO;
         } else {
-            if (paga && (dtVencimento.getTime() == null || dtVencimento.getTime().compareTo(dtPagamento.getTime()) >= 0))
+            if (paga && (this.dataVencimento != null && this.dataVencimento.compareTo(this.dataPagamento) >= 0))
                 return StatusConta.QUITADA;
             else return StatusConta.PAGA_COM_ATRASO;
         }

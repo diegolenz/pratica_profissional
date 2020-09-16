@@ -2,12 +2,14 @@ package imp.comercial.venda;
 
 import imp.AbstractDao;
 import imp.financeiro.condicaoPagamentoDAO.CondicaoPagamentoDAO;
+import imp.financeiro.contas_a_receber.ContaReceberDao;
 import imp.financeiro.formaPagamentoDAO.FormaPagamentoDAO;
 import imp.pessoa.ClienteDAO;
 import imp.produto.ProdutoDao;
 import lib.model.comercial.ItemProduto;
 import lib.model.comercial.VendaProduto;
 import lib.model.comercial.frete.TipoFrete;
+import lib.model.financeiro.contas.ContaPagar;
 import lib.model.financeiro.contas.ContaReceber;
 import lib.model.produto.Produto;
 
@@ -88,41 +90,28 @@ public class VendaProdutoDao extends AbstractDao {
 
     public void saveContas(List<ContaReceber> contas) throws SQLException {
         for (ContaReceber conta : contas) {
-            String sql = "INSERT INTO conta_receber (juros, desconto, multa, descricao, modelo_venda , serie_venda, numero_venda, valor, data_Lancamento, data_Vencimento, forma_pagamento_id) "
-                    + "values (" +
-                    + conta.getMulta() + ", "
-                    + conta.getDesconto() + ", "
-                    + conta.getMulta() + ", "
-                    + " '" + conta.getDescricao() + "', " +
-                    " '" + conta.getVenda().getModeloNota() + "', " +
-                    conta.getVenda().getNumSerieNota() + ", " +
-                    conta.getVenda().getNumeroNota() + ", " +
-                    conta.getValor() + ", " +
-                    "'" + conta.getDataLancamento() + "', " +
-                    "' " + conta.getDataVencimento() + "', " +
-                    " " + conta.getFormaPagamento().getId() + " " +
-                    //  conta.getStatusConta().ordinal() + ", " +
-                    ");";
-            this.st.execute(sql);
+            new ContaReceberDao().save(conta);
         }
     }
 
     public List<ContaReceber> getAllContasByVenda(VendaProduto venda) throws SQLException {
-        String sql = "SELECT * FROM conta_receber WHERE modelo_venda = '" + venda.getModeloNota() + "' and numero_venda = " + venda.getNumeroNota() + " and serie_venda =" + venda.getNumSerieNota() + ";";
+        String sql = "SELECT num, num_parcela, cliente_id, modelo, serie FROM conta_receber WHERE modelo = '" + venda.getModeloNota() + "' and num = " + venda.getNumeroNota() + " and serie =" + venda.getNumSerieNota() + ";";
         PreparedStatement preparedStatement = st.getConnection().prepareStatement(sql);
         ResultSet rs = preparedStatement.executeQuery();
         List<ContaReceber> contas = new ArrayList<ContaReceber>();
         while (rs.next()) {
-            ContaReceber contaPagar = new ContaReceber();
+            ContaReceber contaPagar = new ContaReceberDao().getById(rs.getInt("num"), rs.getInt("num_parcela"),
+                    rs.getInt("cliente_id"), rs.getInt("serie"), rs.getString("modelo"));
+            contas.add(contaPagar);
             // contaPagar.setParcela(new ParcelaDAO().getByID(rs.getInt("parcela_id")));
-            contaPagar.setDataVencimento(rs.getDate("data_vencimento"));
-            contaPagar.setDataLancamento(rs.getDate("data_lancamento"));
-            contaPagar.setVenda(venda);
-            // contaPagar.setFormaPagamento((FormaPagamento) new FormaPagamentoDAO().getByID(rs.getInt("forma_pagamento_id")));
-            contaPagar.setValor(rs.getDouble("valor"));
-            //contaPagar.setValorRecebido(rs.getDouble("valor_recebido"));
-            contaPagar.setPaga(rs.getBoolean("paga"));
-            contaPagar.setFormaPagamento(new FormaPagamentoDAO().getByID(rs.getInt("forma_pagamento_id")));
+//            contaPagar.setDataVencimento(rs.getDate("data_vencimento"));
+//            contaPagar.setDataLancamento(rs.getDate("data_lancamento"));
+//            contaPagar.setVenda(venda);
+//            // contaPagar.setFormaPagamento((FormaPagamento) new FormaPagamentoDAO().getByID(rs.getInt("forma_pagamento_id")));
+//            contaPagar.setValor(rs.getDouble("valor"));
+//            //contaPagar.setValorRecebido(rs.getDouble("valor_recebido"));
+//            contaPagar.setPaga(rs.getBoolean("paga"));
+//            contaPagar.setFormaPagamento(new FormaPagamentoDAO().getByID(rs.getInt("forma_pagamento_id")));
             contas.add(contaPagar);
         }
         return contas;
