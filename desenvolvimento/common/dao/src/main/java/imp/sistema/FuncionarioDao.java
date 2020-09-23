@@ -284,6 +284,19 @@ public class FuncionarioDao extends AbstractDao {
         return funcionario;
     }
 
+    public Funcionario getNomeAndId(Integer id) throws SQLException {
+        PreparedStatement preparedStatement = st.getConnection().prepareStatement("SELECT ativo, nome, id FROM funcionario WHERE ID = " + id + ";");
+        ResultSet rs = preparedStatement.executeQuery();
+        Funcionario funcionario = null;
+        while (rs.next()) {
+            funcionario = new Funcionario();
+            funcionario.setAtivo(rs.getBoolean("ativo"));
+            funcionario.setNome(rs.getString("nome"));
+            funcionario.setId(rs.getInt("id"));
+        }
+        return funcionario;
+    }
+
     private List<GrupoFuncionario> getGrupos(Integer id) throws SQLException {
         PreparedStatement preparedStatement = st.getConnection().prepareStatement("SELECT * FROM relacao_grupo_funcionario WHERE funcionario_id = " + id + ";");
         ResultSet rs = preparedStatement.executeQuery();

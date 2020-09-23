@@ -30,10 +30,5 @@ public enum NivelAcessoModulo implements Serializable {
     public String getDescricao() {
         return descricao;
     }
-
-    @Override
-    public String toString() {
-        return getDescricao();
-    }
     
 }

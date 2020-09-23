@@ -115,6 +115,8 @@ public class GrupoFuncionario implements Serializable {
         this.dataUltimaAlteracao = dataUltimaAlteracao;
     }
 
+
+
     @Override
     public boolean equals(Object obj) {
         
