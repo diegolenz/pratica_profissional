@@ -35,8 +35,8 @@ public class ProdutoDao<T> extends AbstractDao<T> {
         if (produto.getReferencia() == null)
             produto.setReferencia("");
         String sql = "INSERT INTO produto (nome, ativo, data_ultima_alteracao, unidade_medida, funcionario_cadastro, funcionario_ultima_alteracao, data_cadastro, quantidade_estoque, quantidade_minima, marca_id, grupo_id, referencia, codigo_barras, valor) values ('" + produto.getNome() + "', " + produto.getAtivo() +
-                ", '" + produto.getDataUltimaAlteracao() + "', '" + produto.getUnidadeMedida() + "', " + produto.getFuncionarioCadastro().getId() + ", " + produto.getFuncionarioUltimaAtualizacao() +
-                "'" + produto.getDataCadastro() + "', " + produto.getQuantidadeEstoque() + ", " + produto.getQuantidadeMinima() + ", " + produto.getMarca().getId() + ", " + produto.getGrupo().getId() +
+                ", '" + produto.getDataUltimaAlteracao() + "', '" + produto.getUnidadeMedida() + "', " + produto.getFuncionarioCadastro().getId() + ", " + produto.getFuncionarioUltimaAtualizacao().getId() +
+                ", '" + produto.getDataCadastro() + "', " + produto.getQuantidadeEstoque() + ", " + produto.getQuantidadeMinima() + ", " + produto.getMarca().getId() + ", " + produto.getGrupo().getId() +
                 ", '" + produto.getReferencia() + "', '" + produto.getCodigoBarras() + "', " + produto.getValor() + " ) ; ";
         this.st.executeUpdate(sql);
     }
@@ -45,13 +45,16 @@ public class ProdutoDao<T> extends AbstractDao<T> {
         if (produto.getReferencia() == null)
             produto.setReferencia("");
 
-        String sql = "update produto set nome = '" + produto.getNome() + "', ativo = " + produto.getAtivo() + ", data_ultima_alteracao = '" + produto.getDataUltimaAlteracao() + "', unidade_medida = '" + produto.getUnidadeMedida() +
+        String sql = "update " +
+                "produto set nome = '" + produto.getNome() + "', ativo = " + produto.getAtivo() + ", data_ultima_alteracao = '" + produto.getDataUltimaAlteracao() + "', unidade_medida = '" + produto.getUnidadeMedida() +
                 "', data_cadastro = '" + produto.getDataCadastro() + "', quantidade_estoque = " + produto.getQuantidadeEstoque() + ", quantidade_minima = " + produto.getQuantidadeMinima() + ", marca_id = " + produto.getMarca().getId() + "" +
                 ", grupo_id = " + produto.getGrupo().getId() + ", referencia = '" + produto.getReferencia() + "'" +
                 ", codigo_barras = '" + produto.getCodigoBarras() + "', valor = " + produto.getValor() + ", preco_compra = " + produto.getPrecoCompra() + "";
         if (produto.getUltimoFornecedor() != null)
             sql += ", data_ultima_compra = '" + produto.getDataUltimaCompra() + "', ultimo_fornecedor_id = " + produto.getUltimoFornecedor().getId() + "";
-        sql += ", funcionario_ultima_alteracao = " + produto.getFuncionarioUltimaAtualizacao() + " where id = " + produto.getId() + " ;";
+        //if (produto.getDataUltimaVenda() != null)
+        //  sql += ", data_ultima_venda = '" + produto.getDataUltimaVenda() + "' ";
+        sql += ", funcionario_ultima_alteracao = " + produto.getFuncionarioUltimaAtualizacao().getId() + " where id = " + produto.getId() + " ;";
         this.st.executeUpdate(sql);
     }
 
@@ -74,6 +77,32 @@ public class ProdutoDao<T> extends AbstractDao<T> {
         return produtos;
     }
 
+    public List findByFilters(String termo, Boolean ativo) throws SQLException {
+        String sql = "SELECT * FROM produto ";
+        if ((termo != null && !termo.isEmpty()) || ativo != null) {
+            sql += " WHERE ";
+        }
+        Boolean addAnd = false;
+        if (termo != null && !termo.isEmpty()) {
+            sql += " upper(nome) like upper('%" + termo + "%') ";
+            addAnd = true;
+        }
+        if (ativo != null) {
+            if (addAnd)
+                sql += " and ";
+            sql += " ativo = " + ativo;
+        }
+        sql += " ORDER BY nome;";
+
+        ResultSet rs = this.st.executeQuery(sql);
+        List produtos = new ArrayList();
+        while (rs.next()) {
+            Produto produto = (Produto) this.getByID(rs.getInt("id"));
+            if (produto != null)
+                produtos.add(produto);
+        }
+        return produtos;
+    }
 
     public List getAllAtivos(String termo) throws SQLException {
         String sql = "";
@@ -109,6 +138,12 @@ public class ProdutoDao<T> extends AbstractDao<T> {
             produto.setValor(rs.getDouble("valor"));
             produto.setPrecoCompra(rs.getDouble("preco_compra"));
             produto.setQuantidadeEstoque(rs.getDouble("quantidade_estoque"));
+            try {
+                produto.setUltimoFornecedor(new FornecedorDao().getNomeByID(rs.getInt("ultimo_fornecedor_id")));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            produto.setDataUltimaCompra(rs.getDate("data_ultima_compra"));
             produto.setDataUltimaAlteracao(rs.getDate("data_ultima_alteracao"));
             produto.setDataCadastro(rs.getDate("data_cadastro"));
             produto.setQuantidadeMinima(rs.getDouble("quantidade_minima"));

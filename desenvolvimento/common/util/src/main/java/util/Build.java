@@ -15,6 +15,13 @@ public class Build {
 		return simpleDateFormat.format(date);
 	}
 
+	public static String builDataComHoras(Date date){
+		Calendar calendar = new GregorianCalendar();
+		calendar.setTime(date);
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		return simpleDateFormat.format(date);
+	}
+
 	public static double builDoubleDuasCasasDecimais(double precoDouble) {
 		DecimalFormat fmt = new DecimalFormat("0.00");
 		String string = fmt.format(precoDouble);

@@ -17,6 +17,8 @@ public class Compra {
         this.valorFrete = 0D;
         this.valorSeguro = 0D;
         this.outrasDespesas = 0D;
+        this.dataCadastro = new Date();
+        this.dataUltimaAlteracao = new Date();
     }
 
     private List<ItemProduto> itensProdutos ;
@@ -35,8 +37,6 @@ public class Compra {
 
     private List<ContaPagar> contas;
 
-    private Funcionario funcionario;
-
     private Date dtEmisssao;
 
     private Date dtChegada;
@@ -50,6 +50,46 @@ public class Compra {
     private Double outrasDespesas;
 
     private String motivoCancelamento;
+
+    private Funcionario funcionarioUltimaAtualizacao;
+
+    private Funcionario funcionarioCadastro;
+
+    private Date dataUltimaAlteracao;
+
+    private Date dataCadastro;
+
+    public Funcionario getFuncionarioUltimaAtualizacao() {
+        return funcionarioUltimaAtualizacao;
+    }
+
+    public void setFuncionarioUltimaAtualizacao(Funcionario funcionarioUltimaAtualizacao) {
+        this.funcionarioUltimaAtualizacao = funcionarioUltimaAtualizacao;
+    }
+
+    public Funcionario getFuncionarioCadastro() {
+        return funcionarioCadastro;
+    }
+
+    public void setFuncionarioCadastro(Funcionario funcionarioCadastro) {
+        this.funcionarioCadastro = funcionarioCadastro;
+    }
+
+    public Date getDataUltimaAlteracao() {
+        return dataUltimaAlteracao;
+    }
+
+    public void setDataUltimaAlteracao(Date dataUltimaAlteracao) {
+        this.dataUltimaAlteracao = dataUltimaAlteracao;
+    }
+
+    public Date getDataCadastro() {
+        return dataCadastro;
+    }
+
+    public void setDataCadastro(Date dataCadastro) {
+        this.dataCadastro = dataCadastro;
+    }
 
     public List<ItemProduto> getItensProdutos() {
         if (itensProdutos == null){
@@ -92,14 +132,6 @@ public class Compra {
 
     public void setFornecedor(Fornecedor fornecedor) {
         this.fornecedor = fornecedor;
-    }
-
-    public Funcionario getFuncionario() {
-        return funcionario;
-    }
-
-    public void setFuncionario(Funcionario funcionario) {
-        this.funcionario = funcionario;
     }
 
     public Date getDtEmisssao() {

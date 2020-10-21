@@ -35,7 +35,7 @@ public class ClienteService extends Service{
      *				 		     SERVICES
      *-------------------------------------------------------------------*/
 
-    public void save(Object object) throws SQLException {
+    public void save(Object object) throws Exception {
         Pessoa pessoa = (Pessoa) object;
         Assert.notNull(pessoa, "Pessoa não pode estar nula");
         Assert.notNull(pessoa.getNome(), "Campo nome é obrigatório");
@@ -70,29 +70,29 @@ public class ClienteService extends Service{
         if (pessoa.getId() != null) {
             if (pessoaRetorno != null)
                 if (pessoa.getId() != pessoaRetorno.getId())
-                    throw new SQLException("CPF ja cadastrado");
+                    throw new Exception("CPF ja cadastrado");
         } else if (pessoaRetorno != null) {
-            throw new SQLException("CPF ja cadastrado");
+            throw new Exception("CPF ja cadastrado");
         }
 
 
         clienteDAO.save(pessoa);
     }
 
-    public List<Cliente> getFornecedores(String termo) throws SQLException {
+    public List<Cliente> getFornecedores(String termo) throws Exception {
         clienteDAO = new ClienteDAO();
         return clienteDAO.getAllClientes(termo);
     }
 
-    public void salvarCondicoes(List<CondicaoPagamento> condicoes, Integer id) throws SQLException{
+    public void salvarCondicoes(List<CondicaoPagamento> condicoes, Integer id) throws Exception{
         clienteDAO.saveCondicoesPagamento(condicoes, id);
     }
 
-    public void deleteCondicoes(List<CondicaoPagamento> condicoes, Integer id) throws SQLException{
+    public void deleteCondicoes(List<CondicaoPagamento> condicoes, Integer id) throws Exception{
         clienteDAO.deleteCondicoes(condicoes, id);
     }
 
-    public void update(Pessoa pessoa) throws SQLException {
+    public void update(Pessoa pessoa) throws Exception {
         Assert.notNull(pessoa, "Pessoa não pode estar nula");
         Assert.notNull(pessoa.getNome(), "Nome é obrigatório");
        // Assert.isTrue(pessoa.getTelefone().length() > 7, "Telefone de contato deve ter ao minimo 8 numeros");
@@ -105,10 +105,10 @@ public class ClienteService extends Service{
 
         Assert.notNull(pessoa.getCidade(), "Cidade é obrigatória");
         Assert.notNull(pessoa.getNumeroResidencial(), "Numero é obrigatório");
-        if (!pessoa.getTipo().equals(TipoPessoa.ESTRANGEIRO)) {
-            Assert.notNull(pessoa.getCep(), "CEP é obrigatório");
-            Assert.notNull(pessoa.getCpfCnpj(), "CPF/CNPJ é obrigatório");
-            Assert.isTrue(CpfCnpjValidator.isCpfValido(pessoa.getCpfCnpj()), "CPF não é valido");
+        if (pessoa.getTipo().equals(TipoPessoa.ESTRANGEIRO)) {
+          //  Assert.notNull(pessoa.getCep(), "CEP é obrigatório");
+            Assert.notNull(pessoa.getCpfCnpj(), "Documento é obrigatório");
+           // Assert.isTrue(CpfCnpjValidator.isCpfValido(pessoa.getCpfCnpj()), "CPF não é valido");
         }
         Cliente pessoaRetorno = this.getByCpfCnpjExato(pessoa.getCpfCnpj());
         if (!pessoa.getTipo().equals(TipoPessoa.ESTRANGEIRO)) {
@@ -125,31 +125,31 @@ public class ClienteService extends Service{
         clienteDAO.update(pessoa);
     }
 
-    public List getAll(String termo) throws SQLException {
+    public List getAll(String termo) throws Exception {
         return clienteDAO.getAllClientes(termo);
     }
 
-    public List getAllClientesAtivos(String termo) throws SQLException {
+    public List getAllClientesAtivos(String termo) throws Exception {
         return clienteDAO.getAllClientes(termo);
     }
 
-    public List getAllClientes(String termo) throws SQLException {
+    public List getAllClientes(String termo) throws Exception {
         return clienteDAO.getAllClientes(termo);
     }
 
 
-    public Cliente getByID(Integer id) throws SQLException {
+    public Cliente getByID(Integer id) throws Exception {
         Assert.notNull(id, "ID passado como parametro não pode estar nulo");
         Cliente pessoa = clienteDAO.getByID(id);
         return pessoa;
     }
 
-    public void deleteByID(Pessoa pessoa) throws SQLException {
+    public void deleteByID(Pessoa pessoa) throws Exception {
         clienteDAO.deleteByID(pessoa.getId());
     }
 
 
-    public Cliente getByCpfCnpjExato(String cpf) throws SQLException {
+    public Cliente getByCpfCnpjExato(String cpf) throws Exception {
         return clienteDAO.getByCpfCnpjExato(cpf);
     }
 

@@ -16,7 +16,7 @@ import java.util.List;
 
 public class ContaReceberDao extends AbstractDao {
 
-    public List<ContaReceber> getAll(HashMap<String, Object> termos) throws SQLException {
+    public List<ContaReceber> getAll(HashMap<String, Object> termos) throws Exception {
 
         String sql = "select * from conta_receber ";
         Date dataLancamento = (Date) termos.get("data_lancamento");
@@ -28,35 +28,41 @@ public class ContaReceberDao extends AbstractDao {
         if (dataLancamentoFinal != null) {
             if (termosString.length() > 0)
                 termosString.append(" and");
-            termosString.append(" data_lancamento <= " + dataLancamentoFinal + " ");
+            termosString.append(" data_lancamento <= '" + dataLancamentoFinal + "' ");
         }
 
         Date dataPagamento = (Date) termos.get("data_pagamento");
         if (dataPagamento != null) {
             if (termosString.length() > 0)
                 termosString.append(" and");
-            termosString.append(" data_pagamento >= " + dataPagamento + " ");
+            termosString.append(" data_pagamento >= '" + dataPagamento + "' ");
         }
         Date dataPagamentoFinal = (Date) termos.get("data_pagamento");
         if (dataPagamentoFinal != null) {
             if (termosString.length() > 0)
                 termosString.append(" and");
-            termosString.append(" data_pagamento <= " + dataPagamentoFinal + " ");
+            termosString.append(" data_pagamento <= '" + dataPagamentoFinal + "' ");
         }
 
         Date dataVencimento = (Date) termos.get("data_vencimento");
         if (dataLancamento != null) {
             if (termosString.length() > 0)
                 termosString.append(" and");
-            termosString.append(" and data_vencimento " + dataVencimento + "");
+            termosString.append(" data_vencimento '" + dataVencimento + "' ");
         }
         Date dataVencimentoFinal = (Date) termos.get("data_vencimento_final");
         if (dataVencimentoFinal != null) {
             if (termosString.length() > 0)
                 termosString.append(" and");
-            termosString.append(" and data_vencimento " + dataVencimentoFinal + "");
+            termosString.append(" data_vencimento '" + dataVencimentoFinal + "' ");
         }
 
+        String pagador = (String) termos.get("pagador");
+        if (pagador != null && !pagador.isEmpty()) {
+            if (termosString.length() > 0)
+                termosString.append(" and");
+            termosString.append(" cliente_id in (select id from cliente where upper(nome) like upper('%" + pagador + "%')) ");
+        }
 
         if (termosString.length() > 0) {
             sql += " where " + termosString;
@@ -75,7 +81,7 @@ public class ContaReceberDao extends AbstractDao {
 
     }
 //
-//    public ContaReceber update(ContaReceber ContaReceber) throws SQLException{
+//    public ContaReceber update(ContaReceber ContaReceber) throws Exception{
 //        String sql = "update conta_pagar set descricao = "+ContaReceber.getDescricao()+", valor_pago = "+ContaReceber.getValorPago()+", paga ="+
 //                ContaReceber.getValorPago().equals(ContaReceber.getValor()) + ", data_vencimento = '" +ContaReceber.getDataVencimento() +"', data_pagamento ='" +
 //                ContaReceber.getDataPagamento() +"', valor_pago = " + ContaReceber.getValorPago() +", juros = " +ContaReceber.getJuros()+", desconto = " +ContaReceber.getDesconto() +
@@ -88,7 +94,7 @@ public class ContaReceberDao extends AbstractDao {
 //        return null;
 //    }
 
-    public ContaReceber getById(Integer num, Integer numParcela, Integer serie, Integer clienteId, String modelo) throws SQLException {
+    public ContaReceber getById(Integer num, Integer numParcela, Integer serie, Integer clienteId, String modelo) throws Exception {
         String sql = "select * from conta_receber where num = " + num + " and num_parcela = " + numParcela + " and cliente_id =" + clienteId +
                 " and modelo = '" + modelo + "' and serie = " + serie + ";";
         PreparedStatement preparedStatement = this.st.getConnection().prepareStatement(sql);
@@ -113,22 +119,40 @@ public class ContaReceberDao extends AbstractDao {
             ContaReceber.setDataPagamento(rs.getDate("data_pagamento"));
             ContaReceber.setNumNota(rs.getInt("num"));
             ContaReceber.setModelo(rs.getString("modelo"));
+            ContaReceber.setVendaProduto(rs.getBoolean("is_Venda_produto"));
+            ContaReceber.setVendaServico(rs.getBoolean("is_Venda_servico"));
             ContaReceber.setSerie(rs.getInt("serie"));
             //     ContaReceber.setId(rs.getInt("id"));
             ContaReceber.setAtivo(rs.getBoolean("ativo"));
             ContaReceber.setNumParcela(rs.getInt("num_parcela"));
+            //ContaReceber.setv
         }
         return ContaReceber;
     }
 
+    public List<ContaReceber> getByVenda(Integer num, Integer serie, Integer clienteId, String modelo) throws Exception {
+        String sql = "select * from conta_receber where num = " + num + " and cliente_id =" + clienteId +
+                " and modelo = '" + modelo + "' and serie = " + serie + ";";
+        PreparedStatement preparedStatement = this.st.getConnection().prepareStatement(sql);
+        ResultSet rs = preparedStatement.executeQuery();
+        List<ContaReceber> contas = new ArrayList<>();
+        while (rs.next()) {
+            ContaReceber ContaReceber = this.getById(rs.getInt("num"), rs.getInt("num_parcela"), rs.getInt("serie"),
+                    rs.getInt("cliente_id"), rs.getString("modelo"));
+            if (ContaReceber != null)
+                contas.add(ContaReceber);
+        }
+        return contas;
+    }
 
-    public void save(ContaReceber conta) throws SQLException {
+
+    public void save(ContaReceber conta) throws Exception {
 
         String sql = "INSERT INTO conta_receber (";
 
         sql += "modelo, serie, num, valor, data_Lancamento, data_cadastro, data_ultima_alteracao, funcionario_cadastro," +
                 " funcionario_ultima_alteracao, data_Vencimento,  forma_pagamento_id, cliente_id, multa, desconto, juros, num_parcela," +
-                " ativo) "
+                " ativo, is_Venda_Servico, is_Venda_produto ) "
                 + "values ( ";
 
         sql += "'" + conta.getModelo() + "', " +
@@ -147,14 +171,16 @@ public class ContaReceberDao extends AbstractDao {
                 " " + conta.getDesconto() + ", " +
                 " " + conta.getJuros() + ", " +
                 " " + conta.getNumParcela() + "," +
-                " " + conta.isAtivo() +
-                ");";
+                " " + conta.isAtivo() + ", " +
+                " " + conta.getVendaServico() + ", " +
+                conta.getVendaProduto() +
+                " );";
         this.st.execute(sql);
 
         //return "Salvo com sucesso";
     }
 
-    public ContaReceber update(ContaReceber conta) throws SQLException {
+    public ContaReceber update(ContaReceber conta) throws Exception {
         String sql = "UPDATE conta_receber set ";
 //        sql += "  modelo = '" + conta.getModelo() + "', " +
 //                " serie = " + conta.getSerie() + ", num = " + conta.getNumNota() + ", ";

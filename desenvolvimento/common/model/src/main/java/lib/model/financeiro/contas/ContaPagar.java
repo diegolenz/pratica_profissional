@@ -6,6 +6,9 @@ import lib.model.financeiro.formaPagamento.FormaPagamento;
 import lib.model.interno.Funcionario;
 import lib.model.pessoa.fornecedor.Fornecedor;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -119,7 +122,7 @@ public class ContaPagar {
         this.recebedor = recebedor;
     }
 
-   // private Parcela parcela;
+    // private Parcela parcela;
 
     private Double valor;
 
@@ -243,12 +246,25 @@ public class ContaPagar {
         if (!ativo) {
             return StatusConta.CANCELADA;
         }
+
+        LocalDate hoje = LocalDate.now();
+        if (dataVencimento == null) {
+            return StatusConta.PENDENTE;
+        }
+        LocalDate vencimento = Instant.ofEpochMilli(this.dataVencimento.getTime())
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+        LocalDate pagamento = null;
+        if (dataPagamento != null)
+            pagamento = Instant.ofEpochMilli(this.dataPagamento.getTime())
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDate();
         if (!paga) {
-            if (this.dataVencimento != null && this.dataVencimento.compareTo(new Date()) >= 0)
+            if (vencimento != null && vencimento.compareTo(hoje) >= 0)
                 return StatusConta.PENDENTE;
             else return StatusConta.ATRASADO;
         } else {
-            if (paga && (this.dataVencimento != null && this.dataVencimento.compareTo(this.dataPagamento) >= 0))
+            if (paga && (vencimento != null && vencimento.compareTo(pagamento) >= 0))
                 return StatusConta.QUITADA;
             else return StatusConta.PAGA_COM_ATRASO;
         }

@@ -47,8 +47,6 @@ public class AbstractDao<T> {
         this.st.getConnection().rollback();
     }
 
-
-
     public void commit()throws SQLException{
         this.st.getConnection().setAutoCommit(false);
         this.st.getConnection().commit();

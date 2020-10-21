@@ -7,23 +7,27 @@ import java.sql.SQLException;
 public class Service {
     private AbstractDao abstractDao;
 
-    public Service(){
+    public Service() {
         abstractDao = new AbstractDao();
     }
 
-    public void setAutoCommit(Boolean is)throws SQLException{
+    public void setAutoCommit(Boolean is) throws SQLException {
         this.abstractDao.setAutoCommit(is);
     }
 
-    public void rollBack()throws SQLException{
+    public void rollBack() throws SQLException {
         this.abstractDao.rollBack();
     }
 
-    public void commit()throws SQLException {
+    public void commit() throws SQLException {
         abstractDao.commit();
     }
 
-    public void clear()throws SQLException{
-        abstractDao.clear();
+    public void clear() {
+        try {
+            abstractDao.clear();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

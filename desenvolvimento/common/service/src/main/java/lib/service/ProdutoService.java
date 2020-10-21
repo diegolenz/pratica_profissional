@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
-public class ProdutoService {
+public class ProdutoService extends Service{
 
     private ProdutoDao produtoDao;
 
@@ -46,11 +46,19 @@ public class ProdutoService {
         Assert.isTrue(!produto.getUnidadeMedida().trim().isEmpty(), "Campo Unidade de Medida invalido");
         Assert.isTrue(produto.getUnidadeMedida().length() > 1, "Campo Unidade de medida invalido, minimo dois caracteres");
         produto.setDataUltimaAlteracao(new Date());
+        if (produto.getQuantidadeEstoque() < 0) {
+            produto.setQuantidadeEstoque(0D);
+        }
         produtoDao.update(produto);
     }
 
     public List getAll(String termo) throws SQLException{
         List list = produtoDao.getAll(termo);
+        return list;
+    }
+
+    public List findByFilters(String termo, Boolean ativo) throws SQLException{
+        List list = produtoDao.findByFilters(termo, ativo);
         return list;
     }
 

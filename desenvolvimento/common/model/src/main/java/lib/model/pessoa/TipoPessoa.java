@@ -18,6 +18,8 @@ public enum TipoPessoa implements Serializable {
     FISICA("Pessoa física"),
     JURIDICA("Pessoa jurídica"),
     ESTRANGEIRO("Estrangeiro");
+
+
     private final String descricao;
 
     TipoPessoa(String descricao) {

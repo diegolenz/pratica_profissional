@@ -122,8 +122,8 @@ public class CidadeDao extends AbstractDao {
             cidade.setNome(rs.getString("nome"));
             cidade.setDDD(rs.getString("DDD"));
             cidade.setAtivo(rs.getBoolean("ativo"));
-            cidade.setFuncionarioCadastro(new FuncionarioDao().getByID(rs.getInt("funcionario_cadastro")));
-            cidade.setFuncionarioUltimaAtualizacao(new FuncionarioDao().getByID(rs.getInt("funcionario_ultima_alteracao")));
+            cidade.setFuncionarioCadastro(new FuncionarioDao().getNomeAndId(rs.getInt("funcionario_cadastro")));
+            cidade.setFuncionarioUltimaAtualizacao(new FuncionarioDao().getNomeAndId(rs.getInt("funcionario_ultima_alteracao")));
             cidade.setDataCadastro(rs.getDate("data_cadastro"));
             cidade.setDataUltimaAlteracao(rs.getDate("data_ultima_alteracao"));
             cidade.setEstado(this.estadoService.getByID(rs.getInt("estado_id")));

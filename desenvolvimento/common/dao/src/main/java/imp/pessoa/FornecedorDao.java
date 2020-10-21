@@ -33,7 +33,7 @@ public class FornecedorDao extends AbstractDao {
         return id;
     }
 
-    public void saveCondicoesPagamento(List<CondicaoPagamento> condicoes, Integer id) throws SQLException {
+    public void saveCondicoesPagamento(List<CondicaoPagamento> condicoes, Integer id) throws Exception {
         for (CondicaoPagamento condicaoPagamento : condicoes) {
             String sql = "INSERT INTO condicao_pagamento_fornecedor ( fornecedor_id, condicao_id) values (" +
                     "" + id + ", " + condicaoPagamento.getId() + " );";
@@ -41,7 +41,7 @@ public class FornecedorDao extends AbstractDao {
         }
     }
 
-    private List<CondicaoPagamento> getCondicaoByFornecedor(Integer id) throws SQLException {
+    private List<CondicaoPagamento> getCondicaoByFornecedor(Integer id) throws Exception {
         PreparedStatement preparedStatement = st.getConnection().prepareStatement("SELECT * FROM condicao_pagamento_fornecedor WHERE fornecedor_id = " + id + ";");
         ResultSet rs = preparedStatement.executeQuery();
         List<CondicaoPagamento> condicaoPagamentos = new ArrayList<>();
@@ -113,14 +113,14 @@ public class FornecedorDao extends AbstractDao {
                 fornecedor.getDataCadastro() + "','" +
                 fornecedor.getDataUltAlteracao() + "'," +
                 "" + fornecedor.getFuncionarioCadastro().getId() + ", " +
-                "" + fornecedor.getFuncionarioUltimaAlteracao() +
+                "" + fornecedor.getFuncionarioUltimaAlteracao().getId() +
                 " );";
 
         this.st.getConnection().prepareStatement(sql).executeUpdate();
         this.saveCondicoesPagamento(fornecedor.getCondicoesPagamentos(), getUltimoIDFornecedor());
     }
 
-    public void deleteByID(Object id) throws SQLException {
+    public void deleteByID(Object id) throws Exception {
         this.st.getConnection().setAutoCommit(false);
         String deleteCondiscoes = "DELETE FROM condicao_pagamento_fornecedor where fornecedor_id =" + fornecedor.getId();
         String sql = "DELETE FROM fornecedor WHERE id = " + id + " ;";
@@ -132,7 +132,7 @@ public class FornecedorDao extends AbstractDao {
         this.st.getConnection().setAutoCommit(true);
     }
 
-    public List getAllFornecedores(String termoBusca) throws SQLException {
+    public List getAllFornecedores(String termoBusca) throws Exception {
         String sql = "";
         if (termoBusca.length() == 0)
             sql = "SELECT * FROM fornecedor;";
@@ -151,7 +151,7 @@ public class FornecedorDao extends AbstractDao {
         return fornecedors;
     }
 
-    public void update(Object obj) throws SQLException {
+    public void update(Object obj) throws Exception {
         fornecedor = (Fornecedor) obj;
 
         String sql = "UPDATE fornecedor SET nome = '" + fornecedor.getNome() +
@@ -181,7 +181,7 @@ public class FornecedorDao extends AbstractDao {
         this.st.executeUpdate(sql);
     }
 
-    public Fornecedor getByID(Integer id) throws SQLException {
+    public Fornecedor getByID(Integer id) throws Exception {
         PreparedStatement preparedStatement = st.getConnection().prepareStatement("SELECT * FROM fornecedor WHERE ID = " + id + ";");
         ResultSet rs = preparedStatement.executeQuery();
         Fornecedor fornecedor = null;
@@ -227,6 +227,21 @@ public class FornecedorDao extends AbstractDao {
                 fornecedor.setTipo(TipoPessoa.JURIDICA);
             else
                 fornecedor.setTipo(TipoPessoa.ESTRANGEIRO);
+        }
+        return fornecedor;
+    }
+
+    public Fornecedor getNomeByID(Integer id) throws Exception {
+        PreparedStatement preparedStatement = st.getConnection().prepareStatement("SELECT nome, id, ativo FROM fornecedor WHERE ID = " + id + ";");
+        ResultSet rs = preparedStatement.executeQuery();
+        Fornecedor fornecedor = null;
+        while (rs.next()) {
+            fornecedor = new Fornecedor();
+
+            fornecedor.setAtivo(rs.getBoolean("ativo"));
+            fornecedor.setId(rs.getInt("id"));
+            fornecedor.setNome(rs.getString("nome"));
+
         }
         return fornecedor;
     }

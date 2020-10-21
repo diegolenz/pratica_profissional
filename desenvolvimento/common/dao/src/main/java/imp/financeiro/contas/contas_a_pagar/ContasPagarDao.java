@@ -1,9 +1,12 @@
 package imp.financeiro.contas.contas_a_pagar;
 
 import imp.AbstractDao;
+import imp.comercial.compras.CompraDao;
 import imp.financeiro.formaPagamentoDAO.FormaPagamentoDAO;
 import imp.pessoa.FornecedorDao;
 import imp.sistema.FuncionarioDao;
+import lib.model.comercial.Compra;
+import lib.model.financeiro.StatusConta;
 import lib.model.financeiro.contas.ContaPagar;
 import lib.model.interno.Funcionario;
 
@@ -17,7 +20,7 @@ import java.util.List;
 
 public class ContasPagarDao extends AbstractDao {
 
-    public List<ContaPagar> getAll(HashMap<String, Object> termos) throws SQLException {
+    public List<ContaPagar> getAll(HashMap<String, Object> termos) throws Exception {
 
         String sql = "select * from conta_pagar ";
         Date dataLancamento = (Date) termos.get("data_lancamento");
@@ -29,33 +32,39 @@ public class ContasPagarDao extends AbstractDao {
         if (dataLancamentoFinal != null) {
             if (termosString.length() > 0)
                 termosString.append(" and");
-            termosString.append(" data_lancamento <= " + dataLancamentoFinal + " ");
+            termosString.append(" data_lancamento <= '" + dataLancamentoFinal + "' ");
         }
 
         Date dataPagamento = (Date) termos.get("data_pagamento");
         if (dataPagamento != null) {
             if (termosString.length() > 0)
                 termosString.append(" and");
-            termosString.append(" data_pagamento >= " + dataPagamento + " ");
+            termosString.append(" data_pagamento >= '" + dataPagamento + "' ");
         }
         Date dataPagamentoFinal = (Date) termos.get("data_pagamento");
         if (dataPagamentoFinal != null) {
             if (termosString.length() > 0)
                 termosString.append(" and");
-            termosString.append(" data_pagamento <= " + dataPagamentoFinal + " ");
+            termosString.append(" data_pagamento <= '" + dataPagamentoFinal + "' ");
         }
 
         Date dataVencimento = (Date) termos.get("data_vencimento");
-        if (dataLancamento != null) {
+        if (dataVencimento != null) {
             if (termosString.length() > 0)
                 termosString.append(" and");
-            termosString.append(" and data_vencimento " + dataVencimento + "");
+            termosString.append(" data_vencimento >= '" + dataVencimento + "' ");
         }
         Date dataVencimentoFinal = (Date) termos.get("data_vencimento_final");
         if (dataVencimentoFinal != null) {
             if (termosString.length() > 0)
                 termosString.append(" and");
-            termosString.append(" and data_vencimento " + dataVencimentoFinal + "");
+            termosString.append(" data_vencimento <= '" + dataVencimentoFinal + "' ");
+        }
+        String recebedor = (String) termos.get("recebedor");
+        if (recebedor != null && !recebedor.isEmpty()) {
+            if (termosString.length() > 0)
+                termosString.append(" and");
+            termosString.append(" fornecedor_id in (select id from FORNECEDOR where upper(nome) like upper('%" + recebedor + "%')) ");
         }
 
 
@@ -76,7 +85,7 @@ public class ContasPagarDao extends AbstractDao {
 
     }
 //
-//    public ContaPagar update(ContaPagar contaPagar) throws SQLException{
+//    public ContaPagar update(ContaPagar contaPagar) throws Exception{
 //        String sql = "update conta_pagar set descricao = "+contaPagar.getDescricao()+", valor_pago = "+contaPagar.getValorPago()+", paga ="+
 //                contaPagar.getValorPago().equals(contaPagar.getValor()) + ", data_vencimento = '" +contaPagar.getDataVencimento() +"', data_pagamento ='" +
 //                contaPagar.getDataPagamento() +"', valor_pago = " + contaPagar.getValorPago() +", juros = " +contaPagar.getJuros()+", desconto = " +contaPagar.getDesconto() +
@@ -89,7 +98,7 @@ public class ContasPagarDao extends AbstractDao {
 //        return null;
 //    }
 
-    public ContaPagar getById(Integer num, Integer numParcela, Integer serie, Integer fornecedorId, String modelo) throws SQLException {
+    public ContaPagar getById(Integer num, Integer numParcela, Integer serie, Integer fornecedorId, String modelo) throws Exception {
         String sql = "select * from conta_pagar where num = " + num + " and num_parcela = " + numParcela + " and fornecedor_id =" + fornecedorId +
                 " and modelo = '" + modelo + "' and serie = " + serie + ";";
         PreparedStatement preparedStatement = this.st.getConnection().prepareStatement(sql);
@@ -118,11 +127,46 @@ public class ContasPagarDao extends AbstractDao {
             //contaPagar.setId(rs.getInt("id"));
             contaPagar.setAtivo(rs.getBoolean("ativo"));
             contaPagar.setNumParcela(rs.getInt("num_parcela"));
+            contaPagar.setCompra((Compra) new CompraDao().getByIDMinimize(contaPagar.getModelo(), contaPagar.getNumNota(), contaPagar.getSerie(),  contaPagar.getRecebedor().getId()));
         }
         return contaPagar;
     }
 
-    public void save(ContaPagar conta) throws SQLException {
+    public List<ContaPagar> getByCompra(Integer num, Integer serie, Integer fornecedorId, String modelo) throws Exception {
+        String sql = "select * from conta_pagar where num = " + num + " and fornecedor_id =" + fornecedorId +
+                " and modelo = '" + modelo + "' and serie = " + serie + ";";
+        PreparedStatement preparedStatement = this.st.getConnection().prepareStatement(sql);
+        ResultSet rs = preparedStatement.executeQuery();
+        List<ContaPagar> contas = new ArrayList<>();
+        while (rs.next()) {
+            ContaPagar contaPagar = new ContaPagar();
+            contaPagar.setDesconto(rs.getDouble("desconto"));
+            contaPagar.setMulta(rs.getDouble("multa"));
+            contaPagar.setJuros(rs.getDouble("juros"));
+            contaPagar.setValor(rs.getDouble("valor"));
+            contaPagar.setFormaPagamento(new FormaPagamentoDAO().getByID(rs.getInt("forma_pagamento_id")));
+            contaPagar.setRecebedor(new FornecedorDao().getByID(rs.getInt("fornecedor_id")));
+            contaPagar.setPaga(rs.getBoolean("paga"));
+            contaPagar.setValorPago(rs.getDouble("valor_pago"));
+            contaPagar.setDataCadastro(rs.getDate("data_cadastro"));
+            contaPagar.setDataUltAlteracao(rs.getDate("data_ultima_alteracao"));
+            contaPagar.setFuncionarioCadastro(new FuncionarioDao().getByID(rs.getInt("funcionario_cadastro")));
+            contaPagar.setFuncionarioUltimaAlteracao(new FuncionarioDao().getByID(rs.getInt("funcionario_ultima_alteracao")));
+            contaPagar.setDataLancamento(rs.getDate("data_lancamento"));
+            contaPagar.setDataVencimento(rs.getDate("data_vencimento"));
+            contaPagar.setDataPagamento(rs.getDate("data_pagamento"));
+            contaPagar.setNumNota(rs.getInt("num"));
+            contaPagar.setModelo(rs.getString("modelo"));
+            contaPagar.setSerie(rs.getInt("serie"));
+            //contaPagar.setId(rs.getInt("id"));
+            contaPagar.setAtivo(rs.getBoolean("ativo"));
+            contaPagar.setNumParcela(rs.getInt("num_parcela"));
+            contas.add(contaPagar);
+        }
+        return contas;
+    }
+
+    public void save(ContaPagar conta) throws Exception {
 
         String sql = "INSERT INTO conta_pagar (";
         sql += "modelo, serie, num,";
@@ -153,7 +197,7 @@ public class ContasPagarDao extends AbstractDao {
         //return "Salvo com sucesso";
     }
 
-    public ContaPagar update(ContaPagar conta) throws SQLException {
+    public ContaPagar update(ContaPagar conta) throws Exception {
 
 //        if (conta.getCompra() != null) {
 //            sql += "  modelo_compra = '" + conta.getCompra().getModeloNota() + "', " +

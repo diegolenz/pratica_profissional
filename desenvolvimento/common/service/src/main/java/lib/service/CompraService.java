@@ -5,6 +5,7 @@ import imp.produto.ProdutoDao;
 import lib.model.comercial.Compra;
 import lib.model.comercial.ItemProduto;
 import lib.model.financeiro.contas.ContaPagar;
+import lib.model.interno.Funcionario;
 import lib.model.produto.Produto;
 
 import java.sql.SQLException;
@@ -28,19 +29,20 @@ public class CompraService extends Service{
      *				 		     SERVICES
      *-------------------------------------------------------------------*/
 
-    public void save(Object compra) throws SQLException {
+    public void save(Object compra) throws Exception {
         compraDAO.save((Compra) compra);
     }
 
-    public void cancelamento(Compra compra) throws SQLException {
+    public void cancelamento(Compra compra, Funcionario func) throws Exception {
         compraDAO.st.getConnection().setAutoCommit(false);
 
-        ProdutoDao produtoDao = new ProdutoDao();
-        produtoDao.st.getConnection().setAutoCommit(false);
+        ProdutoService produtoService = new ProdutoService();
+        produtoService.setAutoCommit(false);
         for (ItemProduto item : compra.getItensProdutos()){
             Produto produto = item.buildProduto(item);
             produto.setQuantidadeEstoque(produto.getQuantidadeEstoque() - item.getQuantidade());
-            produtoDao.update(produto);
+            produto.setFuncionarioUltimaAtualizacao(func);
+            produtoService.update(produto);
         }
         ContaPagarService contaPagarService = new ContaPagarService();
         for (ContaPagar contaPagar : compra.getContas()){
@@ -49,6 +51,9 @@ public class CompraService extends Service{
         }
 
         compraDAO.cancelar(compra);
+
+        compraDAO.commit();
+        compraDAO.setAutoCommit(true);
     }
 
     public void update(Compra compra) throws Exception {
@@ -57,6 +62,10 @@ public class CompraService extends Service{
 
     public List getAll(String termo) throws Exception {
         return compraDAO.getAll(termo);
+    }
+
+    public List findAllByFilters(String fornecedor, Integer num, Integer serie, String modelo, Boolean ativo) throws Exception {
+        return compraDAO.findByFilters( fornecedor,  num,  serie,  modelo, ativo);
     }
 
     public Compra getByNumSerieModelo(Integer n, String m, Integer s,Integer f) throws Exception {

@@ -2,6 +2,7 @@ package imp.os.modelo;
 
 import imp.AbstractDao;
 import imp.marca.MarcaDao;
+import imp.sistema.FuncionarioDao;
 import lib.model.marca.Marca;
 import lib.model.os.veiculo.modelo.Modelo;
 
@@ -37,6 +38,8 @@ public class ModeloDao extends AbstractDao {
             modelo.setNome(rs.getString("nome"));
             modelo.setDataCadastro(rs.getDate("data_cadastro"));
             modelo.setDataUltimaAalteracao(rs.getDate("data_ultima_alteracao"));
+            modelo.setFuncionarioCadastro(new FuncionarioDao().getNomeAndId(rs.getInt("funcionario_cadastro_id")));
+            modelo.setFuncionarioUltimaAlteracao(new FuncionarioDao().getNomeAndId(rs.getInt("funcionario_ultima_alteracao_id")));
             modelo.setAtivo(rs.getBoolean("ativo"));
             modelo.setMarca((Marca) new MarcaDao<Marca>().getByID(rs.getInt("marca_id")));
             return modelo;

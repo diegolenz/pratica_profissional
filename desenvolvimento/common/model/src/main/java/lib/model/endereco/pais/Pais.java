@@ -17,9 +17,29 @@ public class Pais {
 
     private Date dataUltimaAlteracao;
 
-    private Funcionario funcionarioUltimaAtualizacao;
+    private Integer funcionarioUltimaAtualizacao;
 
-    private Funcionario funcionarioCadastro;
+    private Integer funcionarioCadastro;
+
+    public Integer getFuncionarioUltimaAtualizacao() {
+        return funcionarioUltimaAtualizacao;
+    }
+
+    public void setFuncionarioUltimaAtualizacao(Integer funcionarioUltimaAtualizacao) {
+        this.funcionarioUltimaAtualizacao = funcionarioUltimaAtualizacao;
+    }
+
+    public Integer getFuncionarioCadastro() {
+        return funcionarioCadastro;
+    }
+
+    public void setFuncionarioCadastro(Integer funcionarioCadastro) {
+        this.funcionarioCadastro = funcionarioCadastro;
+    }
+
+    //    private Funcionario funcionarioUltimaAtualizacao;
+//
+//    private Funcionario funcionarioCadastro;
 
     public Boolean getAtivo() {
         return ativo;
@@ -69,20 +89,20 @@ public class Pais {
         this.dataUltimaAlteracao = dataUltimaAlteracao;
     }
 
-    public Funcionario getFuncionarioUltimaAtualizacao() {
-        return funcionarioUltimaAtualizacao;
-    }
-
-    public void setFuncionarioUltimaAtualizacao(Funcionario funcionarioUltimaAtualizacao) {
-        this.funcionarioUltimaAtualizacao = funcionarioUltimaAtualizacao;
-    }
-
-    public Funcionario getFuncionarioCadastro() {
-        return funcionarioCadastro;
-    }
-
-    public void setFuncionarioCadastro(Funcionario funcionarioCadastro) {
-        this.funcionarioCadastro = funcionarioCadastro;
-    }
+//    public Funcionario getFuncionarioUltimaAtualizacao() {
+//        return funcionarioUltimaAtualizacao;
+//    }
+//
+//    public void setFuncionarioUltimaAtualizacao(Funcionario funcionarioUltimaAtualizacao) {
+//        this.funcionarioUltimaAtualizacao = funcionarioUltimaAtualizacao;
+//    }
+//
+//    public Funcionario getFuncionarioCadastro() {
+//        return funcionarioCadastro;
+//    }
+//
+//    public void setFuncionarioCadastro(Funcionario funcionarioCadastro) {
+//        this.funcionarioCadastro = funcionarioCadastro;
+//    }
 
 }

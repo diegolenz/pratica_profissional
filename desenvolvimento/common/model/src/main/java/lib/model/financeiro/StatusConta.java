@@ -11,7 +11,7 @@ public enum StatusConta {
     private String descricao;
 
     StatusConta(String descricao) {
-        this.descricao=descricao;
+        this.descricao = descricao;
     }
 
     @Override

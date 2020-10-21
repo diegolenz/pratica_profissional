@@ -74,7 +74,7 @@ EstadoDao extends AbstractDao {
         List<Estado> estados = new ArrayList<>();
 
         while (rs.next()) {
-            Estado estado = this.getByID(rs.getInt("pais_id"));
+            Estado estado = this.getByID(rs.getInt("id"));
             estados.add(estado);
         }
         return estados;
@@ -128,8 +128,8 @@ EstadoDao extends AbstractDao {
             estado.setNome(rs.getString("nome"));
             estado.setSigla(rs.getString("sigla"));
             estado.setAtivo(rs.getBoolean("ativo"));
-            estado.setFuncionarioCadastro(new FuncionarioDao().getByID(rs.getInt("funcionario_cadastro")));
-            estado.setFuncionarioUltimaAtualizacao(new FuncionarioDao().getByID(rs.getInt("funcionario_ultima_alteracao")));
+            estado.setFuncionarioCadastro(new FuncionarioDao().getNomeAndId(rs.getInt("funcionario_cadastro")));
+            estado.setFuncionarioUltimaAtualizacao(new FuncionarioDao().getNomeAndId(rs.getInt("funcionario_ultima_alteracao")));
             estado.setDataCadastro(rs.getDate("data_cadastro"));
             estado.setDataUltimaAlteracao(rs.getDate("data_ultima_alteracao"));
             estado.setPais(paisService.getByID(rs.getInt("pais_id")));

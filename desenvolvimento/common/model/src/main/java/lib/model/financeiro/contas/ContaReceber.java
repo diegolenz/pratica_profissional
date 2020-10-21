@@ -8,6 +8,9 @@ import lib.model.interno.Funcionario;
 import lib.model.pessoa.cliente.Cliente;
 import lib.model.pessoa.fornecedor.Fornecedor;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -25,9 +28,13 @@ public class ContaReceber {
     //pk
     private Cliente recebedor;
 
-    private VendaProduto venda;
+//    private VendaProduto venda;
+//
+//    private VendaServico vendaServico;
 
-    private VendaServico vendaServico;
+    private Boolean isVendaServico;
+
+    private Boolean isVendaProduto;
 
     private boolean ativo;
 
@@ -189,13 +196,13 @@ public class ContaReceber {
         this.dataPagamento = dataPagamento;
     }
 
-    public VendaProduto getVenda() {
-        return venda;
-    }
-
-    public void setVenda(VendaProduto venda) {
-        this.venda = venda;
-    }
+//    public VendaProduto getVenda() {
+//        return venda;
+//    }
+//
+//    public void setVenda(VendaProduto venda) {
+//        this.venda = venda;
+//    }
 
     public FormaPagamento getFormaPagamento() {
         return formaPagamento;
@@ -237,13 +244,13 @@ public class ContaReceber {
         this.multa = multa;
     }
 
-    public VendaServico getVendaServico() {
-        return vendaServico;
-    }
-
-    public void setVendaServico(VendaServico vendaServico) {
-        this.vendaServico = vendaServico;
-    }
+//    public VendaServico getVendaServico() {
+//        return vendaServico;
+//    }
+//
+//    public void setVendaServico(VendaServico vendaServico) {
+//        this.vendaServico = vendaServico;
+//    }
 
     public Integer getNumParcela() {
         return numParcela;
@@ -257,15 +264,42 @@ public class ContaReceber {
         if (!ativo) {
             return StatusConta.CANCELADA;
         }
+        LocalDate hoje = LocalDate.now();
+        if (dataVencimento == null) {
+            return StatusConta.PENDENTE;
+        }
+        LocalDate vencimento = Instant.ofEpochMilli(this.dataVencimento.getTime())
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+        LocalDate pagamento = null;
+        if (dataPagamento != null)
+            pagamento = Instant.ofEpochMilli(this.dataPagamento.getTime())
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDate();
         if (!paga) {
-            if (this.dataVencimento != null && this.dataVencimento.compareTo(new Date()) >= 0)
+            if (this.dataVencimento != null && vencimento.compareTo(hoje) >= 0)
                 return StatusConta.PENDENTE;
             else return StatusConta.ATRASADO;
         } else {
-            if (paga && (this.dataVencimento != null && this.dataVencimento.compareTo(this.dataPagamento) >= 0))
+            if (paga && (vencimento != null && vencimento.compareTo(pagamento) >= 0))
                 return StatusConta.QUITADA;
             else return StatusConta.PAGA_COM_ATRASO;
         }
     }
 
+    public void setVendaServico(Boolean vendaServico) {
+        isVendaServico = vendaServico;
+    }
+
+    public Boolean getVendaServico() {
+        return isVendaServico;
+    }
+
+    public Boolean getVendaProduto() {
+        return isVendaProduto;
+    }
+
+    public void setVendaProduto(Boolean vendaProduto) {
+        isVendaProduto = vendaProduto;
+    }
 }

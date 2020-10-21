@@ -14,7 +14,7 @@ public class CondicaoPagamentoService {
     CondicaoPagamentoDAO condicaoPagamentoDAO;
     ParcelaService parcelaService;
 
-    public void save(CondicaoPagamento condicaoPagamento) throws Exception{
+    public void save(CondicaoPagamento condicaoPagamento) throws Exception {
         Assert.notNull(condicaoPagamento, "estado não pode estar nulo");
         Assert.notNull(condicaoPagamento.getNome(), "Campo Nome precisa ser preenchido");
         Assert.isTrue(condicaoPagamento.getNome().length() > 1, "Campo nome precisa ao menos 2 caracteres sem contabilizar espaços");
@@ -24,48 +24,58 @@ public class CondicaoPagamentoService {
         Assert.isTrue(parcelas.stream().mapToDouble(Parcela::getPorcentagem).sum() == 100, "A porcentagem " +
                 "somadas das parcelas adicionadas deve ser 100 %");
 
-            parcelaService = new ParcelaService();
-            for (Parcela parcela : condicaoPagamento.getParcelas())
-                    parcelaService.save(parcela);
-        condicaoPagamentoDAO.save(condicaoPagamento);
+        parcelaService = new ParcelaService();
+
+        condicaoPagamento = condicaoPagamentoDAO.save(condicaoPagamento);
+        for (Parcela parcela : condicaoPagamento.getParcelas()) {
+            parcela.setCondicaoPagamento(condicaoPagamento);
+            parcelaService.save(parcela);
+        }
     }
 
-    public void update(CondicaoPagamento condicaoPagamento) throws Exception{
+    public void update(CondicaoPagamento condicaoPagamento) throws Exception {
         Assert.notNull(condicaoPagamento, "Condição de pagamento não pode estar nulo");
         Assert.notNull(condicaoPagamento.getId(), "Código não pode estar nulo");
         Assert.notNull(condicaoPagamento.getNome(), "Campo Nome precisa ser preenchido");
-        Assert.isTrue(condicaoPagamento.getNome().length()>2, "Nome da condição é obrigatório e deve conter ao menos 2 caracteres");
-        if ( (!condicaoPagamento.getParcelas().isEmpty())) {
+
+        condicaoPagamento = condicaoPagamentoDAO.update(condicaoPagamento);
+        Assert.isTrue(condicaoPagamento.getNome().length() > 2, "Nome da condição é obrigatório e deve conter ao menos 2 caracteres");
+
+        Assert.isTrue(condicaoPagamento.getParcelas().stream().mapToDouble(Parcela::getPorcentagem).sum() == 100, "A porcentagem " +
+                "somadas das parcelas adiconadas deve ser 100 %");
+        if ((!condicaoPagamento.getParcelas().isEmpty())) {
             parcelaService = new ParcelaService();
             for (Parcela parcela : condicaoPagamento.getParcelas())
-                parcelaService.save(parcela);
+                if (parcela.getId() == null) {
+                    parcela.setCondicaoPagamento(condicaoPagamento);
+                    parcelaService.save(parcela);
+                }
         }
-        condicaoPagamentoDAO.update(condicaoPagamento);
     }
 
     public List getAll(String termo) throws Exception {
-        return condicaoPagamentoDAO.getAll( termo);
+        return condicaoPagamentoDAO.getAll(termo);
     }
 
     public List getAllAtivos(String termo) throws Exception {
         List list = condicaoPagamentoDAO.getAllAtivos(termo);
-      //  Assert.isTrue(list.size() > 0, "Nenhum resultado encontrado");
+        //  Assert.isTrue(list.size() > 0, "Nenhum resultado encontrado");
         return list;
     }
 
 
-    public CondicaoPagamento getByID(Integer id) throws SQLException {
+    public CondicaoPagamento getByID(Integer id) throws Exception {
         Assert.notNull(id, "ID passado como parametro não pode estar nulo");
         CondicaoPagamento condicaoPagamento = condicaoPagamentoDAO.getByID(id);
-       // Assert.notNull(condicaoPagamento, "Não foi encontrado nenhum estado com esse código");
-        return  condicaoPagamento;
+        // Assert.notNull(condicaoPagamento, "Não foi encontrado nenhum estado com esse código");
+        return condicaoPagamento;
     }
 
-    public CondicaoPagamento getLast()throws Exception {
+    public CondicaoPagamento getLast() throws Exception {
         return condicaoPagamentoDAO.getLast();
     }
 
-    public CondicaoPagamento getByNome(String nome)throws SQLException {
+    public CondicaoPagamento getByNome(String nome) throws Exception {
         return condicaoPagamentoDAO.getByNome(nome);
     }
 
@@ -73,7 +83,7 @@ public class CondicaoPagamentoService {
         condicaoPagamentoDAO.deleteByID(id);
     }
 
-    public void mudarStatus(Estado estado){
+    public void mudarStatus(Estado estado) {
 
 
     }

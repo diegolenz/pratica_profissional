@@ -124,6 +124,9 @@ public class Produto {
         p.setQuantidadeEstoque(itemProduto.getQuantidadeEstoque());
         p.setDataCadastro(itemProduto.getDataCadastro());
         p.setDataUltimaAlteracao(itemProduto.getDataUltimaAlteracao());
+        p.setUltimoFornecedor(itemProduto.getUltimoFornecedor());
+        p.setDataUltimaCompra(itemProduto.getDataUltimaCompra());
+        p.setDataUltimaVenda(itemProduto.getDataUltimaVenda());
         p.setAtivo(itemProduto.getAtivo());
         return p;
     }

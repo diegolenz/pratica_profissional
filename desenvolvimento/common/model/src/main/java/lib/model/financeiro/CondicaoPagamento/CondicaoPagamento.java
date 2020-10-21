@@ -1,7 +1,9 @@
 package lib.model.financeiro.CondicaoPagamento;
 
 import lib.model.financeiro.parcela.Parcela;
+import lib.model.interno.Funcionario;
 
+import java.util.Date;
 import java.util.List;
 
 public class CondicaoPagamento {
@@ -20,6 +22,14 @@ public class CondicaoPagamento {
     private Double multa;
 
     private Double juros;
+
+    private Date dataCadastro;
+
+    private Date dataUltAlteracao;
+
+    private Funcionario funcionarioCadastro;
+
+    private Funcionario funcionarioUltimaAlteracao;
 
     public Integer getId() {
         return id;
@@ -85,4 +95,35 @@ public class CondicaoPagamento {
         this.juros = juros;
     }
 
+    public Date getDataCadastro() {
+        return dataCadastro;
+    }
+
+    public void setDataCadastro(Date dataCadastro) {
+        this.dataCadastro = dataCadastro;
+    }
+
+    public Date getDataUltAlteracao() {
+        return dataUltAlteracao;
+    }
+
+    public void setDataUltAlteracao(Date dataUltAlteracao) {
+        this.dataUltAlteracao = dataUltAlteracao;
+    }
+
+    public Funcionario getFuncionarioCadastro() {
+        return funcionarioCadastro;
+    }
+
+    public void setFuncionarioCadastro(Funcionario funcionarioCadastro) {
+        this.funcionarioCadastro = funcionarioCadastro;
+    }
+
+    public Funcionario getFuncionarioUltimaAlteracao() {
+        return funcionarioUltimaAlteracao;
+    }
+
+    public void setFuncionarioUltimaAlteracao(Funcionario funcionarioUltimaAlteracao) {
+        this.funcionarioUltimaAlteracao = funcionarioUltimaAlteracao;
+    }
 }

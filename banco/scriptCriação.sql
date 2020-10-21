@@ -5,6 +5,10 @@
         ativo boolean,
         ddi varchar(255),
         nome varchar(255),
+		       	data_cadastro timestamp not null, 
+		data_ultima_alteracao timestamp not null, 
+		funcionario_cadastro_id int references funcionario not null,
+		funcionario_ultima_alteracao int references funcionario not null,
         primary key (id)
     ); 
 	
@@ -16,6 +20,10 @@
         nome varchar(99) not null,
         sigla varchar(255),
         pais_id int references pais(id) not null,
+		       	data_cadastro timestamp not null, 
+		data_ultima_alteracao timestamp not null, 
+		funcionario_cadastro_id int references funcionario not null,
+		funcionario_ultima_alteracao int references funcionario not null,
         primary key (id)
     ); 
 
@@ -28,6 +36,10 @@
         CODIGO_IBGE varchar(10),
         nome varchar(255) not null,
         estado_id int references estado(id) not null,
+		       	data_cadastro timestamp not null, 
+		data_ultima_alteracao timestamp not null, 
+		funcionario_cadastro_id int references funcionario not null,
+		funcionario_ultima_alteracao int references funcionario not null,
         primary key (id)
     );
 
@@ -52,8 +64,10 @@
         numero_residencial varchar(255),
         referencia varchar(255),
 		ativo boolean,
-        data_cadastro date,
-        data_ultima_alteracao date
+          	data_cadastro timestamp not null, 
+		data_ultima_alteracao timestamp not null, 
+		funcionario_cadastro_id int references funcionario not null,
+		funcionario_ultima_alteracao int references funcionario not null
 		
     ) ; 
     
@@ -61,7 +75,6 @@
     create table Cliente (
 		id serial primary key, 
         ativo boolean,
-        data_cadastro date,
 		cpf_Cnpj varchar(255),
         data_nascimento date,
         email varchar(255),
@@ -80,7 +93,10 @@
         logradouro varchar(255) not null,
         numero_residencial varchar(255),
         referencia varchar(255),
-        data_ultima_alteracao date
+             	data_cadastro timestamp not null, 
+		data_ultima_alteracao timestamp not null, 
+		funcionario_cadastro_id int references funcionario not null,
+		funcionario_ultima_alteracao int references funcionario not null
     );  
 	
 	  create table Funcionario (
@@ -104,8 +120,10 @@
         logradouro varchar(255) not null,
         numero_residencial int,
         referencia varchar(255),
-        data_cadastro timestamp not null,
-        data_ultima_alteracao timestamp not null,
+              	data_cadastro timestamp not null, 
+		data_ultima_alteracao timestamp not null, 
+		funcionario_cadastro_id int references funcionario not null,
+		funcionario_ultima_alteracao int references funcionario not null,
         data_admissao timestamp,
         data_demissao timestamp,
         primeiro_login boolean not null,
@@ -117,7 +135,11 @@
        id  serial not null,
         ativo boolean,
         nome varchar(255),
-        primary key (id)
+        primary key (id),
+		       	data_cadastro timestamp not null, 
+		data_ultima_alteracao timestamp not null, 
+		funcionario_cadastro_id int references funcionario not null,
+		funcionario_ultima_alteracao int references funcionario not null
     ); 
 	
 	  create table Condicao_pagamento (
@@ -127,6 +149,10 @@
         juros FLOAT,
         multa FLOAT,
         nome varchar(255),
+		       	data_cadastro timestamp not null, 
+		data_ultima_alteracao timestamp not null, 
+		funcionario_cadastro_id int references funcionario not null,
+		funcionario_ultima_alteracao int references funcionario not null,
         quantidadeParcelas int,
         primary key (id)
     ); 
@@ -137,34 +163,42 @@
         dias int,
         numero int,
         porcentagem FLOAT,
-        forma_pagamento_id int,
+        forma_pagamento_id int not null references forma_pagamento ,
+		Condicao_Pagamento_id int not null references condicao_pagamento ON DELETE CASCADE ON UPDATE CASCADE,
         primary key (id)
+		
     ); 
     
-    create table Condicao_Pagamento_Parcela (
-        Condicao_Pagamento_id int not null references condicao_pagamento,
-        parcelas_id int not null references parcela
-    );
+   -- create table Condicao_Pagamento_Parcela (
+     --   Condicao_Pagamento_id int not null references condicao_pagamento,
+       -- parcelas_id int not null references parcela
+    --);
 	 
     create table Grupo (
        id  serial not null,
         ativo boolean,
         nome varchar(255),
+		       	data_cadastro timestamp, 
+		data_ultima_alteracao timestamp, 
+		funcionario_cadastro_id int references funcionario,
+		funcionario_ultima_alteracao int references funcionario,
         primary key (id)
     ); 
     
     create table grupo_funcionario (
 		id  bigserial not null,
         nome varchar(255),
-        data_cadastro timestamp,
-        data_ultima_alteracao timestamp,
+            	data_cadastro timestamp, 
+		data_ultima_alteracao timestamp, 
+		funcionario_cadastro_id int references funcionario,
+		funcionario_ultima_alteracao int references funcionario,
 		ativo boolean,
         primary key (id)
     ); 
     
     create table permissao_acesso (
         id  bigserial not null,
-		Grupo_Funcionario_id INT not null,
+		Grupo_Funcionario_id INT not null references grupo_funcionario  ON DELETE CASCADE ON UPDATE CASCADE,
         modulo varchar(255) not null,
         nivel_Acesso varchar(255) not null,
         primary key (id)
@@ -179,10 +213,11 @@
      create table Marca (
         id  serial not null,
         ativo boolean,
-        data_cadastro timestamp,
-        data_ultima_alteracao timestamp,
-        funcionario_cadastro timestamp,
-        funcionario_ultima_alteracao timestamp,
+              	data_cadastro timestamp, 
+		data_ultima_alteracao timestamp, 
+		funcionario_cadastro_id int references funcionario,
+		funcionario_ultima_alteracao int references funcionario,
+		
         nome varchar(255),
         primary key (id)
     ); 
@@ -202,6 +237,10 @@
 		outras_despesas float,
 		valor_frete float,
 		valor_seguro float,
+		       	data_cadastro timestamp, 
+		data_ultima_alteracao timestamp, 
+		funcionario_cadastro_id int references funcionario,
+		funcionario_ultima_alteracao int references funcionario,
 		motivo_cancelamento varchar,
 		CONSTRAINT pk_compra01 primary key (numero, serie, modelo, fornecedor_id)
 	);
@@ -221,6 +260,10 @@
 		valor_frete float,
 		valor_seguro float,
 		motivo_cancelamento varchar,
+		       	data_cadastro timestamp, 
+		data_ultima_alteracao timestamp, 
+		funcionario_cadastro int references funcionario,
+		funcionario_ultima_alteracao int references funcionario,
 		CONSTRAINT pk_venda primary key (numero, serie, modelo)
 	);
 	
@@ -231,7 +274,10 @@
 		cliente_id int references cliente(id), 
 		data_chegada date,
 		data_emissao date,
-		funcionario_id int references funcionario(id),
+		       	data_cadastro timestamp, 
+		data_ultima_alteracao timestamp, 
+		funcionario_cadastro_id int references funcionario,
+		funcionario_ultima_alteracao int references funcionario,
 		condicao_Pagamentos_id int references condicao_pagamento(id),
 		ativo boolean,
 		tipo_frete int,
@@ -275,7 +321,11 @@
 		multa float,
 		desconto float,
 		juros float,
-		FOREIGN KEY (numero_compra,serie_compra, modelo_compra, fornecedor_id) references compra (numero, serie, modelo, fornecedor_id)	
+		FOREIGN KEY (numero_compra,serie_compra, modelo_compra, fornecedor_id) references compra (numero, serie, modelo, fornecedor_id),
+		       	data_cadastro timestamp, 
+		data_ultima_alteracao timestamp, 
+		funcionario_cadastro_id int references funcionario,
+		funcionario_ultima_alteracao int references funcionario,
 	);
  
 	CREATE TABLE public.conta_receber (
@@ -295,7 +345,11 @@
 	juros float8 NULL,
 		descricao varchar,
 		data_pagamento date,
-	CONSTRAINT conta_receber_pkey PRIMARY KEY (id)
+	CONSTRAINT conta_receber_pkey PRIMARY KEY (id),
+	       	data_cadastro timestamp, 
+		data_ultima_alteracao timestamp, 
+		funcionario_cadastro_id int references funcionario,
+		funcionario_ultima_alteracao int references funcionario,
 );
 
  
@@ -303,8 +357,10 @@
         id  serial not null,
         ativo boolean,
         codigo_barras varchar(255),
-        data_cadastro date,
-        data_ultima_alteracao date,
+       	data_cadastro timestamp, 
+		data_ultima_alteracao timestamp, 
+		funcionario_cadastro_id int references funcionario,
+		funcionario_ultima_alteracao int references funcionario,
 		data_ultima_compra date,
         nome varchar(255),
         preco_compra FLOAT,
@@ -401,7 +457,12 @@ create table condicao_pagamento_cliente (
 		primary key (condicao_id, cliente_id)
 );
 
-create table ordem_servico(id int primary key, data_cadastro date, data_ultima_alteracao date, funcionario_cadastro_id int references funcionario, funcionario_ultima_atualizacao_id int references funcionario,
+create table ordem_servico(
+	id int primary key,
+	data_cadastro date, 
+	data_ultima_alteracao date, 
+	funcionario_cadastro_id int references funcionario, 
+	funcionario_ultima_atualizacao_id int references funcionario,
 condicao_pagamento_id int references condicao_pagamento, cancelada boolean, numero_venda_produto int, serie_venda_produto int, modelo_venda_produto varchar, 
 FOREIGN KEY (numero_venda_produto, serie_venda_produto, modelo_venda_produto) references venda_produto (numero, serie, modelo),
  numero_venda_servico int, serie_venda_servico int, modelo_venda_servico varchar, 
@@ -429,22 +490,33 @@ create table veiculo (
 	data_cadastro date, 
 	data_ultima_alteracao date, 
 	funcionario_cadastro_id int references funcionario,
-	funcionario_ultima_alteracao_int int references funcionario,
+	funcionario_ultima_alteracao int references funcionario,
 	chassis varchar(50), 
 	placa varchar(15),
 	cor varchar(50),
 	modelo_id int references modelo
 );
 
+create table sistema_config (
+	id serial primary key,
+	razao_social_empresa varchar not null,
+	nome_fantasia varchar,
+	cnpj_empresa varchar not null,
+	IE varchar , 
+	logradouro varchar, 
+	bairro varchar,
+	numero varchar,
+	complemento varchar,
+	cidade_id int references cidade,
+	condicao_pagamento_padrao_id int not null references condicao_pagamento
+)
+
 alter table ordem_servico add column responsavel_id int references funcionario;
 alter table ordem_servico  alter column data_cadastro set not null;
 	alter table cliente add column if not exists funcionario_cadastro int references funcionario(id);
 alter table cliente add column if not exists funcionario_ultima_alteracao int references funcionario(id);
-alter table funcionario add column if not exists funcionario_cadastro int references funcionario(id);
-alter table funcionario add column if not exists funcionario_ultima_alteracao int references funcionario(id);
 alter table fornecedor add column if not exists funcionario_cadastro int references funcionario(id);
 alter table fornecedor add column if not exists funcionario_ultima_alteracao int references funcionario(id);
-alter table funcionario add column if not exists alterar_senha_proximo_login boolean default false;
 alter table cidade add column if not exists funcionario_cadastro int references funcionario(id);
 alter table cidade add column if not exists funcionario_ultima_alteracao int references funcionario(id);
 alter table cidade add column if not exists data_cadastro date not null, 
@@ -468,16 +540,63 @@ alter table conta_pagar add column if not exists funcionario_ultima_alteracao in
 alter table conta_pagar add column if not exists data_cadastro timestamp;
 alter table conta_pagar add column if not exists data_ultima_alteracao timestamp;
 
-alter table conta_receber add column if not exists funcionario_cadastro int references funcionario(id);
-alter table conta_receber add column if not exists funcionario_ultima_alteracao int references funcionario(id);
-alter table conta_receber add column if not exists data_cadastro timestamp;
-alter table conta_receber add column if not exists data_ultima_alteracao timestamp;
+alter table conta_pagar add column if not exists funcionario_cadastro int references funcionario(id);
+alter table conta_pagar add column if not exists funcionario_ultima_alteracao int references funcionario(id);
+alter table conta_pagar add column if not exists data_cadastro timestamp;
+alter table conta_pagar add column if not exists data_ultima_alteracao timestamp;
 alter table conta_pagar add column if not exists ativo boolean;
 alter table conta_receber add column if not exists ativo boolean;
 alter table conta_receber add column if not exists funcionario_cadastro int references funcionario(id);
 alter table conta_receber add column if not exists funcionario_ultima_alteracao int references funcionario(id);
 alter table conta_receber add column if not exists data_cadastro timestamp;
 alter table conta_receber add column if not exists data_ultima_alteracao timestamp;
+alter table conta_pagar drop column if exists serie_compra;
+
+alter table conta_pagar drop column if exists modelo_compra;
+alter table conta_pagar drop column if exists num_compra;
+alter table conta_receber drop column if exists serie_venda;
+alter table conta_pagar drop column if exists modelo_venda;
+alter table conta_pagar drop column if exists num_venda;
+alter table permissao_acesso alter column nivel_Acesso type varchar;
+alter table permissao_acesso alter column modulo type varchar;
+
+alter table grupo_funcionario add column if not exists funcionario_cadastro int references funcionario(id) not null default 5;
+alter table grupo_funcionario add column if not exists funcionario_ultima_alteracao int references funcionario(id) not null default 5;
+alter table grupo_funcionario add column if not exists data_cadastro timestamp not null;
+alter table grupo_funcionario add column if not exists data_ultima_alteracao timestamp not null;
+alter table funcionario add column if not exists funcionario_cadastro int references funcionario(id) not null default 5;
+alter table funcionario add column if not exists funcionario_ultima_alteracao int references funcionario(id) not null default 5;
+alter table funcionario add column if not exists data_cadastro timestamp not null;
+alter table funcionario add column if not exists data_ultima_alteracao timestamp not null;
+alter table forma_pagamento add column if not exists funcionario_cadastro int references funcionario(id) not null default 5;
+alter table forma_pagamento add column if not exists funcionario_ultima_alteracao int references funcionario(id) not null default 5;
+alter table forma_pagamento add column if not exists data_cadastro timestamp not null default now();
+alter table forma_pagamento add column if not exists data_ultima_alteracao timestamp not null default now();
+alter table compra add column if not exists funcionario_cadastro int references funcionario(id) not null default 5;
+alter table compra add column if not exists funcionario_ultima_alteracao int references funcionario(id) not null default 5;
+alter table compra add column if not exists data_cadastro timestamp not null default now();
+alter table compra add column if not exists data_ultima_alteracao timestamp not null default now();
+alter table venda_servico add column if not exists funcionario_cadastro int references funcionario(id) not null default 5;
+alter table venda_servico add column if not exists funcionario_ultima_alteracao int references funcionario(id) not null default 5;
+alter table venda_servico add column if not exists data_cadastro timestamp not null default now();
+alter table venda_servico add column if not exists data_ultima_alteracao timestamp not null default now();
+alter table venda_produto add column if not exists funcionario_cadastro int references funcionario(id) not null default 5;
+alter table venda_produto add column if not exists funcionario_ultima_alteracao int references funcionario(id) not null default 5;
+alter table venda_produto add column if not exists data_cadastro timestamp not null default now();
+alter table venda_produto add column if not exists data_ultima_alteracao timestamp not null default now();
+alter table conta_receber add column if not exists is_venda_produto boolean  default false;
+alter table conta_receber add column if not exists is_venda_servico  boolean  default false;
+
+drop table if exists condicao_pagamento_parcela;
+alter table parcela add column if not exists Condicao_Pagamento_id int not null references condicao_pagamento default 1;
+
+-- delete regiao
+  -- delete from item_produto_venda; delete from item_produto_os; delete from item_produto;
+  -- delete from item_servico; delete from item_servico_os;
+  -- delete from venda_produto; delete from ordem_servico; delete from venda_servico; delete from compra; 
+  -- delete from condicao_pagamento_fornecedor;  delete from condicao_pagamento_cliente;
+  -- delete from conta_pagar; delete from conta_receber; delete from condicao_pagamento;
+
 
 
 

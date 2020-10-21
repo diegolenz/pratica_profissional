@@ -21,7 +21,7 @@ public class PaisDao extends AbstractDao {
         sql = ("INSERT INTO pais (nome, ddi, ativo,  data_cadastro, data_ultima_alteracao, funcionario_cadastro, funcionario_ultima_alteracao ) values (" +
                 "'" + pais.getNome() + "','" + pais.getDdi() + "', " + pais.getAtivo() +
                 ", now(), now(), + " +
-                " " + pais.getFuncionarioCadastro().getId() + ", " + pais.getFuncionarioUltimaAtualizacao().getId() + " );");
+                " " + pais.getFuncionarioCadastro() + ", " + pais.getFuncionarioUltimaAtualizacao()+ " );");
 
         this.st.executeUpdate(sql);
     }
@@ -99,8 +99,8 @@ public class PaisDao extends AbstractDao {
             pais.setNome(rs.getString("nome"));
             pais.setDdi(rs.getString("ddi"));
             pais.setAtivo(rs.getBoolean("ativo"));
-            pais.setFuncionarioCadastro(new FuncionarioDao().getByID(rs.getInt("funcionario_cadastro")));
-            pais.setFuncionarioUltimaAtualizacao(new FuncionarioDao().getByID(rs.getInt("funcionario_ultima_alteracao")));
+            pais.setFuncionarioCadastro(rs.getInt("funcionario_cadastro"));
+            pais.setFuncionarioUltimaAtualizacao(rs.getInt("funcionario_ultima_alteracao"));
             pais.setDataCadastro(rs.getDate("data_cadastro"));
             pais.setDataUltimaAlteracao(rs.getDate("data_ultima_alteracao"));
         }
@@ -110,7 +110,7 @@ public class PaisDao extends AbstractDao {
     public void update(Object obj) throws SQLException {
         pais = (Pais) obj;
         String sql = "UPDATE pais SET nome = '" + pais.getNome() + "', ddi = '" + pais.getDdi() + "', ativo=" + pais.getAtivo() + " " +
-                ", funcionario_ultima_alteracao = " + pais.getFuncionarioUltimaAtualizacao().getId() + ", data_ultima_alteracao = now() WHERE id = " + pais.getId() + " ;";
+                ", funcionario_ultima_alteracao = " + pais.getFuncionarioUltimaAtualizacao() + ", data_ultima_alteracao = now() WHERE id = " + pais.getId() + " ;";
         this.st.executeUpdate(sql);
     }
 

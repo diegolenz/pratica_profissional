@@ -20,7 +20,7 @@ import java.util.List;
 public class VendaServicoDao extends AbstractDao {
 
 
-    public void saveItens(List<ItemServico> itens) throws SQLException {
+    public void saveItens(List<ItemServico> itens) throws Exception {
         for (ItemServico itemServico : itens) {
             String sql = "INSERT INTO item_servico (cliente_id, quantidade, valor_unitario, desconto_unitario, acrescimo_unitario, valor_rateio, valor_total, servico_id, " +
                     "serie_venda, " +
@@ -43,7 +43,7 @@ public class VendaServicoDao extends AbstractDao {
         }
     }
 
-    public void save(VendaServico venda) throws SQLException {
+    public void save(VendaServico venda) throws Exception {
         String sql = "INSERT INTO venda_servico (" +
                 " numero," +
                 " modelo," +
@@ -80,12 +80,12 @@ public class VendaServicoDao extends AbstractDao {
 
     }
 
-    public void cancelar(VendaServico venda) throws SQLException {
+    public void cancelar(VendaServico venda) throws Exception {
         String sql = "update venda_servico set ativo = false, motivo_cancelamento = '" + venda.getMotivoCancelamento() + "' where modelo = '" + venda.getModeloNota() + "' and numero = " + venda.getNumeroNota() + " and serie =" + venda.getNumSerieNota() + " ;";
         this.st.execute(sql);
     }
 
-    public void saveContas(List<ContaReceber> contas) throws SQLException {
+    public void saveContas(List<ContaReceber> contas) throws Exception {
         for (ContaReceber conta : contas) {
             new ContaReceberDao().save(conta);
 //            String sql = "INSERT INTO conta_receber ( modelo , serie, num, valor, data_Lancamento, data_Vencimento, forma_pagamento_id) "
@@ -104,7 +104,7 @@ public class VendaServicoDao extends AbstractDao {
         //return "Salvo com sucesso";
     }
 
-    public List<ContaReceber> getAllContasByVenda(VendaServico venda) throws SQLException {
+    public List<ContaReceber> getAllContasByVenda(VendaServico venda) throws Exception {
         String sql = "SELECT * FROM conta_receber WHERE modelo = '" + venda.getModeloNota() + "' and num = " + venda.getNumeroNota() + " and serie =" + venda.getNumSerieNota() + ";";
         PreparedStatement preparedStatement = st.getConnection().prepareStatement(sql);
         ResultSet rs = preparedStatement.executeQuery();
@@ -139,7 +139,7 @@ public class VendaServicoDao extends AbstractDao {
         return contas;
     }
 
-    public List<ItemServico> getAllItensByVenda(VendaServico venda) throws SQLException {
+    public List<ItemServico> getAllItensByVenda(VendaServico venda) throws Exception {
         String sql = "SELECT * FROM item_servico WHERE modelo_venda = '" + venda.getModeloNota() + "' and numero_venda = " + venda.getNumeroNota() + " and serie_venda =" + venda.getNumSerieNota() + ";";
         PreparedStatement preparedStatement = st.getConnection().prepareStatement(sql);
         ResultSet rs = preparedStatement.executeQuery();
@@ -160,14 +160,21 @@ public class VendaServicoDao extends AbstractDao {
         return itens;
     }
 
-    public List getAll(String termoBusca) throws SQLException {
-        String sql = "";
-        if (termoBusca.length() == 0)
-            sql = "SELECT * FROM venda_servico ;";
-        else if ((!termoBusca.matches("[0-9]")))
-            sql = "Select * from venda_servico where id = " + termoBusca + ";";
-        else
-            sql = "SELECT * FROM venda_servico WHERE nome = " + termoBusca + ";";
+    public List getAll(String termo, Boolean ativo) throws Exception {
+        String sql = "SELECT * FROM venda_servico";
+        if ((termo != null && !termo.isEmpty()) || ativo != null) {
+            sql += " WHERE ";
+        }
+        Boolean addAnd = false;
+        if ((termo != null && !termo.isEmpty())) {
+            sql += " cliente_id in (select id from cliente where upper(nome) like upper('%" + termo + "%')) ";
+            addAnd = true;
+        }
+        if (ativo != null) {
+            if (addAnd)
+                sql += " and ";
+            sql += " ativo = " + ativo +" ";
+        }
 
         ResultSet rs = this.st.executeQuery(sql);
         List vendas = new ArrayList();
@@ -177,7 +184,7 @@ public class VendaServicoDao extends AbstractDao {
         return vendas;
     }
 
-    public List getAllAtivos() throws SQLException {
+    public List getAllAtivos() throws Exception {
         String sql = "Select * from venda_produto where ativo = " + 1 + " ;";
         ResultSet rs = this.st.executeQuery(sql);
         List vendas = new ArrayList();
@@ -187,7 +194,7 @@ public class VendaServicoDao extends AbstractDao {
         return vendas;
     }
 
-    public Object getByID(String modelo, Integer numero, Integer serie) throws SQLException {
+    public Object getByID(String modelo, Integer numero, Integer serie) throws Exception {
         String sql = "Select * from venda_servico where numero = " + numero + " and serie = " + serie + " and modelo = '" + modelo + "' ;";
         PreparedStatement preparedStatement = st.getConnection().prepareStatement(sql);
         ResultSet rs = preparedStatement.executeQuery();

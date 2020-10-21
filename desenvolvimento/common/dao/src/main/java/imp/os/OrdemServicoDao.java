@@ -19,15 +19,22 @@ import lib.model.servico.ItemServico;
 import lib.model.servico.Servico;
 
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class OrdemServicoDao extends AbstractDao {
 
-    public List<OrdemServico> getAll() throws SQLException {
-        ResultSet rs = this.st.getConnection().prepareStatement("select * from ordem_servico ").executeQuery();
+    public List<OrdemServico> getAll(String termo) throws Exception {
+        String sql = "SELECT * FROM ordem_servico";
+        Boolean addAnd = false;
+        if ((termo != null && !termo.isEmpty())) {
+            sql += " WHERE cliente_id in (select id from cliente where upper(nome) like upper('%" + termo + "%')) ";
+            addAnd = true;
+        }
+        sql += " ;";
+
+        ResultSet rs = this.st.getConnection().prepareStatement(sql).executeQuery();
         List<OrdemServico> ordens = new ArrayList<>();
         while (rs.next()) {
             ordens.add(getById(rs.getInt("id")));
@@ -35,7 +42,7 @@ public class OrdemServicoDao extends AbstractDao {
         return ordens;
     }
 
-    public List<OrdemServico> findByFilters(String descricao, Date dtInicial, Date dtFinal, String status) throws SQLException {
+    public List<OrdemServico> findByFilters(String descricao, Date dtInicial, Date dtFinal, String status) throws Exception {
         String sql = "select * from ordem_servico os INNER JOIN cliente c on (os.cliente_id = c.id)" +
                 "where (upper(c.nome) like upper('%"+ descricao+"%') OR upper('"+ descricao +"') = 'NULL' )";
         if (dtInicial != null) {
@@ -60,7 +67,7 @@ public class OrdemServicoDao extends AbstractDao {
         return ordens;
     }
 
-    public List<ItemServico> getItensByIdOrdem(Integer id, OrdemServico ordemServico) throws SQLException {
+    public List<ItemServico> getItensByIdOrdem(Integer id, OrdemServico ordemServico) throws Exception {
         ResultSet rs = this.st.getConnection().prepareStatement("select * from item_servico_os where os_id = " + id + " ;").executeQuery();
         List<ItemServico> itens = new ArrayList<>();
         while (rs.next()) {
@@ -79,7 +86,7 @@ public class OrdemServicoDao extends AbstractDao {
         return itens;
     }
 
-    public List<ItemProduto> getItensProdutosByIdOrdem(Integer id, OrdemServico ordemServico) throws SQLException {
+    public List<ItemProduto> getItensProdutosByIdOrdem(Integer id, OrdemServico ordemServico) throws Exception {
         ResultSet rs = this.st.getConnection().prepareStatement("select * from item_produto_os where os_id = " + id + " ;").executeQuery();
         List<ItemProduto> itens = new ArrayList<>();
         while (rs.next()) {
@@ -99,7 +106,7 @@ public class OrdemServicoDao extends AbstractDao {
         return itens;
     }
 
-    public Integer getUltimoIdOs() throws SQLException {
+    public Integer getUltimoIdOs() throws Exception {
         ResultSet resultSet = this.st.executeQuery("Select id from ordem_servico order by ID desc limit 1");
         Integer id = null;
         while (resultSet.next())
@@ -107,7 +114,7 @@ public class OrdemServicoDao extends AbstractDao {
         return id;
     }
 
-    public void save(OrdemServico os) throws SQLException {
+    public void save(OrdemServico os) throws Exception {
         Integer idCond = os.getCondicaoPagamento() != null ? os.getCondicaoPagamento().getId() : null;
         Integer idResp = os.getResponsavel() != null ? os.getResponsavel().getId() : null;
 
@@ -136,7 +143,7 @@ public class OrdemServicoDao extends AbstractDao {
 
     }
 
-    public void saveItensServicos(List<ItemServico> itens, Integer idOs) throws SQLException {
+    public void saveItensServicos(List<ItemServico> itens, Integer idOs) throws Exception {
         for (ItemServico item : itens) {
             this.st.getConnection().prepareStatement("INSERT INTO public.item_servico_os " +
                     "(  quantidade, desconto_unitario, acrescimo_unitario, valor_unitario, valor_total, valor_rateio, os_id, servico_id) " +
@@ -145,7 +152,7 @@ public class OrdemServicoDao extends AbstractDao {
         }
     }
 
-    public void saveItensProdutos(List<ItemProduto> itens, Integer id) throws SQLException {
+    public void saveItensProdutos(List<ItemProduto> itens, Integer id) throws Exception {
         for (ItemProduto item : itens) {
             this.st.getConnection().prepareStatement("INSERT INTO item_produto_os " +
                     "( quantidade, desconto_unitario, acrescimo_unitario, valor_unitario, valor_total, valor_rateio, os_id, produto_id) " +
@@ -154,7 +161,7 @@ public class OrdemServicoDao extends AbstractDao {
         }
     }
 
-    public void update(OrdemServico os) throws SQLException{
+    public void update(OrdemServico os) throws Exception{
         Integer idCondicao = os.getCondicaoPagamento() != null ? os.getCondicaoPagamento().getId() : null;
         Integer numVendaProd = os.getVendaProduto() != null ? os.getVendaProduto().getNumeroNota() : null;
         Integer serieVendaProd = os.getVendaProduto() != null ? os.getVendaProduto().getNumSerieNota() : null;
@@ -176,19 +183,19 @@ public class OrdemServicoDao extends AbstractDao {
         this.st.getConnection().prepareStatement(sql).executeUpdate();
     }
 
-    public void deleteItensServicos(List<ItemServico> itemServicos) throws SQLException {
+    public void deleteItensServicos(List<ItemServico> itemServicos) throws Exception {
         for (ItemServico item : itemServicos) {
             this.st.getConnection().prepareStatement("delete from item_servico_os where servico_id = " + item.getId() + " and os_id = "+ item.getOs().getId() +" ").executeUpdate();
         }
     }
 
-    public void deleteItensProdutos(List<ItemProduto> itemServicos) throws SQLException {
+    public void deleteItensProdutos(List<ItemProduto> itemServicos) throws Exception {
         for (ItemProduto item : itemServicos) {
             this.st.getConnection().prepareStatement("delete from item_produto_os where produto_id = " + item.getId() + " and os_id = "+ item.getOs().getId() +" ;").executeUpdate();
         }
     }
 
-    public OrdemServico getById(Integer id) throws SQLException {
+    public OrdemServico getById(Integer id) throws Exception {
         ResultSet rs = this.st.getConnection().prepareStatement("select * from ordem_servico where id = " + id + " ;").executeQuery();
         if (rs.next()) {
             OrdemServico ordemServico = new OrdemServico();

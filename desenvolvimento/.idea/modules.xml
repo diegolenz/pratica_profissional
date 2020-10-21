@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Retaguarda/Retaguarda.iml" filepath="$PROJECT_DIR$/Retaguarda/Retaguarda.iml" />
+      <module fileurl="file://$PROJECT_DIR$/common/dao/dao.iml" filepath="$PROJECT_DIR$/common/dao/dao.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/desenvolvimento.iml" filepath="$PROJECT_DIR$/.idea/desenvolvimento.iml" />
+      <module fileurl="file://$PROJECT_DIR$/common/model/model.iml" filepath="$PROJECT_DIR$/common/model/model.iml" />
+      <module fileurl="file://$PROJECT_DIR$/common/service/service.iml" filepath="$PROJECT_DIR$/common/service/service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/common/util/util.iml" filepath="$PROJECT_DIR$/common/util/util.iml" />
+    </modules>
+  </component>
+</project>

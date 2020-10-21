@@ -64,7 +64,7 @@ public class Funcionario extends Pessoa {
 
     public boolean isPermissaoConcedida(ModuloSistema modulo, NivelAcessoModulo nivel) {
 
-        if (nivelAcesso == NivelAcessoOperador.SUPORTE) {
+        if (nivelAcesso == NivelAcessoOperador.SUPORTE || !modulo.getNescecitaPermissao()) {
             return true;
         }
 

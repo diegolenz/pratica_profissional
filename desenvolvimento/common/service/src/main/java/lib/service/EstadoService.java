@@ -28,6 +28,12 @@ public class EstadoService {
         Assert.notNull(estado.getNome(), "Campo Nome precisa ser preenchido");
         Assert.notNull(estado.getSigla(), "Campo sigla é obrigatório");
         Assert.notNull(estado.getPais(), "Selecione um país");
+        Optional<Estado> paisOptional = Optional.ofNullable(estadoDao.getByNomeAndPaisExato(estado));
+        if (paisOptional.isPresent() && !paisOptional.get().getId().equals(estado.getId())) {
+            throw new Exception("Ja existe um estado com esse mesmo nome no mesmo país, o cadastro de estado não deve conter nomes duplicados em um mesmo país ");
+        }
+       // Assert.isTrue((!paisOptional.isPresent() && !paisOptional.get().getId().equals(estado.getId())), "Ja existe um estado com esse mesmo nome no mesmo país, o cadastro de estado não deve conter nomes duplicados em um mesmo país ");
+
         estadoDao.update(estado);
     }
 

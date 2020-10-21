@@ -13,7 +13,6 @@ import lib.model.pessoa.cliente.Cliente;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +25,7 @@ public class ClienteDAO extends AbstractDao {
         this.cliente = new Cliente();
     }
 
-    public Integer getUltimoIdCliente() throws SQLException {
+    public Integer getUltimoIdCliente() throws Exception {
         PreparedStatement preparedStatement = st.getConnection().prepareStatement("Select id from cliente order by ID desc limit 1");
         ResultSet rs = preparedStatement.executeQuery();
         Integer id = null;
@@ -35,7 +34,7 @@ public class ClienteDAO extends AbstractDao {
         return id;
     }
 
-    public void save(Object obj) throws SQLException {
+    public void save(Object obj) throws Exception {
         Cliente cliente = (Cliente) obj;
         String sql = "";
         sql = "INSERT INTO cliente (" +
@@ -92,7 +91,7 @@ public class ClienteDAO extends AbstractDao {
         this.saveCondicoesPagamento(cliente.getCondicaoPagamentos(), getUltimoIdCliente());
     }
 
-    public void saveCondicoesPagamento(List<CondicaoPagamento> condicoes, Integer id) throws SQLException {
+    public void saveCondicoesPagamento(List<CondicaoPagamento> condicoes, Integer id) throws Exception {
         for (CondicaoPagamento condicaoPagamento : condicoes) {
             String sql = "INSERT INTO condicao_pagamento_cliente ( cliente_id, condicao_id) values (" +
                     "" + id + ", " + condicaoPagamento.getId() + " );";
@@ -100,7 +99,7 @@ public class ClienteDAO extends AbstractDao {
         }
     }
 
-    public void deleteCondicoes(List<CondicaoPagamento> condicoes, Integer fornecedorId) throws SQLException {
+    public void deleteCondicoes(List<CondicaoPagamento> condicoes, Integer fornecedorId) throws Exception {
         String sql = "";
         for (CondicaoPagamento condicaoPagamento : condicoes) {
             sql = "DELETE FROM condicao_pagamento_cliente WHERE condicao_id = " + condicaoPagamento.getId() + " and cliente_id = " + fornecedorId + " ;";
@@ -108,7 +107,7 @@ public class ClienteDAO extends AbstractDao {
         }
     }
 
-    public void deleteByID(Object id) throws SQLException {
+    public void deleteByID(Object id) throws Exception {
         this.st.getConnection().setAutoCommit(false);
         String sqlDeletaCondicoes = "delete from condicao_pagamento_cliente where cliente_id = " + id + " ;";
         String sql = "DELETE FROM cliente WHERE id = " + id + " ;";
@@ -118,7 +117,7 @@ public class ClienteDAO extends AbstractDao {
         this.st.getConnection().setAutoCommit(true);
     }
 
-    public List getAllClientes(String termoBusca) throws SQLException {
+    public List getAllClientes(String termoBusca) throws Exception {
         String sql = "";
         if (termoBusca.length() == 0)
             sql = "SELECT * FROM cliente where ativo = true ;";
@@ -136,7 +135,7 @@ public class ClienteDAO extends AbstractDao {
         return clientes;
     }
 
-    public void update(Object obj) throws SQLException {
+    public void update(Object obj) throws Exception {
         cliente = (Cliente) obj;
         String sql = "UPDATE cliente SET nome = '" + cliente.getNome() +
                 "', sexo = '" + cliente.getSexo() +
@@ -160,7 +159,7 @@ public class ClienteDAO extends AbstractDao {
         this.st.executeUpdate(sql);
     }
 
-    public Cliente getByID(Integer id) throws SQLException {
+    public Cliente getByID(Integer id) throws Exception {
         PreparedStatement preparedStatement = st.getConnection().prepareStatement("SELECT * FROM cliente WHERE ID = " + id + ";");
         ResultSet rs = preparedStatement.executeQuery();
         Cliente cliente = null;
@@ -210,7 +209,7 @@ public class ClienteDAO extends AbstractDao {
         return cliente;
     }
 
-    private List<CondicaoPagamento> getCondicaoByFornecedor(Integer id) throws SQLException {
+    private List<CondicaoPagamento> getCondicaoByFornecedor(Integer id) throws Exception {
         PreparedStatement preparedStatement = st.getConnection().prepareStatement("SELECT * FROM condicao_pagamento_cliente WHERE cliente_id = " + id + ";");
         ResultSet rs = preparedStatement.executeQuery();
         List<CondicaoPagamento> condicaoPagamentos = new ArrayList<>();
@@ -220,7 +219,7 @@ public class ClienteDAO extends AbstractDao {
         return condicaoPagamentos;
     }
 
-    public Cliente getByCpfCnpjExato(String cpf) throws SQLException {
+    public Cliente getByCpfCnpjExato(String cpf) throws Exception {
         PreparedStatement preparedStatement = st.getConnection().prepareStatement("SELECT id FROM cliente WHERE cpf_cnpj = '" + cpf + "' ;");
         ResultSet rs = preparedStatement.executeQuery();
         if (rs.next()) {

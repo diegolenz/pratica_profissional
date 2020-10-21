@@ -1,5 +1,6 @@
 package lib.model.financeiro.parcela;
 
+import lib.model.financeiro.CondicaoPagamento.CondicaoPagamento;
 import lib.model.financeiro.formaPagamento.FormaPagamento;
 
 
@@ -17,6 +18,7 @@ public class Parcela {
 
     private FormaPagamento formaPagamento;
 
+    private CondicaoPagamento condicaoPagamento;
 
     public Integer getId() {
         return id;
@@ -66,4 +68,11 @@ public class Parcela {
         this.ativo = ativo;
     }
 
+    public CondicaoPagamento getCondicaoPagamento() {
+        return condicaoPagamento;
+    }
+
+    public void setCondicaoPagamento(CondicaoPagamento condicaoPagamento) {
+        this.condicaoPagamento = condicaoPagamento;
+    }
 }

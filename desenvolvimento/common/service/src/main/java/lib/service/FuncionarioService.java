@@ -40,8 +40,13 @@ public class FuncionarioService extends Service {
         operadorDao.save(operador);
     }
 
-    public void clear() throws SQLException {
-        operadorDao.clear();
+    public void clear() {
+        try {
+            operadorDao.clear();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
 
@@ -89,7 +94,7 @@ public class FuncionarioService extends Service {
         operadorDao.deleteByID(id);
     }
 
-    public Funcionario getByLogin(String user, String password)throws SQLException{
+    public Funcionario getByLogin(String user, String password) throws SQLException {
         return operadorDao.getByLogin(user, password);
     }
 }

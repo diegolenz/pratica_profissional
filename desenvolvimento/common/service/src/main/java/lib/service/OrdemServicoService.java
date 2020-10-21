@@ -28,11 +28,11 @@ public class OrdemServicoService extends Service{
      *				 		     SERVICES
      *-------------------------------------------------------------------*/
 
-    public void save(Object ordemServico) throws SQLException {
+    public void save(Object ordemServico) throws Exception {
         ordemServicoDAO.save((OrdemServico) ordemServico);
     }
 
-//    public void cancelamento(OrdemServico ordemServico) throws SQLException {
+//    public void cancelamento(OrdemServico ordemServico) throws Exception {
 //        ContaReceberService contaReceberService = new ContaReceberService();
 //        for (ContaReceber contaReceber : ordemServico.getContas()){
 //            contaReceber.setAtivo(false);
@@ -41,55 +41,55 @@ public class OrdemServicoService extends Service{
 //
 //    }
 
-    public void update(OrdemServico ordemServico) throws SQLException {
+    public void update(OrdemServico ordemServico) throws Exception {
          ordemServicoDAO.update(ordemServico);
     }
 
-    public List getAll() throws SQLException {
-        return ordemServicoDAO.getAll();
+    public List getAll(String t) throws Exception {
+        return ordemServicoDAO.getAll(t);
     }
 
-    public List findByFilters(String descricao, Date dtInicialPeriodo, Date dtFinalPeriodo, String status) throws SQLException {
+    public List findByFilters(String descricao, Date dtInicialPeriodo, Date dtFinalPeriodo, String status) throws Exception {
         if (descricao.isEmpty()) {
             descricao = null;
         }
         return ordemServicoDAO.findByFilters(descricao, dtInicialPeriodo, dtFinalPeriodo, status);
     }
 
-    public void deleteProdutos(List list)throws SQLException{
+    public void deleteProdutos(List list)throws Exception{
         ordemServicoDAO.deleteItensProdutos(list);
     }
 
-    public void deleteServicos(List list)throws SQLException{
+    public void deleteServicos(List list)throws Exception{
         ordemServicoDAO.deleteItensServicos(list);
     }
 
-    public void saveProdutos(List list, Integer idos)throws SQLException{
+    public void saveProdutos(List list, Integer idos)throws Exception{
         ordemServicoDAO.saveItensProdutos(list, idos);
     }
 
-    public void saveServicos(List list, Integer idos)throws SQLException{
+    public void saveServicos(List list, Integer idos)throws Exception{
         ordemServicoDAO.saveItensServicos(list, idos);
     }
 
-    public void deleteItensProdutos(List<ItemProduto> itens)throws SQLException{
+    public void deleteItensProdutos(List<ItemProduto> itens)throws Exception{
         ordemServicoDAO.deleteItensProdutos(itens);
     }
 
-    public void deleteItensServicos(List<ItemServico> itens)throws SQLException{
+    public void deleteItensServicos(List<ItemServico> itens)throws Exception{
         ordemServicoDAO.deleteItensServicos(itens);
     }
 
 
-    public OrdemServico getByNumSerieModelo(Integer id) throws SQLException {
+    public OrdemServico getByNumSerieModelo(Integer id) throws Exception {
         return (OrdemServico) ordemServicoDAO.getById(id);
     }
 
-    public List getAllOrdemServicosAtivos(String termo) throws SQLException {
+    public List getAllOrdemServicosAtivos(String termo) throws Exception {
         return null;// ordemServicoDAO.getAllOrdemServicos(termo);
     }
 
-    public List getAllOrdemServicos(String termo) throws SQLException {
+    public List getAllOrdemServicos(String termo) throws Exception {
         return null;// ordemServicoDAO.getAllOrdemServicos(termo);
     }
 

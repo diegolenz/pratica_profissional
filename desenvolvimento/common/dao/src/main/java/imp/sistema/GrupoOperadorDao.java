@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class GrupoOperadorDao extends AbstractDao {
@@ -29,15 +30,17 @@ public class GrupoOperadorDao extends AbstractDao {
     public GrupoFuncionario save(GrupoFuncionario grupo) throws SQLException {
         //Salva grupo
         String sql = "Insert into grupo_funcionario ( " +
-                "nome, data_cadastro," +
-                " data_ultima_alteracao," +
-                " ativo, funcionario_cadastro, " +
+                " nome," +
+                " data_cadastro," +
                 " funcionario_cadastro, " +
-                "funcionario_ultima_alteracao) values ( " +
+                " data_ultima_alteracao," +
+                " funcionario_ultima_alteracao," +
+                " ativo ) values ( " +
                 "'" + grupo.getNome() + "', " +
-                "'" + grupo.getDataCadastro() + "'," +
-                " " + grupo.getFuncionarioCadastro().getId() +
-                " '" + grupo.getFuncionarioUltimaAlteracao().getId() + "', " +
+                " now(), " +
+                " " + grupo.getFuncionarioCadastro().getId() + ", " +
+                "  now(), " +
+                " " + grupo.getFuncionarioUltimaAlteracao().getId() + ", " +
                 "" + grupo.getAtivo() + " );";
         this.st.getConnection().prepareStatement(sql).executeUpdate();
         // this.st.getConnection().commit();
@@ -58,7 +61,9 @@ public class GrupoOperadorDao extends AbstractDao {
         this.st.executeUpdate(sql);
         String sqlDeletePermisoes = "delete from permissao_acesso where grupo_funcionario_id = " + grupoFuncionario.getId() + " ;";
         this.st.executeUpdate(sqlDeletePermisoes);
-        for (PermissaoAcesso permissaoAcesso : grupoFuncionario.getPermissoes()) {
+        List<PermissaoAcesso> permissoesSalvar = grupoFuncionario.getPermissoes().stream().filter(permissaoAcesso -> permissaoAcesso.getId() == null).collect(Collectors.toList());
+
+        for (PermissaoAcesso permissaoAcesso : permissoesSalvar) {
             String sqlPermissoes = "insert into permissao_acesso (grupo_funcionario_id, modulo, nivel_acesso) values " +
                     "(" + grupoFuncionario.getId() + ", '" + permissaoAcesso.getModulo() + "', '" + permissaoAcesso.getNivelAcesso() + "' );";
             this.st.executeUpdate(sqlPermissoes);
@@ -69,7 +74,7 @@ public class GrupoOperadorDao extends AbstractDao {
 
     public void delete(GrupoFuncionario grupoFuncionario) throws SQLException {
         this.st.getConnection().prepareStatement("delete from grupo_funcionario where id = " + grupoFuncionario.getId() + " ;").executeUpdate();
-        this.st.getConnection().prepareStatement("delete from permissao_acesso where grupo_funcionario_id = " + grupoFuncionario.getId() + " ;").executeUpdate();
+        //this.st.getConnection().prepareStatement("delete from permissao_acesso where grupo_funcionario_id = " + grupoFuncionario.getId() + " ;").executeUpdate();
     }
 
     public GrupoFuncionario getGrupoByUltimoId() throws SQLException {

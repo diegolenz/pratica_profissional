@@ -26,11 +26,11 @@ public class VendaServicoService extends Service {
      *				 		     SERVICES
      *-------------------------------------------------------------------*/
 
-    public void save(Object venda) throws SQLException {
+    public void save(Object venda) throws Exception {
         vendaDAO.save((VendaServico) venda);
     }
 
-    public void cancelamento(VendaServico venda) throws SQLException {
+    public void cancelamento(VendaServico venda) throws Exception {
         ContaReceberService contaReceberService = new ContaReceberService();
         for (ContaReceber contaReceber : venda.getContas()){
             contaReceber.setAtivo(false);
@@ -40,23 +40,23 @@ public class VendaServicoService extends Service {
 
     }
 
-    public void update(VendaProduto venda) throws SQLException {
+    public void update(VendaProduto venda) throws Exception {
         // vendaDAO.update(venda);
     }
 
-    public List getAll(String termo) throws SQLException {
-        return vendaDAO.getAll(termo);
+    public List getAll(String termo,  Boolean ativo) throws Exception {
+        return vendaDAO.getAll(termo,  ativo);
     }
 
-    public VendaServico getByNumSerieModelo(Integer n, String m, Integer s) throws SQLException {
+    public VendaServico getByNumSerieModelo(Integer n, String m, Integer s) throws Exception {
         return (VendaServico) vendaDAO.getByID(m, n, s);
     }
 
-    public List getAllVendasAtivos(String termo) throws SQLException {
+    public List getAllVendasAtivos(String termo) throws Exception {
         return null;// vendaDAO.getAllVendas(termo);
     }
 
-    public List getAllVendas(String termo) throws SQLException {
+    public List getAllVendas(String termo) throws Exception {
         return null;// vendaDAO.getAllVendas(termo);
     }
 

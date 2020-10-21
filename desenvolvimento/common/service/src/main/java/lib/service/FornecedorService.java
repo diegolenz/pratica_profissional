@@ -89,7 +89,7 @@ public class FornecedorService extends Service{
         fornecedorDAO.update(pessoa);
     }
 
-    public List getAll(String termo) throws SQLException {
+    public List getAll(String termo) throws Exception {
         return fornecedorDAO.getAllFornecedores(termo);
     }
 
@@ -98,14 +98,14 @@ public class FornecedorService extends Service{
     }
 
 
-    public Fornecedor getByID(Integer id) throws SQLException {
+    public Fornecedor getByID(Integer id) throws Exception {
         Assert.notNull(id, "ID passado como parametro não pode estar nulo");
         Fornecedor pessoa = fornecedorDAO.getByID(id);
       //  Assert.notNull(pessoa, "Não foi encontrado nenhuma pessoa com esse código");
         return pessoa;
     }
 
-    public void deleteByID(Pessoa pessoa) throws SQLException {
+    public void deleteByID(Pessoa pessoa) throws Exception {
         fornecedorDAO.deleteByID(pessoa.getId());
     }
 

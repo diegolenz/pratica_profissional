@@ -21,56 +21,60 @@ import java.util.stream.Collectors;
 public enum ModuloSistema implements Serializable {
 
     //produtos
-    PRODUTOS(CategoriaModuloSistema.ESTOQUE, "Produtos", false),
-    SERVICOS(CategoriaModuloSistema.ESTOQUE, "Serviços", false),
-    MARCAS(CategoriaModuloSistema.ESTOQUE, "Marcas", false),
-    GRUPOS_PRODUTOS_SERVICOS(CategoriaModuloSistema.ESTOQUE, "Grupos de produtos/serviços", false),
+    PRODUTOS(CategoriaModuloSistema.ESTOQUE, "Produtos", false, true),
+    SERVICOS(CategoriaModuloSistema.ESTOQUE, "Serviços", false, true),
+    MARCAS(CategoriaModuloSistema.ESTOQUE, "Marcas", false, true),
+    GRUPOS_PRODUTOS_SERVICOS(CategoriaModuloSistema.ESTOQUE, "Grupos de produtos/serviços", false, true),
 
     //PESSOAS
-    FORNECEDORES(CategoriaModuloSistema.PESSOAS, "Forncededores", false),
-    CLIENTES(CategoriaModuloSistema.PESSOAS, "Clientes", false),
+    FORNECEDORES(CategoriaModuloSistema.PESSOAS, "Forncededores", false, true),
+    CLIENTES(CategoriaModuloSistema.PESSOAS, "Clientes", false, true),
 
     //COMERCIAL
-    COMPRAS(CategoriaModuloSistema.COMERCIAL, "Compras", false),
-    VENDAS(CategoriaModuloSistema.COMERCIAL, "Vendas", false),
+    COMPRAS(CategoriaModuloSistema.COMERCIAL, "Compras", false, true),
+    VENDAS(CategoriaModuloSistema.COMERCIAL, "Vendas", false, true),
 
     //FINANCEIRO
-    CONTAS_PAGAR(CategoriaModuloSistema.FINANCIRO, "Contas a pagar", false),
-    CONTAS_RECEBER(CategoriaModuloSistema.FINANCIRO, "Contas a receber", false),
-    ALTERAR_DATA_VENCIMENTO_CONTA_PAGAR(CategoriaModuloSistema.FINANCIRO, "Alterar data de vencimento das contas a pagar", true),
-    ALTERAR_FORMA_PAGAMENTO_CONTA_PAGAR(CategoriaModuloSistema.FINANCIRO, "Alterar forma de pagamento das contas a pagar", true),
-    ALTERAR_DATA_VENCIMENTO_CONTA_RECEBER(CategoriaModuloSistema.FINANCIRO, "Alterar data de vencimento das contas a receber", true),
-    ALTERAR_FORMA_PAGAMENTO_CONTA_RECEBER(CategoriaModuloSistema.FINANCIRO, "Alterar forma de pagamento das contas a receber", true),
-    CAIXAS(CategoriaModuloSistema.FINANCIRO, "Caixas", false),
-    FORMAS_PAGAMENTO(CategoriaModuloSistema.FINANCIRO, "Formas de pagamentos", false),
-    CONDICOES_PAGAMENTO(CategoriaModuloSistema.FINANCIRO, "Condições de pagamento", false),
+    CONTAS_PAGAR(CategoriaModuloSistema.FINANCIRO, "Contas a pagar", false, true),
+    CONTAS_RECEBER(CategoriaModuloSistema.FINANCIRO, "Contas a receber", false, true),
+    ALTERAR_DATA_VENCIMENTO_CONTA_PAGAR(CategoriaModuloSistema.FINANCIRO, "Alterar data de vencimento das contas a pagar", true, true),
+    ALTERAR_FORMA_PAGAMENTO_CONTA_PAGAR(CategoriaModuloSistema.FINANCIRO, "Alterar forma de pagamento das contas a pagar", true, true),
+    ALTERAR_DATA_VENCIMENTO_CONTA_RECEBER(CategoriaModuloSistema.FINANCIRO, "Alterar data de vencimento das contas a receber", true, true),
+    ALTERAR_FORMA_PAGAMENTO_CONTA_RECEBER(CategoriaModuloSistema.FINANCIRO, "Alterar forma de pagamento das contas a receber", true, true),
+    CAIXAS(CategoriaModuloSistema.FINANCIRO, "Caixas", false, false), //alterar nescecita permissao caso for implementado os caixas
+    FORMAS_PAGAMENTO(CategoriaModuloSistema.FINANCIRO, "Formas de pagamentos", false, true),
+    CONDICOES_PAGAMENTO(CategoriaModuloSistema.FINANCIRO, "Condições de pagamento", false, true),
 
 
     //Sistema
-    SISTEMA_GRUPO_OPERADORES(CategoriaModuloSistema.SISTEMA, "Grupos de operadores", false),
-    SISTEMA_OPERADORES(CategoriaModuloSistema.SISTEMA, "Operadores", false),
-    SISTEMA_CONFIG(CategoriaModuloSistema.SISTEMA, "Configuração geral", true),
+    SISTEMA_GRUPO_OPERADORES(CategoriaModuloSistema.SISTEMA, "Grupos de operadores", false, true),
+    SISTEMA_OPERADORES(CategoriaModuloSistema.SISTEMA, "Operadores", false, true),
+    SISTEMA_CONFIG(CategoriaModuloSistema.SISTEMA, "Configuração geral", true, true),
     // TROCAR_SENHA(CategoriaModuloSistema.SISTEMA, "Trocar senha"),
-    CONFIRMACAO(CategoriaModuloSistema.SISTEMA, "Confirmação de senha", true),
+    CONFIRMACAO(CategoriaModuloSistema.SISTEMA, "Confirmação de senha", true, false),
+    SWING(CategoriaModuloSistema.SISTEMA, "SWING", true, false),
+
 
     //CADASTROS
-    ENDERECO(CategoriaModuloSistema.CADASTROS, "Endereços", false),
+    ENDERECO(CategoriaModuloSistema.CADASTROS, "Endereços", false, true),
 
     //OS
-    OS(CategoriaModuloSistema.OS, "Ordens de serviços", false),
-    MODELOS(CategoriaModuloSistema.OS, "Modelos", false);
+    OS(CategoriaModuloSistema.OS, "Ordens de serviços", false, true),
+    MODELOS(CategoriaModuloSistema.OS, "Modelos", false, true);
 
 
     private final CategoriaModuloSistema categoria;
     private final String descricao;
-    // private final Boolean nescecitaPermissao;
+
     private final boolean somenteGravacao;
+    private final Boolean nescecitaPermissao;
 //    private final boolean permiteModoLeituraGravacao;
 
-    ModuloSistema(CategoriaModuloSistema categoria, String descricao, Boolean somenteGravacao) {
+    ModuloSistema(CategoriaModuloSistema categoria, String descricao, Boolean somenteGravacao, Boolean nescecitaPermissao) {
         this.categoria = categoria;
         this.descricao = descricao;
         this.somenteGravacao = somenteGravacao;
+        this.nescecitaPermissao = nescecitaPermissao;
 //        this.permiteModoSomenteLeitura = permiteModoSomenteLeitura;
 //        this.permiteModoLeituraGravacao = permiteModoLeituraGravacao;
     }
@@ -94,6 +98,11 @@ public enum ModuloSistema implements Serializable {
     public boolean isSomenteGravacao() {
         return somenteGravacao;
     }
+
+    public Boolean getNescecitaPermissao() {
+        return nescecitaPermissao;
+    }
+
     //    public boolean isModoSomenteLeituraPermitido() {
 //        return permiteModoSomenteLeitura;
 //    }
